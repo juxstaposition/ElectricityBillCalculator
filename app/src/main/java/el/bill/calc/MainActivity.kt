@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "ok", Snackbar.LENGTH_LONG)
+
+            Snackbar.make(view, "Profile Created", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
     }
