@@ -1,5 +1,6 @@
 package el.bill.calc
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +17,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-
-            Snackbar.make(view, "Profile Created", Snackbar.LENGTH_LONG)
+            val intent = Intent(this, NewItem::class.java)
+            intent.putExtra("key",2)
+            startActivity(intent)
+            /*Snackbar.make(view, "Profile Created", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+            */
         }
     }
 
@@ -28,13 +32,26 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        R.id.action_settings -> {
+            println("settings clicked")
+            true
+        }
+        R.id.action_devices -> {
+            println("devices clicked")
+            true
+        }
+        R.id.action_help -> {
+            println("help clicked")
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
         }
     }
 }

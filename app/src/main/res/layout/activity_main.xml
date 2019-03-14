@@ -32,6 +32,7 @@
             app:maxImageSize="36dp"
             app:srcCompat="@drawable/add24dp"
 
-            app:backgroundTint="@color/colorPrimary"/>
+            app:backgroundTint="@color/colorPrimary"
+            />
 
 </android.support.design.widget.CoordinatorLayout>
