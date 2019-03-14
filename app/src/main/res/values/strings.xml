@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">ElectricityBillCalculator</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">EB C&amp;M</string>
+    <string name="action_devices">Devices</string>
 </resources>
