@@ -1,4 +1,4 @@
-package el.bill.calc;
+package advanced.android.ebcm;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
-public class MainActivityJava extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MainActivityJava extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivityJava.this, NewItem.class);
+                Intent intent = new Intent(MainActivity.this, NewItem.class);
                 intent.putExtra("key", 2);
                 startActivity(intent);
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

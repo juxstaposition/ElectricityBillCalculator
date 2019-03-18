@@ -1,4 +1,4 @@
-package el.bill.calc
+package advanced.android.ebcm
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
