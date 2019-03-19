@@ -21,7 +21,7 @@
             app:layout_constraintRight_toRightOf="parent"/>
     <TextView
             android:text="@string/orText"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/orText"
@@ -33,7 +33,7 @@
             app:layout_constraintBottom_toTopOf="@id/newItemNameLayout"/>
 
     <Button
-            android:text="Pick An Item"
+            android:text="@string/pick_an_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonPickItem"
@@ -44,7 +44,7 @@
     />
 
     <Button
-            android:text="Add"
+            android:text="@string/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonItemAdd"
@@ -54,7 +54,7 @@
             app:layout_constraintLeft_toRightOf="@id/buttonItemCancel"
             app:layout_constraintTop_toBottomOf="@id/newItemUsageDays" />
     <Button
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonItemCancel"
@@ -73,7 +73,7 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="New Item"
+                android:hint="@string/new_item"
                 android:textColor="@color/black"
                 android:inputType="text"/>
     </android.support.design.widget.TextInputLayout>
@@ -88,7 +88,7 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Consumption"
+                android:hint="@string/consumption"
                 android:textColor="@color/black"
                 android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
@@ -103,7 +103,7 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Quantity"
+                android:hint="@string/quantity"
                 android:textColor="@color/black"
                 android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
@@ -118,7 +118,7 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Usage h/day"
+                android:hint="@string/usage_h_day"
                 android:textColor="@color/black"
                 android:inputType="time"/>
     </android.support.design.widget.TextInputLayout>
@@ -133,7 +133,7 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Usage days/month"
+                android:hint="@string/usage_d_month"
                 android:textColor="@color/black"
                 android:inputType="numberSigned"/>
     </android.support.design.widget.TextInputLayout>
