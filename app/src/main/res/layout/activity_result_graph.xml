@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ResultGraph">
+
+    <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="248dp"
+            android:id="@+id/graph"/>
+    <TextView
+            android:text="Highest Consumption "
+            android:layout_width="410dp"
+            android:layout_height="95dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/graph"/>
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="6dp" android:id="@+id/textView"/>
+
+
+</android.support.constraint.ConstraintLayout>
