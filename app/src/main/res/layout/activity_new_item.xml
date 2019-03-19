@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".NewItem"
+        tools:context=".NewItemActivity"
         android:theme="@android:style/Theme.Holo.NoActionBar"
 >
     <TextView
@@ -16,9 +16,32 @@
             android:id="@+id/title"
             android:textColor="@color/black"
 
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.393"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+    <TextView
+            android:text="@string/orText"
+            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orText"
+            android:textColor="@color/black"
+
+            app:layout_constraintTop_toBottomOf="@id/buttonPickItem"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/newItemNameLayout"/>
+
+    <Button
+            android:text="Pick An Item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonPickItem"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+    />
 
     <Button
             android:text="Add"
@@ -26,33 +49,33 @@
             android:layout_height="wrap_content"
             android:id="@+id/buttonItemAdd"
 
-            android:layout_marginRight="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/buttonItemCancel"
+            app:layout_constraintTop_toBottomOf="@id/newItemUsageDays" />
     <Button
             android:text="Cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonItemCancel"
-            android:layout_marginLeft="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/buttonItemAdd"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-    />
+            app:layout_constraintTop_toBottomOf="@id/newItemUsageDays"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     <android.support.design.widget.TextInputLayout
             android:id="@+id/newItemNameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            android:textColorHint="@color/colorAccent">
+            app:layout_constraintTop_toBottomOf="@+id/orText"
+            android:textColorHint="@color/colorAccent"
+            >
 
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="New Item"
                 android:textColor="@color/black"
-        />
+                android:inputType="text"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -66,7 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Consumption"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -80,11 +104,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Quantity"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-            android:id="@+id/newItemDailyUsage"
+            android:id="@+id/newItemUsageHoursLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/colorAccent"
@@ -94,21 +119,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Usage h/day"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:inputType="time"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-            android:id="@+id/newItemMonthlyUsage"
+            android:id="@+id/newItemUsageDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/colorAccent"
-            app:layout_constraintTop_toBottomOf="@+id/newItemDailyUsage">
+            app:layout_constraintTop_toBottomOf="@+id/newItemUsageHoursLayout">
 
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Usage days/month"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:inputType="numberSigned"/>
     </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>
