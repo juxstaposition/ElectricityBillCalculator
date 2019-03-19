@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewItemActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewProfileActivity.class);
                 intent.putExtra("key", 2);
                 startActivity(intent);
             }
@@ -49,11 +49,17 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if ( id == R.id.action_devices){
+            return true;
+        }
+        else if ( id == R.id.action_help){
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private ArrayList<Profile> profiles = new ArrayList<>();
+    //private ArrayList<Profile> profiles = new ArrayList<>();
 
 
 

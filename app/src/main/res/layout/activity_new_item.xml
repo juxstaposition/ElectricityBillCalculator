@@ -27,7 +27,7 @@
             android:id="@+id/orText"
             android:textColor="@color/black"
 
-            app:layout_constraintTop_toBottomOf="@id/buttonPickItem"
+            app:layout_constraintTop_toBottomOf="@id/buttonItemPick"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/newItemName"/>
@@ -36,7 +36,7 @@
             android:text="@string/pick_an_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonPickItem"
+            android:id="@+id/buttonItemPick"
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintLeft_toLeftOf="parent"
