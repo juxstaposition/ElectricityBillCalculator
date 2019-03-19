@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Profile> profiles = new ArrayList<>();
 
+    Profile profile = new Profile();
+    
+
+
 
 
 }
