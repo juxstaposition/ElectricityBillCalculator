@@ -14,6 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PROFILE_ID = "id";
     private static final String KEY_PROFILE_NAME = "profileName";
     private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_POWER_COST = "powerCost";
 
 
     private static final String TABLE_DEVICES = "devices";
@@ -35,9 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_PROFILES_TABLE = "CREATE TABLE" + TABLE_PROFILES + "("
+        String CREATE_PROFILES_TABLE = "CREATE TABLE " + TABLE_PROFILES + "("
                 + KEY_PROFILE_ID + "INTEGER PRIMARY KEY," + KEY_PROFILE_NAME + " TEXT,"
-                + KEY_DESCRIPTION + " TEXT" + ")";
+                + KEY_DESCRIPTION + " TEXT," + KEY_POWER_COST+ " TEXT" + ")";
         db.execSQL(CREATE_PROFILES_TABLE);
     }
 
