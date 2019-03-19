@@ -42,20 +42,7 @@ public class ResultGraph extends AppCompatActivity {
                 new DataPoint(4, 60),
                 new DataPoint(5, 17060),
                 new DataPoint(6, 700),
-                new DataPoint(7, 3000),
-                new DataPoint(8, 2500),
-                new DataPoint(9, 60),
-                new DataPoint(10, 17060),
-                new DataPoint(11, 700),
-                new DataPoint(12, 3000),
-                new DataPoint(13, 2500),
-                new DataPoint(14, 60),
-                new DataPoint(15, 17060),
-                new DataPoint(16, 700),
-                new DataPoint(17, 3000),
-                new DataPoint(18, 2500),
-                new DataPoint(19, 60),
-                new DataPoint(20, 17060),
+               
         });
         graph.addSeries(series);
 
