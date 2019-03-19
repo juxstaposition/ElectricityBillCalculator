@@ -11,9 +11,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".NewItem"
-            android:theme="@style/AppTheme.NewItemTheme"
-        ></activity>
+        <activity
+                android:name=".NewItemActivity"
+                android:theme="@style/AppTheme.NewItemTheme"
+        />
 
         <activity
                 android:name=".MainActivity"
