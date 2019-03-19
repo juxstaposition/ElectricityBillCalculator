@@ -4,5 +4,6 @@
     <string name="action_devices">Devices</string>
     <string name="action_help">Help</string>
     <string name="create_new_item">Create New Item</string>
+    <string name="orText">------ or ------</string>
 
 </resources>
