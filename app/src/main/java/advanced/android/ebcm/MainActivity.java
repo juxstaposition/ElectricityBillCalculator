@@ -59,7 +59,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //private ArrayList<Profile> profiles = new ArrayList<>();
+    public ArrayList<Profile> profiles = new ArrayList<>();
+
+
+
+
+
+
+
+
 
 
 
