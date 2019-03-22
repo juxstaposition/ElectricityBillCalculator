@@ -1,7 +1,7 @@
 <resources>
-
+    <!--labels-->
     <string name="app_name">EB C&amp;M</string>
-
+    <string name="title_activity_devices_list">Favourite Devices</string>
 
     <!--options-->
     <string name="action_settings">Settings</string>
@@ -10,25 +10,23 @@
 
 
     <!--titles-->
-    <string name="create_new_profile">Create New Profile</string>
-    <string name="create_new_item">Create New Item</string>
-
+    <string name="create_new_profile">Create Profile</string>
+    <string name="create_new_item">Create Device</string>
 
     <!--hints-->
     <string name="description">Description</string>
     <string name="new_profile_name">New Profile Name</string>
-    <string name="consumption">Consumption</string>
+    <string name="consumption">Consumption kWh</string>
     <string name="quantity">Quantity</string>
-    <string name="usage_h_day">Usage H/Dat</string>
-    <string name="usage_d_month">Usage D/Month</string>
+    <string name="usage_h_day">Usage h/Day</string>
+    <string name="usage_d_month">Usage d/Month</string>
     <string name="new_item">New Item</string>
-
+    <string name="profile_cost">Cost kWh</string>
 
     <!--buttons-->
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="pick_an_item">Pick An Item</string>
-
 
     <!--special-->
     <string name="orText">------ or ------</string>

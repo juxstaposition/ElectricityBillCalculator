@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,9 +23,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewItemActivity.class);
-                intent.putExtra("key", 2);
-                startActivity(intent);
+                Intent newProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
+                startActivity(newProfileActivity);
             }
         });
     }
@@ -47,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        else if ( id == R.id.action_devices){
+            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
+            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
+            startActivity(devicesListActivity);
+            return true;
+        }
+        else if ( id == R.id.action_help){
             return true;
         }
 
