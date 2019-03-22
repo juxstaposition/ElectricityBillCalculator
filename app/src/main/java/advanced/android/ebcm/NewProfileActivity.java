@@ -1,5 +1,6 @@
 package advanced.android.ebcm;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,8 +23,8 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
-        System.out.println("height = "+ height + " width = "+width);
-        getWindow().setLayout( width*8/10,height*8/10 );
+
+//        getWindow().setLayout( width*8/10,height*8/10 );
 
         profileNameInput = findViewById(R.id.newProfileName);
         profileDescriptionInput = findViewById(R.id.newProfileDescription);
@@ -31,11 +32,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
         findViewById(R.id.buttonProfileCancel).setOnClickListener(this);
-    }
-
-    void addProfile() {
-        Profile profile = new Profile();
-
+        findViewById(R.id.back_view).setOnClickListener(this);
     }
 
     @Override
@@ -72,9 +69,10 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 super.onBackPressed();
             }
         }
-        else if (view.getId() == R.id.buttonProfileCancel){
+        else if (view.getId() == R.id.buttonProfileCancel || view.getId() == R.id.back_view){
             super.onBackPressed();
         }
+
     }
 
 }
