@@ -23,11 +23,18 @@ GraphView graphView;
         GraphView graphView = (GraphView) findViewById(R.id.graphView);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(99);
+        graphView.getViewport().setMaxX(8);
 
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMaxY(2000);
+        graphView.getViewport().setMaxY(20000);
+//        graphView.setHorizontalScrollBarEnabled(true);
+
+        graphView.getViewport().setScrollable(true);
+//        graphView.getViewport().setScrollableY(true);
+
+        graphView.getViewport().setScalable(true);
+//        graphView.getViewport().setScalableY(true);
 
 
 
@@ -51,6 +58,13 @@ GraphView graphView;
                 new DataPoint(4, 60),
                 new DataPoint(5, 17060),
                 new DataPoint(6, 700),
+                new DataPoint(7, 0),
+                new DataPoint(8, 700),
+                new DataPoint(9, 3000),
+                new DataPoint(10, 2500),
+                new DataPoint(11, 60),
+                new DataPoint(12, 17060),
+                new DataPoint(13, 700),
                
         });
         graphView.addSeries(series);
@@ -59,7 +73,7 @@ GraphView graphView;
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return Color.rgb((int) data.getX() * 255, (int) Math.abs(data.getY() * 255 / 6), 100);
+                return Color.rgb((int) data.getX() * 255/4, (int) Math.abs(data.getY() * 255 / 6), 100);
             }
         });
         series.setSpacing(50);
