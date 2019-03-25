@@ -16,7 +16,7 @@ public class DevicesListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final String transferredData = Constant.PROFILE_DEVICE; //getIntent().getStringExtra("KEY");
+        final String transferredData = getIntent().getStringExtra("KEY");
 
 
         FloatingActionButton fab = findViewById(R.id.fab);

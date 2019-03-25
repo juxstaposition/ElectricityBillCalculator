@@ -10,6 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "ebcm";
+    
     private static final String TABLE_PROFILES = "profiles";
     private static final String KEY_PROFILE_ID = "id";
     private static final String KEY_PROFILE_NAME = "profileName";
@@ -70,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
 
-        Profile profile = new Profile(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
+        Profile profile = new Profile(cursor.getString(1), cursor.getString(2), cursor.getString(3));
 
         return profile;
     }

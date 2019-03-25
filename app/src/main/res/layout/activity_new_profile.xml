@@ -66,13 +66,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/newProfileTitle"
-                android:textColorHint="@color/colorAccent"
+                android:textColorHint="@color/colorPrimary"
                 android:layout_marginTop="24dp">
 
             <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/new_profile_name"
+
+                    android:textColorHint="@color/colorPrimary"
                     android:textColor="@color/black"
                     android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
@@ -81,7 +83,7 @@
                 android:id="@+id/newProfileDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorAccent"
+                android:textColorHint="@color/colorPrimary"
                 android:layout_marginTop="50dp"
                 app:layout_constraintTop_toBottomOf="@+id/newProfileName">
 
@@ -89,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/description"
+                    android:textColorHint="@color/colorPrimary"
                     android:textColor="@color/black"
                     android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
@@ -97,14 +100,16 @@
                 android:id="@+id/newProfileCost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorAccent"
+                android:textColorHint="@color/colorPrimary"
                 android:layout_marginTop="50dp"
                 app:layout_constraintTop_toBottomOf="@+id/newProfileDescription">
 
             <android.support.design.widget.TextInputEditText
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile_cost"
+                    android:textColorHint="@color/colorPrimary"
                     android:textColor="@color/black"
                     android:inputType="number"/>
         </android.support.design.widget.TextInputLayout>
