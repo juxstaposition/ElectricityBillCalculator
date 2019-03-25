@@ -11,12 +11,16 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".NewProfileActivity"
-                  android:theme="@style/AppTheme.NewItemTheme"
-        >
+        <activity
+                android:name=".DevicesListActivity"
+                android:label="@string/title_activity_devices_list"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-                android:name=".NewItemActivity"
+                android:name=".NewDeviceActivity"
+                android:theme="@style/AppTheme.NewItemTheme"/>
+        <activity
+                android:name=".NewProfileActivity"
                 android:theme="@style/AppTheme.NewItemTheme"/>
         <activity
                 android:name=".MainActivity"
