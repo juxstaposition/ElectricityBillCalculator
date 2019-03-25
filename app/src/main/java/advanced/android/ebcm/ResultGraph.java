@@ -4,12 +4,11 @@ import android.graphics.Color;
 import android.icu.text.NumberFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.Series;
+import com.jjoe64.graphview.series.*;
 
 import java.security.KeyStore;
 
@@ -27,14 +26,14 @@ GraphView graphView;
 
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMaxY(20000);
+        graphView.getViewport().setMaxY(400);
 //        graphView.setHorizontalScrollBarEnabled(true);
 
         graphView.getViewport().setScrollable(true);
-//        graphView.getViewport().setScrollableY(true);
+        graphView.getViewport().setScrollableY(true);
 
         graphView.getViewport().setScalable(true);
-//        graphView.getViewport().setScalableY(true);
+       graphView.getViewport().setScalableY(true);
 
 
 
@@ -50,7 +49,10 @@ GraphView graphView;
 
         });
 
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
+
+
+
+         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
                 new DataPoint(0, 0),
                 new DataPoint(1, 700),
                 new DataPoint(2, 3000),
@@ -68,6 +70,15 @@ GraphView graphView;
                
         });
         graphView.addSeries(series);
+series.setOnDataPointTapListener(new OnDataPointTapListener() {
+    @Override
+    public void onTap(Series series, DataPointInterface dataPoint) {
+        String masg = "X: "+dataPoint.getX()+"\nY: "+dataPoint.getY();
+        Toast.makeText(ResultGraph.this,masg,Toast.LENGTH_SHORT).show();
+
+    }
+
+});
 
 
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
