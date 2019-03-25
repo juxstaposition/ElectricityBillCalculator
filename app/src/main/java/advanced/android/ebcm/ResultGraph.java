@@ -15,14 +15,23 @@ import java.security.KeyStore;
 
 public class ResultGraph extends AppCompatActivity {
 
-
+GraphView graphView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_graph);
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        GraphView graphView = (GraphView) findViewById(R.id.graphView);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(0);
+        graphView.getViewport().setMaxX(99);
 
-        graph.getGridLabelRenderer(). setLabelFormatter(new DefaultLabelFormatter() {
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setMinY(0);
+        graphView.getViewport().setMaxY(2000);
+
+
+
+        graphView.getGridLabelRenderer(). setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
@@ -44,13 +53,13 @@ public class ResultGraph extends AppCompatActivity {
                 new DataPoint(6, 700),
                
         });
-        graph.addSeries(series);
+        graphView.addSeries(series);
 
 
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
+                return Color.rgb((int) data.getX() * 255, (int) Math.abs(data.getY() * 255 / 6), 100);
             }
         });
         series.setSpacing(50);

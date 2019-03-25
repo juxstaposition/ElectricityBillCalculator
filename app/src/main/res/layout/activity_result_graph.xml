@@ -10,15 +10,16 @@
     <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="248dp"
-            android:id="@+id/graph"/>
+            android:id="@+id/graphView"/>
     <TextView
             android:text="Highest Consumption "
             android:layout_width="410dp"
             android:layout_height="95dp"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/graph"/>
+            app:layout_constraintTop_toBottomOf="@id/graphView"/>
             android:textSize="20dp"
-            tools:layout_editor_absoluteX="6dp" android:id="@+id/textView"/>
+            tools:layout_editor_absoluteX="6dp"
+            android:id="@+id/textView"/>
 
 
 </android.support.constraint.ConstraintLayout>
