@@ -13,9 +13,7 @@ public class Device {
     }
 
     public void setName(String name) {
-        if (name.length() > 0 && name != null) {
             this.name = name;
-        }
     }
 
     public int getWattage() {
@@ -23,9 +21,7 @@ public class Device {
     }
 
     public void setWattage(int wattage) {
-        if (wattage > 0) {
-            this.wattage = wattage;
-        }
+        this.wattage = wattage;
     }
 
     public int getQuantity() {
@@ -33,9 +29,7 @@ public class Device {
     }
 
     public void setQuantity(int quantity) {
-        if (quantity > 0) {
-            this.quantity = quantity;
-        }
+        this.quantity = quantity;
     }
 
     public int getHours() {
@@ -43,9 +37,9 @@ public class Device {
     }
 
     public void setHours(int hours) {
-        if (hours > 0) {
+
             this.hours = hours;
-        }
+
     }
 
     public int getMinutes() {
@@ -53,9 +47,7 @@ public class Device {
     }
 
     public void setMinutes(int minutes) {
-        if (minutes > 0) {
-            this.minutes = minutes;
-        }
+        this.minutes = minutes;
     }
 
     public int getDays_month() {
@@ -63,8 +55,7 @@ public class Device {
     }
 
     public void setDays_month(int days_month) {
-        if (days_month > 0) {
-            this.days_month = days_month;
-        }
+        this.days_month = days_month;
     }
+
 }

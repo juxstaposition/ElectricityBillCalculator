@@ -1,18 +1,22 @@
 package advanced.android.ebcm;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.*;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    LinearLayout myVerticalLayout = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,16 +24,43 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        myVerticalLayout = findViewById(R.id.profile_list);
+
+        /**
+         * Test
+         */
+        LinearLayout test = findViewById(R.id.constraintProfile);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Panel Clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ImageView clipdel = findViewById(R.id.deleteClipArt);
+        clipdel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Example Delete Clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        /**
+         *  Test end
+         */
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewItemActivity.class);
-                intent.putExtra("key", 2);
-                startActivity(intent);
+                Intent newProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
+                startActivity(newProfileActivity);
+                Profile test = new Profile("New","description","2");
+                test.generateProfile(getApplicationContext(), myVerticalLayout);
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        else if ( id == R.id.action_devices){
+            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
+            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
+            startActivity(devicesListActivity);
+            return true;
+        }
+        else if ( id == R.id.action_help){
             return true;
         }
 

@@ -13,17 +13,54 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="AppTheme.NewItemTheme">
-        <item name= "android:windowIsTranslucent">true</item>
-        <item name= "android:windowCloseOnTouchOutside">true</item>
-        <item name= "android:windowActionBar">false</item>
-        <item name= "windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/shadowedBackground</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
 
+    <style name="DeleteClipArt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/delete_button_clipart</item>
+    </style>
 
+    <style name="ProfileFormStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:background">@drawable/profile_view</item>
+    </style>
+
+    <style name="BasicButton">
+        <item name="android:topLeftRadius">21dp</item>
+        <item name="android:topRightRadius">21dp</item>
+        <item name="android:bottomRightRadius">21dp</item>
+        <item name="android:bottomLeftRadius">21dp</item>
 
     </style>
+
+    <style name="WrapHeightWidth">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ProfileNameTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginRight">50dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+    </style>
+
 </resources>
