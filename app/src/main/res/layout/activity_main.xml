@@ -4,7 +4,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/lightBlue">
+
+
+
+
+        <ScrollView
+                android:layout_marginTop="55dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        >
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+            >
+
+                <LinearLayout
+                        android:id="@+id/profile_list"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+
+
+                <android.support.design.widget.CoordinatorLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:id="@+id/layoutProfile"
+                            android:orientation="vertical"
+                            style="@style/ProfileFormStyle"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            >
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                        >
+
+                            <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                            >
+                                <TextView
+                                        android:layout_marginTop="3dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        style="@style/ProfileNameTitleStyle"
+                                        android:text="Name"
+                                        android:fontFamily="sans-serif-black"
+                                />
+                                <TextView
+                                        android:id="@+id/nameContentView"
+                                        android:textColor="@color/black"
+                                        style="@style/WrapHeightWidth"
+                                        android:text="My Name"
+                                        android:fontFamily="cursive"
+                                        android:textSize="25sp"
+                                />
+
+                            </LinearLayout>
+                            <TextView
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Description......"
+                                    android:textSize="16dp"
+                                    android:visibility="visible"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="sans-serif-condensed-light"
+                            />
+
+                            <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        style="@style/ProfileNameTitleStyle"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="Price:"
+                                />
+                                <TextView
+                                    android:textColor="@color/black"
+                                    style="@style/WrapHeightWidth"
+                                    android:text="1€/kWh"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="10dp"
+                                    android:fontFamily="serif-monospace"/>
+
+                            </LinearLayout>
+
+
+
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+
+                            android:src="@mipmap/app_launcher_icon_round"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:layout_marginLeft="23dp"
+                            android:layout_marginTop="27dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="start"
+                    />
+                    <ImageView
+                            android:layout_gravity="right"
+                            android:id="@+id/deleteClipArt"
+                            style="@style/DeleteClipArt"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginRight="7dp"
+                    />
+
+                </android.support.design.widget.CoordinatorLayout>
+
+                </LinearLayout>
+
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"/>
+            </LinearLayout>
+
+        </ScrollView>
+
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,27 +157,41 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:background="?attr/colorPrimary"
+
         />
-
-
-
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+
+    <include
+            layout="@layout/content_main"
+            android:visibility="gone"
+    >
+
+    </include>
 
     <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fabNewProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_gravity="top|end"
+            app:layout_anchor="@id/fabCalculateProfile"
+            app:layout_anchorGravity="top"
+            android:layout_marginBottom="80dp"
             android:scaleType="center"
             app:maxImageSize="36dp"
             app:srcCompat="@drawable/add24dp"
             app:backgroundTint="@color/colorPrimary"
+            app:tint="@color/white"
     />
-
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCalculateProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:maxImageSize="50dp"
+            app:srcCompat="@drawable/bulb_layer"
             app:backgroundTint="@color/colorPrimary"
-            />
+    />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="advanced.android.ebcm">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="advanced.android.ebcm">
 
     <application
-
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/app_launcher_icon"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/app_launcher_icon_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name=".NewItemActivity"
-                android:theme="@style/AppTheme.NewItemTheme"
-        />
-
+                android:name=".DevicesListActivity"
+                android:label="@string/title_activity_devices_list"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".NewDeviceActivity"
+                android:theme="@style/AppTheme.InputPopUpStyle"/>
+        <activity
+                android:name=".NewProfileActivity"
+                android:theme="@style/AppTheme.InputPopUpStyle"/>
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

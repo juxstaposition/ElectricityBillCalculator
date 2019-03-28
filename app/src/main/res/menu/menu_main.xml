@@ -11,12 +11,9 @@
             android:id="@+id/action_devices"
             android:orderInCategory="100"
             android:title="@string/action_devices"
-            app:showAsAction="never" android:enabled="true"/>
-    <item
-            android:id="@+id/action_settings"
-            android:orderInCategory="100"
-            android:title="@string/action_settings"
-            app:showAsAction="never" />
+            app:showAsAction="never"
+            android:enabled="true"/>
+
 
 
 </menu>
