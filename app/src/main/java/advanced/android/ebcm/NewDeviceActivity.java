@@ -11,7 +11,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
     TextInputLayout nameInput = null, consumptionInput = null,
         quantityInput = null, usageHoursInput = null, usageDaysInput = null;
-    boolean validation = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,37 +59,36 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             super.onBackPressed();
         }
         else if (view.getId() == R.id.buttonItemPick){
-
+            // to be implemented
         }
         else if (view.getId() == R.id.buttonItemAdd){
+            // request input content
             String  name = nameInput.getEditText().getText().toString(),
             consumption = consumptionInput.getEditText().getText().toString(),
             quantity = quantityInput.getEditText().getText().toString(),
             usageHours = usageHoursInput.getEditText().getText().toString(),
             usageDays = usageDaysInput.getEditText().getText().toString();
 
+            // validation of input parameters
+            boolean validation = true;
+
             if( name.length() == 0){
-                sendWarningToast("Insert Device Name!");
+                validation = sendWarningToast("Insert Device Name!");
             }
-            if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 )){
-                sendWarningToast("Consumption must be greater than 0!");
+            if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 ) ){
+                validation = sendWarningToast("Consumption must be greater than 0!");
             }
             if (validation && (quantity.length() == 0 || Integer.parseInt(quantity) < 1 )){
-                sendWarningToast("At least 1 device must be used!");
+                validation = sendWarningToast("At least 1 device must be used!");
             }
-            if (validation && (usageHours.length() == 0 || Integer.parseInt(usageHours) < 1 )) {
-                sendWarningToast("Must be used at least 1 minute!");
+            if (validation && (usageHours.length() == 0 || Integer.parseInt(usageHours) < 1) ){
+                validation = sendWarningToast("Must be used at least 1 minute!");
             }
-            if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1 )) {
-                sendWarningToast("Must be used at least 1 day!");
+            if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1) ){
+                validation = sendWarningToast("Must be used at least 1 day!");
             }
 
-            System.out.println("Item Name "        + name);
-            System.out.println("Item Consumption " + consumption);
-            System.out.println("Item Quantity "    + quantity);
-            System.out.println("Item Usage hours "  + usageHours);
-            System.out.println("Item Usage days "   + usageDays);
-
+            // if
             if (validation){
                 Toast.makeText(NewDeviceActivity.this, "New Device Added!", Toast.LENGTH_LONG).show();
                 super.onBackPressed();
@@ -98,8 +96,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void sendWarningToast(String message){
+    private boolean sendWarningToast(String message){
         Toast.makeText(NewDeviceActivity.this, message, Toast.LENGTH_SHORT).show();
-        validation = false;
+        return false;
     }
 }

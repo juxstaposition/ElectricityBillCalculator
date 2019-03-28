@@ -1,16 +1,20 @@
 package advanced.android.ebcm;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
-    TextInputLayout profileNameInput = null, profileDescriptionInput = null, profileCostInput = null;
+    TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
+
+    DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,61 +22,90 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_new_profile);
 
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-
-//        getWindow().setLayout( width*8/10,height*8/10 );
-
         profileNameInput = findViewById(R.id.newProfileName);
         profileDescriptionInput = findViewById(R.id.newProfileDescription);
-        profileCostInput = findViewById(R.id.newProfileCost);
+        profilePriceInput = findViewById(R.id.newProfilePrice);
+        mDatabaseHelper = new DatabaseHelper(this);
 
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
         findViewById(R.id.buttonProfileCancel).setOnClickListener(this);
         findViewById(R.id.back_view).setOnClickListener(this);
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,R.anim.fade);
     }
 
     @Override
     public void onClick(View view) {
+        Intent returnIntent = new Intent();
+
+        Constant animation = new Constant();
+        animation.startAnimation(view,R.anim.blink,getApplicationContext());
 
         if (view.getId() == R.id.buttonProfileAdd){
+
+
+
             boolean validation = true;
 
             String  profileName = profileNameInput.getEditText().getText().toString(),
                     profileDescription = profileDescriptionInput.getEditText().getText().toString(),
-                    profileCost = profileCostInput.getEditText().getText().toString();
+                    profilePrice = profilePriceInput.getEditText().getText().toString();
 
             if (profileName.length() == 0){
-                Toast.makeText(NewProfileActivity.this, "Insert Profile Name!", Toast.LENGTH_SHORT).show();
-                validation = false;
+                validation = sendWarningToast("Insert Profile Name!");
             }
 
             if (validation && profileDescription.length() == 0 ){
-                Toast.makeText(NewProfileActivity.this, "Insert Description Name!", Toast.LENGTH_SHORT).show();
-                validation = false;
+                validation = sendWarningToast("Insert Description Name!");
             }
-
-            if (validation && (profileCost.length() == 0 || Integer.parseInt(profileCost) <= 0 )){
-                Toast.makeText(NewProfileActivity.this, "Cost must be greater than 0!", Toast.LENGTH_SHORT).show();
-                validation = false;
+            String checkPriceValue = profilePrice;
+            if (validation && (profilePrice.length() == 0 || Integer.parseInt(checkPriceValue) <= 0 )){
+                validation = sendWarningToast("Cost must be greater than 0!");
             }
-
-            System.out.println("Profile Name: "        + profileName);
-            System.out.println("Profile Description: " + profileDescription);
-            System.out.println("Profile Cost: "        + profileCost);
 
             if (validation){
-                Toast.makeText(NewProfileActivity.this, "New Profile Created!", Toast.LENGTH_LONG).show();
-                super.onBackPressed();
+
+                returnIntent.putExtra("PROFILE_NAME",profileName);
+                returnIntent.putExtra("PROFILE_PRICE",profilePrice);
+                returnIntent.putExtra("PROFILE_DESCRIPTION",profileDescription);
+                setResult(Activity.RESULT_OK, returnIntent);
+
+                Log.d("PROFILE", profileName +", " + profileDescription + ", " + profilePrice);
+                addProfileToDatabase(profileName, profileDescription, profilePrice);
+                finish();
             }
         }
         else if (view.getId() == R.id.buttonProfileCancel || view.getId() == R.id.back_view){
-            super.onBackPressed();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
         }
-
     }
 
+    private boolean sendWarningToast(String message){
+        Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    private void addProfileToDatabase (String name, String description, String price) {
+        boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
+
+        if (insertData) {
+            toastMesasge("Profile Successfully Created");
+        } else {
+            toastMesasge("Something went wrong");
+        }
+    }
+
+    /**
+     * customizable toast
+     * @param message
+     */
+    private void toastMesasge(String message) {
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
 }

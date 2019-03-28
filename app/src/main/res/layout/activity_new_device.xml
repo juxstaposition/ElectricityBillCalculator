@@ -17,8 +17,12 @@
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:layout_margin="30dp"
+            android:background="@drawable/pop_up_background"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="60dp"
+
     >
             <View
                     android:id="@+id/view"
@@ -39,6 +43,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"/>
             <TextView
+                    android:visibility="gone"
                     android:text="@string/orText"
                     android:textSize="12dp"
                     android:layout_width="wrap_content"
@@ -53,12 +58,13 @@
                     app:layout_constraintBottom_toTopOf="@id/newItemName"/>
 
             <Button
+                    android:visibility="gone"
                     android:id="@+id/buttonItemPick"
                     android:text="@string/pick_an_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:background="@drawable/basic_button"
+                    android:background="@drawable/basic_button_green"
 
                     app:layout_constraintTop_toBottomOf="@id/title"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -70,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/buttonItemAdd"
-                    android:background="@drawable/basic_button"
+                    android:background="@drawable/basic_button_green"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -81,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/buttonItemCancel"
-                    android:background="@drawable/basic_button"
+                    android:background="@drawable/basic_button_green"
 
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/buttonItemAdd"
@@ -93,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@+id/orText"
-                    android:textColorHint="@color/colorAccent"
+                    android:textColorHint="@color/colorSecondary"
                     >
 
                 <android.support.design.widget.TextInputEditText
@@ -108,7 +114,7 @@
                     android:id="@+id/newItemConsumption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorAccent"
+                    android:textColorHint="@color/colorSecondary"
                     app:layout_constraintTop_toBottomOf="@+id/newItemName">
 
                 <android.support.design.widget.TextInputEditText
@@ -123,7 +129,7 @@
                     android:id="@+id/newItemQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorAccent"
+                    android:textColorHint="@color/colorSecondary"
                     app:layout_constraintTop_toBottomOf="@+id/newItemConsumption">
 
                 <android.support.design.widget.TextInputEditText
@@ -138,7 +144,7 @@
                     android:id="@+id/newItemUsageHours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorAccent"
+                    android:textColorHint="@color/colorSecondary"
                     app:layout_constraintTop_toBottomOf="@+id/newItemQuantity">
 
                 <android.support.design.widget.TextInputEditText
@@ -153,7 +159,7 @@
                     android:id="@+id/newItemUsageDays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorAccent"
+                    android:textColorHint="@color/colorSecondary"
                     app:layout_constraintTop_toBottomOf="@+id/newItemUsageHours">
 
                 <android.support.design.widget.TextInputEditText

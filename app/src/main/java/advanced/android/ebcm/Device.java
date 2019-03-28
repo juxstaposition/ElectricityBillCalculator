@@ -1,61 +1,102 @@
 package advanced.android.ebcm;
 
 public class Device {
-    protected String name;
-    protected int wattage;
-    protected int quantity;
-    protected int hours;
-    protected int minutes;
-    protected int days_month;
+
+    private int id;
+    private String name;
+    private Integer quantity;
+    private Integer hours;
+    private Integer minutes;
+    private Integer days;
+    private String group;
+    private Integer consumption;
+    private Integer profile_parent;
+
+    public Device(int id, String name, Integer quantity, Integer hours, Integer minutes, Integer days, String group, Integer consumption, Integer profile_parent) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.hours = hours;
+        this.minutes = minutes;
+        this.days = days;
+        this.group = group;
+        this.consumption = consumption;
+        this.profile_parent = profile_parent;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-            this.name = name;
+        this.name = name;
     }
 
-    public int getWattage() {
-        return wattage;
-    }
-
-    public void setWattage(int wattage) {
-        this.wattage = wattage;
-    }
-
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public int getHours() {
+    public Integer getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
-
-            this.hours = hours;
-
+    public void setHours(Integer hours) {
+        this.hours = hours;
     }
 
-    public int getMinutes() {
+    public Integer getMinutes() {
         return minutes;
     }
 
-    public void setMinutes(int minutes) {
+    public void setMinutes(Integer minutes) {
         this.minutes = minutes;
     }
 
-    public int getDays_month() {
-        return days_month;
+    public Integer getDays() {
+        return days;
     }
 
-    public void setDays_month(int days_month) {
-        this.days_month = days_month;
+    public void setDays(Integer days) {
+        this.days = days;
     }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public Integer getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(Integer consumption) {
+        this.consumption = consumption;
+    }
+
+    public Integer getProfile_parent() {
+        return profile_parent;
+    }
+
+    public void setProfile_parent(Integer profile_parent) {
+        this.profile_parent = profile_parent;
+    }
+
+
 
 }

@@ -3,15 +3,15 @@
     <string name="app_name">EB C&amp;M</string>
     <string name="title_activity_devices_list">Favourite Devices</string>
 
-    <!--options-->
-    <string name="action_settings">Settings</string>
+    <!--menu-->
     <string name="action_devices">Devices</string>
     <string name="action_help">Help</string>
-
 
     <!--titles-->
     <string name="create_new_profile">Create Profile</string>
     <string name="create_new_item">Create Device</string>
+    <string name="name_title">Name</string>
+    <string name="price_title">Price</string>
 
     <!--hints-->
     <string name="description">Description</string>

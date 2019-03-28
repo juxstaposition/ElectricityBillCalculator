@@ -19,7 +19,7 @@ public class DevicesListActivity extends AppCompatActivity {
         final String transferredData = getIntent().getStringExtra("KEY");
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fabNewProfile);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,6 +28,13 @@ public class DevicesListActivity extends AppCompatActivity {
                 startActivity(newItemActivity);
             }
         });
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_left_enter, R.anim.slide_right_exit);
     }
 
 }
