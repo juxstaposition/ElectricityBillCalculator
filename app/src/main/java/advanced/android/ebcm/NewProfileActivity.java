@@ -27,6 +27,13 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profilePriceInput = findViewById(R.id.newProfilePrice);
         mDatabaseHelper = new DatabaseHelper(this);
 
+        final String transferredData = getIntent().getStringExtra("KEY");
+        if (transferredData.equals(Constant.EDIT_PROFILE)) {
+            profileTitle.setText(R.string.edit_profile);
+            TextView profileTitle = findViewById(R.id.newProfileTitle);
+            //
+        }
+
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
         findViewById(R.id.buttonProfileCancel).setOnClickListener(this);
         findViewById(R.id.back_view).setOnClickListener(this);
@@ -47,8 +54,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         animation.startAnimation(view,R.anim.blink,getApplicationContext());
 
         if (view.getId() == R.id.buttonProfileAdd){
-
-
 
             boolean validation = true;
 

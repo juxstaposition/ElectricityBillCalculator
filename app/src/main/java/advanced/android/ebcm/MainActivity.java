@@ -1,7 +1,5 @@
 package advanced.android.ebcm;
 
-import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Profile> profiles = new ArrayList<>();
     LinearLayout myVerticalLayout = null;
-    private final int CREATE_PROFILE_ACTIVITY_REQ_CODE = 372;
 
     private static final String TAG = "MainActivity";
 
@@ -48,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Panel Clicked!", Toast.LENGTH_SHORT).show();
+                Constant animation = new Constant();
+                animation.startAnimation(v,R.anim.blink,getApplicationContext());
+                animation.startAnimation(clipdel,R.anim.blink,getApplicationContext());
             }
         });
 
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent newProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
-                startActivityForResult(newProfileActivity,CREATE_PROFILE_ACTIVITY_REQ_CODE);
+                startActivityForResult(newProfileActivity,Constant.CREATE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
             }
         });
@@ -101,18 +100,6 @@ public class MainActivity extends AppCompatActivity {
             Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
             devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
             startActivity(devicesListActivity);
-            return true;
-        }
-        else if ( id == R.id.action_help){
-            return true;
-        }
-        else if ( id == R.id.action_devices){
-            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
-            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
-            startActivity(devicesListActivity);
-            return true;
-        }
-        else if ( id == R.id.action_help){
             return true;
         }
 
@@ -185,10 +172,25 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "There is no ID found for profile", Toast.LENGTH_SHORT);
         }
 
-
         final Profile test = new Profile(i, name, description, price);
         profiles.add(test);
         test.generateProfile(getApplicationContext(), myVerticalLayout);
+                test.profileForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                animation.startAnimation(test.profileForm,R.anim.blink,getApplicationContext());
+                Constant animation = new Constant();
+                Intent editProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
+                editProfileActivity.putExtra("KEY",Constant.EDIT_PROFILE);
+                editProfileActivity.putExtra("NAME",test.getName());
+                editProfileActivity.putExtra("DESCRIPTION",test.getDescription());
+                editProfileActivity.putExtra("PRICE",test.getPrice());
+                startActivityForResult(editProfileActivity,Constant.EDIT_PROFILE_ACTIVITY_REQ_CODE);
+            }
+                overridePendingTransition(R.anim.blink,0);
+
+        });
 ///*        test.clipDelete.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -200,4 +202,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+        
+
 }

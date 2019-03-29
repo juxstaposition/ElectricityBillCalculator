@@ -9,6 +9,7 @@
 
     <!--titles-->
     <string name="create_new_profile">Create Profile</string>
+    <string name="edit_profile">Edit Profile</string>
     <string name="create_new_item">Create Device</string>
     <string name="name_title">Name</string>
     <string name="price_title">Price</string>
@@ -21,7 +22,7 @@
     <string name="usage_h_day">Usage h/Day</string>
     <string name="usage_d_month">Usage d/Month</string>
     <string name="new_item">New Item</string>
-    <string name="profile_cost">Cost kWh</string>
+    <string name="profile_price">Price kWh</string>
 
     <!--buttons-->
     <string name="add">Add</string>

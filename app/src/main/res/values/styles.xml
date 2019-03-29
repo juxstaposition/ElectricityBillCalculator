@@ -30,14 +30,15 @@
     </style>
 
     <!-- Profile List Layout Styling -->
-    <style name="ProfileFormStyle">
+    <style name="ProfileFormStyle" >
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">130dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/profile_view</item>
+        <!--<item name="selectableItemBackground">?android:attr/selectableItemBackground</item> parent="android:Theme.Holo.Light"-->
     </style>
 
     <style name="ProfileNameTitleStyle">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

@@ -3,7 +3,6 @@ package advanced.android.ebcm;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,18 +15,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_device);
-
-        /*
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        System.out.println("height = "+ height + " width = "+width);
-
-        getWindow().setLayout( width*8/10,height*8/10 );                */
-
-
 
         nameInput = findViewById(R.id.newItemName);
         consumptionInput = findViewById(R.id.newItemConsumption);
@@ -53,10 +40,16 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,R.anim.fade);
+    }
+
+    @Override
     public void onClick(View view){
 
         if (view.getId() == R.id.buttonItemCancel || view.getId() == R.id.backViewNavigation){
-            super.onBackPressed();
+            finish();
         }
         else if (view.getId() == R.id.buttonItemPick){
             // to be implemented
@@ -91,7 +84,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             // if
             if (validation){
                 Toast.makeText(NewDeviceActivity.this, "New Device Added!", Toast.LENGTH_LONG).show();
-                super.onBackPressed();
+                finish();
             }
         }
     }

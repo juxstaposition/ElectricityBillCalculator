@@ -26,9 +26,11 @@ public class DevicesListActivity extends AppCompatActivity {
                 Intent newItemActivity = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
                 newItemActivity.putExtra("KEY", transferredData);
                 startActivity(newItemActivity);
+                overridePendingTransition(R.anim.blink,0);
             }
         });
     }
+
 
 
     @Override
