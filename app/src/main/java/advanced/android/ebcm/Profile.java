@@ -2,10 +2,11 @@ package advanced.android.ebcm;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.*;
 
 public class Profile {
@@ -14,16 +15,13 @@ public class Profile {
     private String name;
     private String price;
     private String description;
-    private Device[] devices;
 
-    LinearLayout profileForm = null;
-    LinearLayout firstLine = null;
-    LinearLayout secondLine = null;
+    LinearLayout profileForm;
 
-    TextView profileName = null;
-    TextView profileExpense = null;
+    TextView profileName;
+    TextView profileExpense;
     TextView profileDescription;
-    public ImageView clipDelete = null;
+    public ImageView clipDelete;
 
 
     public int getId() {
@@ -40,6 +38,7 @@ public class Profile {
 
     public void setName(String name) {
         this.name = name;
+        profileName.setText(name);
     }
 
     public String getDescription() {
@@ -50,16 +49,9 @@ public class Profile {
         this.description = description;
     }
 
-    public Device[] getDevices() {
-        return devices;
-    }
-
-    public void setDevices(Device[] devices) {
-        this.devices = devices;
-    }
 
 
-    public Profile(String name, String description,String price) {
+    public Profile(String name, String description, String price) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -74,9 +66,10 @@ public class Profile {
 
     public void generateProfile(final Context context, LinearLayout myVerticalLayout){
 
-        // Request for a screen resolution pixels to be transformed into dp
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-
+        String titlesFont = "sans-serif-black";
+        int titlesTextSize = 14;
+        String descriptionsFont = "serif-monospace";
+        int descriptionsTextSize = 16;
         // Instantiation of base linear layout for profile panel
         profileForm = new LinearLayout(
                 /* Assigning theme of panel */
@@ -84,57 +77,34 @@ public class Profile {
         );
         // Setting margins, with each component new Layout parameters have to be instantiated
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                                                     LinearLayout.LayoutParams.WRAP_CONTENT);
-        // setMargins(left,top,right,bottom)
-        lp.setMargins( convertDpToPx(20,dm),convertDpToPx(10,dm), convertDpToPx(20,dm),0 );
-
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         profileForm.setLayoutParams(lp);
         profileForm.setOrientation(LinearLayout.VERTICAL);
         // setting panel to be clickable and adding function
-        profileForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //original profile
-//                Constant animation = new Constant();
-//                animation.startAnimation(profileForm,R.anim.blink,context);
-//                Toast.makeText(context, name +", id=" + id, Toast.LENGTH_SHORT).show();
-
-                //delete SQLite test
-                DatabaseHelper mDatabaseHelper = new DatabaseHelper(context);
-                mDatabaseHelper.deleteProfile(getId(),getName());
-                Toast.makeText(context,"removed " + getName() + " from database.", Toast.LENGTH_SHORT).show();
-
-            }
-        });
+        // needs to be done where object is instantiated
 
         // Panel is made of linear layouts, first line contains titles
-        firstLine = new LinearLayout(context);
-        firstLine.setOrientation(LinearLayout.HORIZONTAL);
-        firstLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout firstLine = new LinearLayout(context);
+        firstLine.setOrientation(LinearLayout.VERTICAL);
+        firstLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        firstLine.setGravity(Gravity.CENTER);
         // Creating new text component for title
-        TextView profileTitle = new TextView(
-                new ContextThemeWrapper(context, R.style.ProfileNameTitleStyle),null,0
-        );
-        profileTitle.setText(R.string.name_title);
 
-        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                             LinearLayout.LayoutParams.WRAP_CONTENT);
-        nameParams.setMargins(convertDpToPx(25,dm),convertDpToPx(5,dm),convertDpToPx(50,dm),0);
-        profileTitle.setLayoutParams(nameParams);
+        TextView profileTitle = createTextView("Name",context, titlesFont,titlesTextSize);
         firstLine.addView(profileTitle);
 
-        TextView profileTitleCost = new TextView(
-                new ContextThemeWrapper(context, R.style.ProfileNameTitleStyle),null,0
-        );
-        profileTitleCost.setText(R.string.price_title);
+        profileName = createTextView(name,context, "cursive",25);
+        profileName.setTextColor(Color.BLACK);
+        firstLine.addView(profileName);
 
-        LinearLayout.LayoutParams priceParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                              LinearLayout.LayoutParams.WRAP_CONTENT);
-        priceParams.setMargins(convertDpToPx(25,dm),convertDpToPx(5,dm),convertDpToPx(50,dm),0);
-        profileTitleCost.setLayoutParams(priceParams);
-        firstLine.addView(profileTitleCost);
+        profileDescription = createTextView(description,context, descriptionsFont,16);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        params.setMargins(convertDpToPx(5,dm),convertDpToPx(0,dm), convertDpToPx(0,dm),0);
+        profileDescription.setLayoutParams(params);
 
         /*CoordinatorLayout supportLayout = new CoordinatorLayout(context);
         supportLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT,
@@ -146,34 +116,69 @@ public class Profile {
         lllp.gravity = Gravity.RIGHT;
         clipDelete.setLayoutParams(lllp);*/
 
-        secondLine = new LinearLayout(context);
-        secondLine.setOrientation(LinearLayout.HORIZONTAL);
 
-        profileName = new TextView(context);
-        profileName.setText(name);
-        profileName.setTextSize(30);
-        profileName.setTextColor(Color.BLACK);
-        secondLine.addView(profileName);
+        // should be changed to constrained layout
+        LinearLayout thirdLine = new LinearLayout(context);
+        thirdLine.setOrientation(LinearLayout.HORIZONTAL);
+        thirdLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        profileDescription = new TextView(context);
-        profileDescription.setText(description);
-        profileDescription.setTextSize(30);
-        profileDescription.setTextColor(Color.BLACK);
-        secondLine.addView(profileDescription);
 
-        profileExpense = new TextView(context);
-        profileExpense.setText(price +"€/kWh");
-        profileExpense.setTextSize(30);
-        profileExpense.setTextColor(Color.BLACK);
-        secondLine.addView(profileExpense);
+        LinearLayout firstCol = generatedDescriptionColumn("Price","Cost",context,titlesFont,titlesTextSize);
+        LinearLayout secondCol = generatedDescriptionColumn(price + "€/kWh","0"+"€/month",context,descriptionsFont,descriptionsTextSize);
+        LinearLayout thirdCol = generatedDescriptionColumn("Power","Time",context,titlesFont,titlesTextSize);
+        LinearLayout fourthCol = generatedDescriptionColumn("0"+"W","0"+"h/month",context,descriptionsFont,descriptionsTextSize);
+
+        thirdLine.addView(firstCol);
+        thirdLine.addView(secondCol);
+        thirdLine.addView(thirdCol);
+        thirdLine.addView(fourthCol);
 
         profileForm.addView(firstLine);
-        profileForm.addView(secondLine);
+        profileForm.addView(profileDescription);
+        profileForm.addView(thirdLine);
 /*
         supportLayout.addView(profileForm);
         supportLayout.addView(clipDelete);*/
 
         myVerticalLayout.addView(profileForm);
+    }
+
+    private LinearLayout generatedDescriptionColumn(String firstTextView, String secondTextView,
+                                                    Context context,String titlesFont,int titlesSize) {
+
+        LinearLayout column = new LinearLayout(context);
+        column.setOrientation(LinearLayout.VERTICAL);
+
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        // setMargins(left,top,right,bottom)
+        lp.setMargins( convertDpToPx(5,dm),convertDpToPx(0,dm), convertDpToPx(5,dm),0 );
+        column.setLayoutParams(lp);
+
+        TextView profileTitlePrice = createTextView(firstTextView, context, titlesFont,titlesSize);
+        column.addView(profileTitlePrice);
+        TextView profileTitleCost = createTextView(secondTextView, context, titlesFont, titlesSize);
+        column.addView(profileTitleCost);
+
+        return column;
+    }
+
+    private TextView createTextView(String text, Context context, String style,int textSize){
+
+        TextView newTextView = new TextView(context);
+        newTextView.setText(text);
+        newTextView.setTextSize(textSize);
+        newTextView.setTextColor(Color.BLACK);
+
+        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        newTextView.setLayoutParams(nameParams);
+        Typeface typeface = Typeface.create(style, Typeface.NORMAL);
+        newTextView.setTypeface(typeface);
+
+        return newTextView;
     }
 
     private int convertDpToPx(int dp, DisplayMetrics displayMetrics) {

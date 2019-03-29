@@ -26,6 +26,8 @@
     <!--buttons-->
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
     <string name="pick_an_item">Pick An Item</string>
 
     <!--special-->

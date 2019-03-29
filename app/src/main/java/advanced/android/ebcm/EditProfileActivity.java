@@ -1,16 +1,16 @@
 package advanced.android.ebcm;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditProfileActivity  extends AppCompatActivity implements View.OnClickListener  {
 
     TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
 
@@ -19,15 +19,16 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_profile);
+        setContentView(R.layout.activity_edit_profile);
+
 
 
         profileNameInput = findViewById(R.id.newProfileName);
         profileDescriptionInput = findViewById(R.id.newProfileDescription);
         profilePriceInput = findViewById(R.id.newProfilePrice);
 
-        findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
-        findViewById(R.id.buttonProfileCancel).setOnClickListener(this);
+        findViewById(R.id.buttonProfileUpdate).setOnClickListener(this);
+        findViewById(R.id.buttonProfileDelete).setOnClickListener(this);
         findViewById(R.id.back_view).setOnClickListener(this);
 
     }
@@ -57,7 +58,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         Constant animation = new Constant();
         animation.startAnimation(view,R.anim.blink,getApplicationContext());
 
-        if (view.getId() == R.id.buttonProfileAdd){
+        if (view.getId() == R.id.buttonProfileUpdate){
 
 
 
@@ -75,7 +76,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 validation = sendWarningToast("Insert Description Name!");
             }
             String checkPriceValue = profilePrice;
-            if (validation && (profilePrice.length() == 0 || Float.valueOf(checkPriceValue.trim()).floatValue() <= 0 )){
+            if (validation && (profilePrice.length() == 0 || Integer.parseInt(checkPriceValue) <= 0 )){
                 validation = sendWarningToast("Cost must be greater than 0!");
             }
 
@@ -87,41 +88,53 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 setResult(Activity.RESULT_OK, returnIntent);
 
                 Log.d("PROFILE", profileName +", " + profileDescription + ", " + profilePrice);
-                addProfileToDatabase(profileName, profileDescription, profilePrice);
+                updateProfile();
                 finish();
             }
         }
-        else if (view.getId() == R.id.buttonProfileCancel || view.getId() == R.id.back_view){
+        else if (view.getId() == R.id.buttonProfileDelete || view.getId() == R.id.back_view){
+            deleteProfile();
             setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
         }
     }
 
     private boolean sendWarningToast(String message){
-        Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(EditProfileActivity.this, message, Toast.LENGTH_SHORT).show();
         return false;
     }
 
-    private void addProfileToDatabase (String name, String description, String price) {
-        boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
-
-        if (insertData) {
-            toastMesasge("Profile Successfully Created");
-        } else {
-            toastMesasge("Something went wrong");
-        }
-    }
 
     private void updateProfile () {
-        //update & delete SQLite test
-//        DatabaseHelper mDatabaseHelper = new DatabaseHelper(context);
-//
-//        //update
-//        mDatabaseHelper.updateProfile(getName(),getDescription(),getPrice(), getId(), getName());
-//
-//        //delete
-//        mDatabaseHelper.deleteProfile(getId(),getName());
-//        Toast.makeText(context,"removed " + getName() + " from database.", Toast.LENGTH_SHORT).show();
+
+        Intent receivedIntent = getIntent();
+
+        TextView name = findViewById(R.id.edit_profile_name);
+        TextView description = findViewById(R.id.edit_profile_description);
+        TextView price = findViewById(R.id.edit_profile_price);
+
+        Integer id = Integer.parseInt(receivedIntent.getStringExtra("ID"));
+        String oldName = receivedIntent.getStringExtra("PROFILE_NAME");
+
+        String newName = name.getText().toString();
+        String newDescription = description.getText().toString();
+        String newPrice = price.getText().toString();
+
+
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+
+        mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id, oldName);
+
+    }
+
+    private void deleteProfile () {
+        Intent receivedIntent = getIntent();
+        Integer id = Integer.parseInt(receivedIntent.getStringExtra("ID"));
+        String name = receivedIntent.getStringExtra("PROFILE_NAME");
+
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+        mDatabaseHelper.deleteProfile(id,name);
+        Toast.makeText(this,"removed " + name + " with id "+ id +" from database.", Toast.LENGTH_SHORT).show();
     }
 
     /**

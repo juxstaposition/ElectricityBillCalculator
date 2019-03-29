@@ -231,4 +231,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void deleteDeviceName(int id, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_DEVICE + " WHERE " +
+                DEVICE_COL0 + " = '" + id + "'" + " AND " + DEVICE_COL1 + " = '" +
+                name + "'";
+        Log.d(TAG, "deleteDeviceName: query: " +query);
+        Log.d(TAG, "deleteDeviceName: Deleting " + name + " from database.");
+        db.execSQL(query);
+    }
 }

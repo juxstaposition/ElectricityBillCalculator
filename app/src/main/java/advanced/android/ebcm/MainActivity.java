@@ -36,10 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mDatabaseHelper = new DatabaseHelper(this);
-        myVerticalLayout = findViewById(R.id.profile_list);
 
-        generateProfileView();
 
         /**
          * Test
@@ -75,11 +72,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        LinearLayout profileLayout = findViewById(R.id.profile_list);
-        profileLayout.removeAllViews();
+    protected void onResume() {
+        super.onResume();
+        mDatabaseHelper = new DatabaseHelper(this);
+        myVerticalLayout = findViewById(R.id.profile_list);
+        myVerticalLayout.removeAllViews();
         generateProfileView();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mDatabaseHelper.close();
     }
 
     @Override
@@ -101,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
             Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
             devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
             startActivity(devicesListActivity);
-            return true;
-        }
-        else if ( id == R.id.action_help){
             return true;
         }
         else if ( id == R.id.action_devices){
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             String profilePrice = data.getStringExtra("PROFILE_PRICE");
             String profileDescription = data.getStringExtra("PROFILE_NAME");
 
-//            generateNewProfile(profileName,profileDescription,profilePrice);
         }
     }
 
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor data = mDatabaseHelper.getProfileData();
 
         if (data != null) {
-            if (data.moveToFirst() && data.getCount() > 1) {
+            if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
                     i = Integer.parseInt(data.getString(0));
                     String name = data.getString(1);
@@ -166,38 +166,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void generateNewProfile(String name, String description, String price) {
-
-
-        Cursor data = mDatabaseHelper.getProfileItemID(name, description);
-
-        if (data != null) {
-
-            if (data.moveToFirst() && data.getCount() >= 1) {
-                do {
-                    i = Integer.parseInt(data.getString(0));
-                    Log.d("profile", "got here");
-
-                } while (data.moveToNext());
-            }
-
-        } else {
-            Toast.makeText(this, "There is no ID found for profile", Toast.LENGTH_SHORT);
-        }
-
-
-        final Profile test = new Profile(i, name, description, price);
-        profiles.add(test);
-        test.generateProfile(getApplicationContext(), myVerticalLayout);
-///*        test.clipDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, test.getName(), Toast.LENGTH_SHORT).show();
-//                myVerticalLayout.removeView(test.profileForm);
-//                profiles.remove(test);
-//            }
-//        });*/
-
-
-    }
 }

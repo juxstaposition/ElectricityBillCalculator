@@ -37,7 +37,7 @@
     </style>
 
     <style name="ProfileNameTitleStyle">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
