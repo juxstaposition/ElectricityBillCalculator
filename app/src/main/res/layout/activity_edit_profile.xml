@@ -112,7 +112,8 @@
                     android:id="@+id/edit_profile_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/profile_cost"
+                    android:hint="@string/profile_price
+"
                     android:textColor="@color/black"
                     android:inputType="numberDecimal"/>
 

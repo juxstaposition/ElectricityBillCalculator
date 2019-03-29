@@ -15,12 +15,13 @@ import android.content.Intent;
 import android.widget.*;
 import java.util.ArrayList;
 
+import static advanced.android.ebcm.Constant.CREATE_PROFILE_ACTIVITY_REQ_CODE;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Profile> profiles = new ArrayList<>();
     LinearLayout myVerticalLayout = null;
-    private final int CREATE_PROFILE_ACTIVITY_REQ_CODE = 372;
 
     private static final String TAG = "MainActivity";
 
@@ -41,15 +42,18 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Test
          */
+        final ImageView clipdel = findViewById(R.id.deleteClipArt);
+
         LinearLayout test = findViewById(R.id.layoutProfile);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Panel Clicked!", Toast.LENGTH_SHORT).show();
+                Constant animation = new Constant();
+                animation.startAnimation(v,R.anim.blink,getApplicationContext());
+                animation.startAnimation(clipdel,R.anim.blink,getApplicationContext());
             }
         });
 
-        ImageView clipdel = findViewById(R.id.deleteClipArt);
         clipdel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent newProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
-                startActivityForResult(newProfileActivity,CREATE_PROFILE_ACTIVITY_REQ_CODE);
+                startActivityForResult(newProfileActivity, CREATE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
             }
         });
@@ -165,5 +169,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 }

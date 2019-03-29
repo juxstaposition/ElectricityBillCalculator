@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
@@ -25,6 +26,15 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profileNameInput = findViewById(R.id.newProfileName);
         profileDescriptionInput = findViewById(R.id.newProfileDescription);
         profilePriceInput = findViewById(R.id.newProfilePrice);
+
+        final String transferredData = getIntent().getStringExtra("KEY");
+
+
+//        if (transferredData.equals(Constant.EDIT_PROFILE)) {
+//            TextView profileTitle = findViewById(R.id.newProfileTitle);
+//            profileTitle.setText(R.string.edit_profile);
+//            //
+//        }
 
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
         findViewById(R.id.buttonProfileCancel).setOnClickListener(this);
@@ -58,8 +68,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         animation.startAnimation(view,R.anim.blink,getApplicationContext());
 
         if (view.getId() == R.id.buttonProfileAdd){
-
-
 
             boolean validation = true;
 

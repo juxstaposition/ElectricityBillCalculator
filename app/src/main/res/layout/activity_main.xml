@@ -18,16 +18,19 @@
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
             >
 
+                <!-- Layout structure for profiles -->
                 <LinearLayout
                         android:id="@+id/profile_list"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:layout_height="match_parent">
-
 
                 <android.support.design.widget.CoordinatorLayout
                         android:layout_width="match_parent"
@@ -37,10 +40,7 @@
                             android:id="@+id/layoutProfile"
                             android:orientation="vertical"
                             style="@style/ProfileFormStyle"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            app:layout_constraintTop_toTopOf="parent"
+
                             >
 
                         <LinearLayout
@@ -49,6 +49,7 @@
                                 android:orientation="vertical"
                         >
 
+                            <!-- First Line -->
                             <LinearLayout
                                     android:orientation="vertical"
                                     android:layout_width="match_parent"
@@ -73,41 +74,122 @@
                                 />
 
                             </LinearLayout>
+
+                            <!-- Description -->
                             <TextView
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginBottom="5dp"
                                     android:textColor="@color/black"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Description......"
                                     android:textSize="16dp"
                                     android:visibility="visible"
-                                    android:layout_gravity="center"
-                                    android:fontFamily="sans-serif-condensed-light"
+                                    android:fontFamily="serif-monospace"
                             />
 
+
+                            <!-- Third Line -->
                             <LinearLayout
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                        android:layout_height="wrap_content"
+                                <!-- Price Cost view -->
+                                <LinearLayout
                                         android:layout_width="wrap_content"
-                                        style="@style/ProfileNameTitleStyle"
-                                        android:fontFamily="sans-serif-black"
-                                        android:text="Price:"
-                                />
-                                <TextView
-                                    android:textColor="@color/black"
-                                    style="@style/WrapHeightWidth"
-                                    android:text="1€/kWh"
-                                    android:textSize="16sp"
-                                    android:layout_marginLeft="10dp"
-                                    android:fontFamily="serif-monospace"/>
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="sans-serif-black"
+                                            android:text="Price:"
+                                    />
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="@color/black"
+                                            android:text="Cost:"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="sans-serif-black"
+                                    /><!--android:fontFamily="serif-monospace"-->
 
+                                </LinearLayout>
+
+                                <!-- Price Cost Values -->
+                                <LinearLayout
+                                        android:layout_marginLeft="4dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="serif-monospace"
+                                            android:text="1€/kWh"
+                                    />
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="@color/black"
+                                            android:text="xx€/month"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="serif-monospace"
+                                    />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="sans-serif-black"
+                                            android:text="Power:"
+                                    />
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="@color/black"
+                                            android:text="Time:"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="sans-serif-black"
+                                    /><!--android:fontFamily="serif-monospace"-->
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                        android:layout_marginLeft="4dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="serif-monospace"
+                                            android:text="100W"
+                                    />
+                                    <TextView
+                                            android:layout_height="16dp"
+                                            android:layout_width="wrap_content"
+                                            android:textColor="@color/black"
+                                            android:text="xx h/month"
+                                            style="@style/ProfileNameTitleStyle"
+                                            android:fontFamily="serif-monospace"
+                                    />
+                                </LinearLayout>
                             </LinearLayout>
-
-
-
 
 
                         </LinearLayout>
@@ -115,22 +197,19 @@
                     </LinearLayout>
 
                     <ImageView
-
                             android:src="@mipmap/app_launcher_icon_round"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            android:layout_marginLeft="23dp"
-                            android:layout_marginTop="27dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="start"
                     />
                     <ImageView
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:id="@+id/deleteClipArt"
                             style="@style/DeleteClipArt"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginRight="7dp"
+                            android:layout_marginTop="-10dp"
+                            android:layout_marginRight="-10dp"
                     />
 
                 </android.support.design.widget.CoordinatorLayout>
@@ -144,7 +223,6 @@
             </LinearLayout>
 
         </ScrollView>
-
 
 
     <android.support.design.widget.AppBarLayout
@@ -166,8 +244,7 @@
     <include
             layout="@layout/content_main"
             android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    >
 
     </include>
 
