@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.CoordinatorLayout;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -17,14 +18,20 @@ public class Profile {
     private String name;
     private String price;
     private String description;
+    private String cost;
+    private String power;
+    private String time;
 
     LinearLayout profileForm;
+    CoordinatorLayout supportLayout;
 
-    TextView profileName;
-    TextView profileExpense;
-    TextView profileDescription;
+    private TextView profileName;
+    private TextView profileDescription;
+    private TextView profilePrice;
+    private TextView profileCost;
+    private TextView profilePower;
+    private TextView profileTime;
     public ImageView clipDelete;
-
 
     public int getId() {
         return id;
@@ -38,22 +45,47 @@ public class Profile {
         return name;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
     public void setName(String name) {
         this.name = name;
         profileName.setText(name);
-    }
-    
-    public void setDescription(String description){
-        this.description = description;
     }
 
     public String getDescription() {
         return description;
     }
+
+    public void setDescription(String description){
+        this.description = description;
+        profileDescription.setText(description);
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price){
+        this.price = price;
+        profilePrice.setText(price);
+    }
+
+    public void setCost (String cost){
+        this.cost = cost;
+        profileCost.setText(cost);
+    }
+
+    public void setPower (String power){
+        this.power = power;
+        profileCost.setText(power);
+    }
+    public void setTime (String time){
+        this.time = time;
+        profileCost.setText(time);
+    }
+
+    public CoordinatorLayout getLayout(){
+        return supportLayout;
+    }
+
 
     public Profile(String name, String description,String price) {
         this.name = name;
@@ -110,16 +142,17 @@ public class Profile {
         profileDescription = createTextView(description,context, descriptionsFont,16);
         profileDescription.setLayoutParams(setMargin(5,0,0,0,dm));
 
-
-        /*CoordinatorLayout supportLayout = new CoordinatorLayout(context);
+        supportLayout = new CoordinatorLayout(context);
         supportLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT,
                                                                          CoordinatorLayout.LayoutParams.MATCH_PARENT));
         clipDelete = new ImageView(
                 new ContextThemeWrapper(context, R.style.DeleteClipArt),null,0
         );
-        CoordinatorLayout.LayoutParams lllp = (CoordinatorLayout.LayoutParams) supportLayout.getLayoutParams();
+        CoordinatorLayout.LayoutParams lllp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT,
+                                                CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+
         lllp.gravity = Gravity.RIGHT;
-        clipDelete.setLayoutParams(lllp);*/
+        clipDelete.setLayoutParams(lllp);
 
 
         // should be changed to constrained layout
@@ -129,10 +162,23 @@ public class Profile {
                                                                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
 
-        LinearLayout firstCol = generatedDescriptionColumn("Price","Cost",context,titlesFont,titlesTextSize);
-        LinearLayout secondCol = generatedDescriptionColumn(price + "€/kWh","0"+"€/month",context,descriptionsFont,descriptionsTextSize);
-        LinearLayout thirdCol = generatedDescriptionColumn("Power","Time",context,titlesFont,titlesTextSize);
-        LinearLayout fourthCol = generatedDescriptionColumn("0"+"W","0"+"h/month",context,descriptionsFont,descriptionsTextSize);
+        LinearLayout firstCol = generatedDescriptionColumn(context);
+        addTitlesToDescription(firstCol,"Price:","Cost:",titlesFont,titlesTextSize,context);
+
+        LinearLayout secondCol = generatedDescriptionColumn(context);
+        profilePrice = createTextView(price+"€/kWh", context,descriptionsFont,descriptionsTextSize);
+        secondCol.addView(profilePrice);
+        profileCost = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
+        secondCol.addView(profileCost);
+
+        LinearLayout thirdCol = generatedDescriptionColumn(context);
+        addTitlesToDescription(thirdCol,"Power:","Time:",titlesFont,titlesTextSize,context);
+
+        LinearLayout fourthCol = generatedDescriptionColumn(context);
+        profilePower = createTextView(0+"W", context,descriptionsFont,descriptionsTextSize);
+        fourthCol.addView(profilePower);
+        profileTime = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
+        fourthCol.addView(profileTime);
 
         thirdLine.addView(firstCol);
         thirdLine.addView(secondCol);
@@ -143,11 +189,13 @@ public class Profile {
         profileForm.addView(profileDescription);
         profileForm.addView(thirdLine);
 
-        myVerticalLayout.addView(profileForm);
+        supportLayout.addView(profileForm);
+        supportLayout.addView(clipDelete);
+
+        myVerticalLayout.addView(supportLayout);
     }
 
-    private LinearLayout generatedDescriptionColumn(String firstTextView, String secondTextView,
-                                                    Context context,String titlesFont,int titlesSize) {
+    private LinearLayout generatedDescriptionColumn(Context context) {
 
         LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);
@@ -159,12 +207,15 @@ public class Profile {
         lp.setMargins( convertDpToPx(5,dm),convertDpToPx(0,dm), convertDpToPx(5,dm),0 );
         column.setLayoutParams(lp);
 
-        TextView profileTitlePrice = createTextView(firstTextView, context, titlesFont,titlesSize);
-        column.addView(profileTitlePrice);
-        TextView profileTitleCost = createTextView(secondTextView, context, titlesFont, titlesSize);
-        column.addView(profileTitleCost);
-
         return column;
+    }
+
+    private void addTitlesToDescription(LinearLayout layout,String firstTitle, String secondTitle,
+                                        String font, int size, Context context){
+        TextView profileFirstTitle = createTextView(firstTitle, context, font,size);
+        layout.addView(profileFirstTitle);
+        TextView profileSecondTitle = createTextView(secondTitle, context, font, size);
+        layout.addView(profileSecondTitle);
     }
 
     private TextView createTextView(String text, Context context, String style,int textSize){

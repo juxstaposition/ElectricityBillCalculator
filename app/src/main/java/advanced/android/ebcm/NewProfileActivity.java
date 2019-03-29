@@ -27,8 +27,8 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profileDescriptionInput = findViewById(R.id.newProfileDescription);
         profilePriceInput = findViewById(R.id.newProfilePrice);
 
-        final String transferredData = getIntent().getStringExtra("KEY");
-
+        //final String transferredData = getIntent().getStringExtra("KEY");
+        //System.out.print(transferredData);
 
 //        if (transferredData.equals(Constant.EDIT_PROFILE)) {
 //            TextView profileTitle = findViewById(R.id.newProfileTitle);
