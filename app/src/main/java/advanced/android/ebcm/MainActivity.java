@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.*;
+
 import java.util.ArrayList;
 
 import static advanced.android.ebcm.Constant.CREATE_PROFILE_ACTIVITY_REQ_CODE;
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Profile> profiles = new ArrayList<>();
     LinearLayout myVerticalLayout = null;
+    ArrayList<Integer> profileIds = new ArrayList<>();
+
 
     private static final String TAG = "MainActivity";
 
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        myVerticalLayout = findViewById(R.id.profile_list);
+
+        generateProfileView();
 
 
         /**
@@ -73,22 +79,16 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.blink,0);
             }
         });
+
+        FloatingActionButton fabCalc = findViewById(R.id.fabCalculateProfile);
+        fabCalc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    addNewProfile();
+            }
+        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseHelper = new DatabaseHelper(this);
-        myVerticalLayout = findViewById(R.id.profile_list);
-        myVerticalLayout.removeAllViews();
-        generateProfileView();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mDatabaseHelper.close();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,15 +129,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            String profileName = data.getStringExtra("PROFILE_NAME");
-            String profilePrice = data.getStringExtra("PROFILE_PRICE");
-            String profileDescription = data.getStringExtra("PROFILE_NAME");
-
+            addNewProfile();
         }
     }
 
     private void generateProfileView(){
 
+        mDatabaseHelper = new DatabaseHelper(this);
 
         Cursor data = mDatabaseHelper.getProfileData();
 
@@ -152,6 +150,16 @@ public class MainActivity extends AppCompatActivity {
                     final Profile profile = new Profile(i,name,description,price);
                     profiles.add(profile);
                     profile.generateProfile(getApplicationContext(), myVerticalLayout);
+
+                    profile.profileForm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
+                            intent.putExtra("KEY", "KEYok");
+                            startActivity(intent);
+                        }
+                    });
+
                     ///*        test.clipDelete.setOnClickListener(new View.OnClickListener() {
         //            @Override
         //            public void onClick(View v) {
@@ -168,8 +176,75 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT);
         }
 
+        mDatabaseHelper.close();
     }
 
+    public void addNewProfile(){
 
+        mDatabaseHelper = new DatabaseHelper(this);
 
+        Cursor data = mDatabaseHelper.getProfileData();
+
+        if (data != null) {
+            if (data.moveToFirst() && data.getCount() >= 1) {
+                do {
+                    profileIds.add(data.getInt(0));
+                } while (data.moveToNext());
+            }
+        }
+
+        int max = 0;
+
+        for ( int i = 0; i < profileIds.size(); i++ ) {
+            if ( max < i ){
+                max = profileIds.get(i);
+            }
+        }
+        Log.d("MAX_VALUE", Integer.toString(max));
+
+        Cursor profileNEW = mDatabaseHelper.getProfileItemByID(Integer.toString(max));
+
+        String name, description, price;
+
+        if (profileNEW != null) {
+            if (profileNEW.moveToFirst() && profileNEW.getCount() >= 1) {
+                do {
+                    Log.d( "father",  "1rst" + profileNEW.getString(1) + profileNEW.getString(2) + String.valueOf(profileNEW.getFloat(3)));
+
+                    i = profileNEW.getInt(0);
+                    name = profileNEW.getString(1);
+                    description = profileNEW.getString(2);
+                    price = String.valueOf(profileNEW.getFloat(3));
+
+                    final Profile profile = new Profile(i,name,description,price);
+                    profiles.add(profile);
+                    profile.generateProfile(getApplicationContext(), myVerticalLayout);
+
+                    profile.profileForm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
+                            intent.putExtra("KEY", "KEYok");
+                            startActivity(intent);
+                        }
+                    });
+
+                    ///*        test.clipDelete.setOnClickListener(new View.OnClickListener() {
+                    //            @Override
+                    //            public void onClick(View v) {
+                    //                Toast.makeText(MainActivity.this, test.getName(), Toast.LENGTH_SHORT).show();
+                    //                myVerticalLayout.removeView(test.profileForm);
+                    //                profiles.remove(test);
+                    //            }
+                    //              });*/
+                    Log.d("profileCREATE", Integer.toString(i));
+
+                } while (profileNEW.moveToNext());
+            }
+        } else {
+            Log.d("addingNewProfile", "profileNEW is empty");
+        }
+
+        mDatabaseHelper.close();
+    }
 }

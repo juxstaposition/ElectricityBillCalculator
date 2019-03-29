@@ -43,18 +43,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseHelper = new DatabaseHelper(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mDatabaseHelper.close();
-    }
-
-    @Override
     public void finish() {
         super.finish();
         overridePendingTransition(0,R.anim.fade);
@@ -95,7 +83,11 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 setResult(Activity.RESULT_OK, returnIntent);
 
                 Log.d("PROFILE", profileName +", " + profileDescription + ", " + profilePrice);
+
+                mDatabaseHelper = new DatabaseHelper(this);
                 addProfileToDatabase(profileName, profileDescription, profilePrice);
+                mDatabaseHelper.close();
+
                 finish();
             }
         }

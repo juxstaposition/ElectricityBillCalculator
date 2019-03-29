@@ -143,14 +143,6 @@ public class Profile {
         profileForm.addView(profileDescription);
         profileForm.addView(thirdLine);
 
-        profileForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DevicesListActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
         myVerticalLayout.addView(profileForm);
     }
 

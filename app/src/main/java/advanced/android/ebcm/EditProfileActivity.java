@@ -123,7 +123,7 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
 
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
-        mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id, oldName);
+        mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id);
 
     }
 

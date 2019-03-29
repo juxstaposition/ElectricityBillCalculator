@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //database info
     private static final String DATABASE_NAME = "ebcm";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     //table names
     private static final String TABLE_PROFILE = "profile_table";
@@ -163,6 +163,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor getProfileItemByID(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_PROFILE +
+                " WHERE " + PROFILE_COL0 + " = '" + id + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
     //device
     public Cursor getDeviceItemID(String name){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -187,11 +195,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     //profile
-    public void updateProfile(String newName, String newDescription, String newPrice, int id, String oldName) {
+    public void updateProfile(String newName, String newDescription, String newPrice, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + TABLE_PROFILE + " SET " + PROFILE_COL1 +
-                " = '" + newName + "', " + PROFILE_COL2 + " = '" + newDescription + "', " + PROFILE_COL3 + " = '" + newPrice + "' WHERE " + PROFILE_COL0 + " = '" + id +"'" +
-                " AND " + PROFILE_COL1 + " ='" + oldName + "'";
+                " = '" + newName + "', " + PROFILE_COL2 + " = '" + newDescription + "', " + PROFILE_COL3 + " = '" + newPrice + "' WHERE " + PROFILE_COL0 + " = " + id;
 
         Log.d(TAG, "updateProfile: query: " + query);
         Log.d(TAG, "updateProfile: Setting name to " + newName);
