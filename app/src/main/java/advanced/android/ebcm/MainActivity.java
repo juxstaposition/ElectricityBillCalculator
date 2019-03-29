@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -134,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void generateProfileView(){
-
         mDatabaseHelper = new DatabaseHelper(this);
 
         Cursor data = mDatabaseHelper.getProfileData();
@@ -143,31 +141,33 @@ public class MainActivity extends AppCompatActivity {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
                     i = Integer.parseInt(data.getString(0));
-                    String name = data.getString(1);
+                    final String name = data.getString(1);
                     String description = data.getString(2);
                     String price = String.valueOf(data.getFloat(3));
 
                     final Profile profile = new Profile(i,name,description,price);
                     profiles.add(profile);
                     profile.generateProfile(getApplicationContext(), myVerticalLayout);
-
                     profile.profileForm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
-                            intent.putExtra("KEY", "KEYok");
+                            intent.putExtra("KEY",Integer.toString(i));
                             startActivity(intent);
                         }
                     });
+                    profile.clipDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, profile.getName(), Toast.LENGTH_SHORT).show();
+                        myVerticalLayout.removeView(profile.getLayout());
+                        profiles.remove(profile);
 
-                    ///*        test.clipDelete.setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View v) {
-        //                Toast.makeText(MainActivity.this, test.getName(), Toast.LENGTH_SHORT).show();
-        //                myVerticalLayout.removeView(test.profileForm);
-        //                profiles.remove(test);
-        //            }
-        //              });*/
+                        mDatabaseHelper = new DatabaseHelper(getApplicationContext());
+                        mDatabaseHelper.deleteProfile(i,name);
+                        mDatabaseHelper.close();
+                    }});
+
                     Log.d("profileCREATE", Integer.toString(i));
 
                 } while (data.moveToNext());
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT);
         }
+        mDatabaseHelper.close();
 
         mDatabaseHelper.close();
     }
