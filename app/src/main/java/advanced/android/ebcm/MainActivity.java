@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void generateProfileView(){
+
         mDatabaseHelper = new DatabaseHelper(this);
 
         Cursor data = mDatabaseHelper.getProfileData();
@@ -140,35 +141,7 @@ public class MainActivity extends AppCompatActivity {
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-                    i = Integer.parseInt(data.getString(0));
-                    final String name = data.getString(1);
-                    String description = data.getString(2);
-                    String price = String.valueOf(data.getFloat(3));
-
-                    final Profile profile = new Profile(i,name,description,price);
-                    profiles.add(profile);
-                    profile.generateProfile(getApplicationContext(), myVerticalLayout);
-                    profile.profileForm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
-                            intent.putExtra("KEY",Integer.toString(i));
-                            startActivity(intent);
-                        }
-                    });
-                    profile.clipDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, profile.getName(), Toast.LENGTH_SHORT).show();
-                        myVerticalLayout.removeView(profile.getLayout());
-                        profiles.remove(profile);
-
-                        mDatabaseHelper = new DatabaseHelper(getApplicationContext());
-                        mDatabaseHelper.deleteProfile(i,name);
-                        mDatabaseHelper.close();
-                    }});
-
-                    Log.d("profileCREATE", Integer.toString(i));
+                    createNewProfile(data,mDatabaseHelper);
 
                 } while (data.moveToNext());
             }
@@ -177,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mDatabaseHelper.close();
 
-        mDatabaseHelper.close();
     }
 
     public void addNewProfile(){
@@ -197,48 +169,22 @@ public class MainActivity extends AppCompatActivity {
         int max = 0;
 
         for ( int i = 0; i < profileIds.size(); i++ ) {
-            if ( max < i ){
+
+            if ( max < profileIds.get(i) ){
                 max = profileIds.get(i);
+                System.out.println(max);
             }
         }
         Log.d("MAX_VALUE", Integer.toString(max));
 
         Cursor profileNEW = mDatabaseHelper.getProfileItemByID(Integer.toString(max));
 
-        String name, description, price;
 
         if (profileNEW != null) {
             if (profileNEW.moveToFirst() && profileNEW.getCount() >= 1) {
                 do {
-                    Log.d( "father",  "1rst" + profileNEW.getString(1) + profileNEW.getString(2) + String.valueOf(profileNEW.getFloat(3)));
 
-                    i = profileNEW.getInt(0);
-                    name = profileNEW.getString(1);
-                    description = profileNEW.getString(2);
-                    price = String.valueOf(profileNEW.getFloat(3));
-
-                    final Profile profile = new Profile(i,name,description,price);
-                    profiles.add(profile);
-                    profile.generateProfile(getApplicationContext(), myVerticalLayout);
-
-                    profile.profileForm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
-                            intent.putExtra("KEY", "KEYok");
-                            startActivity(intent);
-                        }
-                    });
-
-                    ///*        test.clipDelete.setOnClickListener(new View.OnClickListener() {
-                    //            @Override
-                    //            public void onClick(View v) {
-                    //                Toast.makeText(MainActivity.this, test.getName(), Toast.LENGTH_SHORT).show();
-                    //                myVerticalLayout.removeView(test.profileForm);
-                    //                profiles.remove(test);
-                    //            }
-                    //              });*/
-                    Log.d("profileCREATE", Integer.toString(i));
+                    createNewProfile(profileNEW,mDatabaseHelper);
 
                 } while (profileNEW.moveToNext());
             }
@@ -248,4 +194,50 @@ public class MainActivity extends AppCompatActivity {
 
         mDatabaseHelper.close();
     }
+
+    private void deleteProfile(int id){
+        for (Profile profile : profiles){
+            if (profile.getId() == id){
+                profiles.remove(profile);
+
+                mDatabaseHelper = new DatabaseHelper(getApplicationContext());
+                mDatabaseHelper.deleteProfile(profile.getId(),profile.getName());
+                mDatabaseHelper.close();
+                break;
+            }
+        }
+    }
+
+    private void createNewProfile(Cursor data, DatabaseHelper mDatabaseHelper){
+
+        i = Integer.parseInt(data.getString(0));
+        final String name = data.getString(1);
+        String description = data.getString(2);
+        String price = String.valueOf(data.getFloat(3));
+
+        final Profile profile = new Profile(i,name,description,price);
+        profiles.add(profile);
+        profile.generateProfile(getApplicationContext(), myVerticalLayout);
+        profile.profileForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
+                intent.putExtra("KEY",Integer.toString(i));
+                startActivity(intent);
+            }
+        });
+        profile.clipDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, profile.getName(), Toast.LENGTH_SHORT).show();
+                myVerticalLayout.removeView(profile.getLayout());
+
+                deleteProfile(profile.getId());
+
+            }});
+
+
+        Log.d("profileCREATE", Integer.toString(i));
+    }
+
 }
