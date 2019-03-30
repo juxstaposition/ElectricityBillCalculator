@@ -28,15 +28,15 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
         final String transferredData = getIntent().getStringExtra("KEY");
 
-//        if (transferredData.equals(Constant.FAVOURITE_DEVICE)){
-//            findViewById(R.id.buttonItemPick).setVisibility(View.GONE);
-//            findViewById(R.id.orText).setVisibility(View.GONE);
-//        }
-//        else{
-//            findViewById(R.id.buttonItemPick).setVisibility(View.VISIBLE);
-//            findViewById(R.id.buttonItemPick).setOnClickListener(this);
-//            findViewById(R.id.orText).setVisibility(View.VISIBLE);
-//        }
+        if (transferredData.equals(Constant.FAVOURITE_DEVICE)){
+            findViewById(R.id.buttonItemPick).setVisibility(View.GONE);
+            findViewById(R.id.orText).setVisibility(View.GONE);
+        }
+        else{
+            findViewById(R.id.buttonItemPick).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonItemPick).setOnClickListener(this);
+            findViewById(R.id.orText).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -47,14 +47,21 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view){
+        Constant animation = new Constant();
 
-        if (view.getId() == R.id.buttonItemCancel || view.getId() == R.id.backViewNavigation){
+        if (view.getId() == R.id.buttonItemCancel){
+            animation.startAnimation(view,R.anim.blink,getApplicationContext());
+            finish();
+        }
+        else if (view.getId() == R.id.backViewNavigation){
             finish();
         }
         else if (view.getId() == R.id.buttonItemPick){
+            animation.startAnimation(view,R.anim.blink,getApplicationContext());
             // to be implemented
         }
         else if (view.getId() == R.id.buttonItemAdd){
+            animation.startAnimation(view,R.anim.blink,getApplicationContext());
             // request input content
             String  name = nameInput.getEditText().getText().toString(),
             consumption = consumptionInput.getEditText().getText().toString(),

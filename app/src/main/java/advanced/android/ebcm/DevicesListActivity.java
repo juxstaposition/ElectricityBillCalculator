@@ -1,13 +1,17 @@
 package advanced.android.ebcm;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 public class DevicesListActivity extends AppCompatActivity {
+
+    DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,26 @@ public class DevicesListActivity extends AppCompatActivity {
 
         final String transferredData = getIntent().getStringExtra("KEY");
 
+        if (transferredData.equals(Constant.PROFILE_DEVICES)){
+            mDatabaseHelper = new DatabaseHelper(this);
+            System.out.println("______________________________________");
+            System.out.println(getIntent().getStringExtra("PROFILE_ID"));
+            Cursor profile = mDatabaseHelper.getProfileItemByID(getIntent().getStringExtra("PROFILE_ID"));
+
+            if (profile != null) {
+                if (profile.moveToFirst() && profile.getCount() >= 1) {
+                    do {
+
+                        String profileName = profile.getString(1);
+                        setTitle(profileName);
+
+                    } while (profile.moveToNext());
+                }
+            } else {
+                Log.d("addingNewProfile", "profileNEW is empty");
+            }
+
+        }
 
         FloatingActionButton fab = findViewById(R.id.fabNewProfile);
         fab.setOnClickListener(new View.OnClickListener() {

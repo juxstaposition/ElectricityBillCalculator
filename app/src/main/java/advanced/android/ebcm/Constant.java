@@ -7,7 +7,7 @@ import android.view.animation.AnimationUtils;
 
 public class Constant {
     public static final String FAVOURITE_DEVICE = "FAVOURITE_DEVICE";
-    public static final String PROFILE_DEVICE = "PROFILE_DEVICE";
+    public static final String PROFILE_DEVICES = "PROFILE_DEVICES";
     public static final String EDIT_PROFILE = "EDIT_PROFILE";
 
 

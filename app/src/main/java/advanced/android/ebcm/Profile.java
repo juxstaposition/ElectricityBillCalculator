@@ -150,7 +150,7 @@ public class Profile {
         );
         CoordinatorLayout.LayoutParams lllp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT,
                                                 CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-
+        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-5,dm),convertDpToPx(-5,dm),convertDpToPx(0,dm));
         lllp.gravity = Gravity.RIGHT;
         clipDelete.setLayoutParams(lllp);
 

@@ -65,6 +65,9 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
             if (profileName.length() == 0){
                 validation = sendWarningToast("Insert Profile Name!");
+                TextInputLayout newProfileName = findViewById(R.id.newProfileName);
+                newProfileName.setErrorEnabled(true);
+                newProfileName.setError(getString(R.string.add));
             }
 
             if (validation && profileDescription.length() == 0 ){
