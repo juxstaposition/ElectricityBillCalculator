@@ -30,9 +30,12 @@
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
     <string name="pick_an_item">Pick An Item</string>
 
     <!--special-->
     <string name="orText">------ or ------</string>
+    <string name="notice">Notice:</string>
+    <string name="irreversible">This is an irreversible action!</string>
 
 </resources>

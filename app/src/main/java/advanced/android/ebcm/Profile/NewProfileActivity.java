@@ -1,14 +1,15 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Profile;
 
+import advanced.android.ebcm.Constant;
+import advanced.android.ebcm.DatabaseHelper;
+import advanced.android.ebcm.R;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
@@ -23,9 +24,9 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_new_profile);
 
 
-        profileNameInput = findViewById(R.id.newProfileName);
-        profileDescriptionInput = findViewById(R.id.newProfileDescription);
-        profilePriceInput = findViewById(R.id.newProfilePrice);
+        profileNameInput = findViewById(R.id.editProfileName);
+        profileDescriptionInput = findViewById(R.id.editProfileDescription);
+        profilePriceInput = findViewById(R.id.editProfilePrice);
 
         //final String transferredData = getIntent().getStringExtra("KEY");
         //System.out.print(transferredData);
@@ -37,8 +38,8 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 //        }
 
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
-        findViewById(R.id.buttonProfileCancel).setOnClickListener(this);
-        findViewById(R.id.back_view).setOnClickListener(this);
+        findViewById(R.id.buttonDeleteProfileCancel).setOnClickListener(this);
+        findViewById(R.id.back_view_edit_profile).setOnClickListener(this);
 
     }
 
@@ -65,7 +66,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
             if (profileName.length() == 0){
                 validation = sendWarningToast("Insert Profile Name!");
-                TextInputLayout newProfileName = findViewById(R.id.newProfileName);
+                TextInputLayout newProfileName = findViewById(R.id.editProfileName);
                 newProfileName.setErrorEnabled(true);
                 newProfileName.setError(getString(R.string.add));
             }
@@ -73,8 +74,8 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
             if (validation && profileDescription.length() == 0 ){
                 validation = sendWarningToast("Insert Description Name!");
             }
-            String checkPriceValue = profilePrice;
-            if (validation && (profilePrice.length() == 0 || Float.valueOf(checkPriceValue.trim()).floatValue() <= 0 )){
+
+            if (validation && (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 )){
                 validation = sendWarningToast("Cost must be greater than 0!");
             }
 
@@ -94,7 +95,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
         }
-        else if (view.getId() == R.id.buttonProfileCancel || view.getId() == R.id.back_view){
+        else if (view.getId() == R.id.buttonDeleteProfileCancel || view.getId() == R.id.back_view_edit_profile){
             setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
         }
@@ -109,29 +110,17 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
 
         if (insertData) {
-            toastMesasge("Profile Successfully Created");
+            toastMessage("Profile Successfully Created");
         } else {
-            toastMesasge("Something went wrong");
+            toastMessage("Something went wrong");
         }
-    }
-
-    private void updateProfile () {
-        //update & delete SQLite test
-//        DatabaseHelper mDatabaseHelper = new DatabaseHelper(context);
-//
-//        //update
-//        mDatabaseHelper.updateProfile(getName(),getDescription(),getPrice(), getId(), getName());
-//
-//        //delete
-//        mDatabaseHelper.deleteProfile(getId(),getName());
-//        Toast.makeText(context,"removed " + getName() + " from database.", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * customizable toast
-     * @param message
+     * @param message string
      */
-    private void toastMesasge(String message) {
+    private void toastMessage(String message) {
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 }

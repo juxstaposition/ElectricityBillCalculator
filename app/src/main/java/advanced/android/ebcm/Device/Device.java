@@ -1,4 +1,4 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Device;
 
 public class Device {
 

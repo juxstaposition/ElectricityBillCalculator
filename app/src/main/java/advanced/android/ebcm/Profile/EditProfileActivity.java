@@ -1,8 +1,12 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Profile;
 
+import advanced.android.ebcm.Constant;
+import advanced.android.ebcm.DatabaseHelper;
+import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 public class EditProfileActivity  extends AppCompatActivity implements View.OnClickListener  {
 
     TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
+    TextInputEditText name, description, price;
 
     DatabaseHelper mDatabaseHelper;
 
@@ -23,13 +28,24 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
 
 
 
-        profileNameInput = findViewById(R.id.newProfileName);
-        profileDescriptionInput = findViewById(R.id.newProfileDescription);
-        profilePriceInput = findViewById(R.id.newProfilePrice);
 
-        findViewById(R.id.buttonProfileUpdate).setOnClickListener(this);
-        findViewById(R.id.buttonProfileDelete).setOnClickListener(this);
-        findViewById(R.id.back_view).setOnClickListener(this);
+
+        profileNameInput = findViewById(R.id.editProfileName);
+        name = findViewById(R.id.edit_profile_name);
+        name.setText(getIntent().getStringExtra("PROFILE_NAME"));
+
+        profileDescriptionInput = findViewById(R.id.editProfileDescription);
+        description = findViewById(R.id.edit_profile_description);
+        description.setText(getIntent().getStringExtra("PROFILE_DESCRIPTION"));
+
+        profilePriceInput = findViewById(R.id.editProfilePrice);
+        price = findViewById(R.id.edit_profile_price);
+        price.setText(getIntent().getStringExtra("PROFILE_PRICE"));
+
+
+        findViewById(R.id.buttonEditProfileCancel).setOnClickListener(this);
+        findViewById(R.id.buttonEditProfileConfirm).setOnClickListener(this);
+        findViewById(R.id.back_view_edit_profile).setOnClickListener(this);
 
     }
 
@@ -58,7 +74,7 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
         Constant animation = new Constant();
         animation.startAnimation(view,R.anim.blink,getApplicationContext());
 
-        if (view.getId() == R.id.buttonProfileUpdate){
+        if (view.getId() == R.id.buttonEditProfileConfirm){
 
 
 
@@ -75,8 +91,8 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
             if (validation && profileDescription.length() == 0 ){
                 validation = sendWarningToast("Insert Description Name!");
             }
-            String checkPriceValue = profilePrice;
-            if (validation && (profilePrice.length() == 0 || Integer.parseInt(checkPriceValue) <= 0 )){
+
+            if (validation && (profilePrice.length() == 0 || Float.valueOf(profilePrice) <= 0 )){
                 validation = sendWarningToast("Cost must be greater than 0!");
             }
 
@@ -92,11 +108,11 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
                 finish();
             }
         }
-        else if (view.getId() == R.id.buttonProfileDelete || view.getId() == R.id.back_view){
-            deleteProfile();
+        else if ( view.getId() == R.id.buttonEditProfileCancel || view.getId() == R.id.back_view_edit_profile  ){
             setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
         }
+
     }
 
     private boolean sendWarningToast(String message){
@@ -113,8 +129,7 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
         TextView description = findViewById(R.id.edit_profile_description);
         TextView price = findViewById(R.id.edit_profile_price);
 
-        Integer id = Integer.parseInt(receivedIntent.getStringExtra("ID"));
-        String oldName = receivedIntent.getStringExtra("PROFILE_NAME");
+        int id = Integer.parseInt(receivedIntent.getStringExtra("PROFILE_ID"));
 
         String newName = name.getText().toString();
         String newDescription = description.getText().toString();
@@ -125,23 +140,16 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
 
         mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id);
 
-    }
-
-    private void deleteProfile () {
-        Intent receivedIntent = getIntent();
-        Integer id = Integer.parseInt(receivedIntent.getStringExtra("ID"));
-        String name = receivedIntent.getStringExtra("PROFILE_NAME");
-
-        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
-        mDatabaseHelper.deleteProfile(id,name);
-        Toast.makeText(this,"removed " + name + " with id "+ id +" from database.", Toast.LENGTH_SHORT).show();
+        toastMesasge("Profile data updated");
     }
 
     /**
      * customizable toast
-     * @param message
+     * @param message string
      */
     private void toastMesasge(String message) {
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
+
+
 }

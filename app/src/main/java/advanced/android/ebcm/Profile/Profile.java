@@ -1,7 +1,7 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Profile;
 
+import advanced.android.ebcm.R;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.*;
 
 public class Profile {
@@ -22,8 +21,8 @@ public class Profile {
     private String power;
     private String time;
 
-    LinearLayout profileForm;
-    CoordinatorLayout supportLayout;
+    public LinearLayout profileForm;
+    public CoordinatorLayout supportLayout;
 
     private TextView profileName;
     private TextView profileDescription;

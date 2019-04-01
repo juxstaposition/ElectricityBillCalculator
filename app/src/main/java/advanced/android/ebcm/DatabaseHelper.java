@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //database info
     private static final String DATABASE_NAME = "ebcm";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     //table names
     private static final String TABLE_PROFILE = "profile_table";
@@ -128,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Returns all the data from database
-     * @return
+     * @return data
      */
 
     //profile
@@ -149,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * returns only the ID that matches the name passed in
-     * @params name
+     * @param name string
      * @return
      *
      * This and below are NOT done yet
@@ -163,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public Cursor getProfileItemByID(String id){
+    public Cursor getProfileItemByID(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_PROFILE +
                 " WHERE " + PROFILE_COL0 + " = '" + id + "'";
@@ -189,9 +189,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     /**
      * Updates the name field
-     * @param newName
-     * @param id
-     * @param oldName
+     * @param newName string
+     * @param id int
      */
 
     //profile
@@ -226,15 +225,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Delete from database
-     * @param name
-     * @param id
+     * @param id integer
      */
-    public void deleteProfile(int id, String name) {
+    public void deleteProfile(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_PROFILE + " WHERE " +
-                PROFILE_COL0 + " = '" + id + "'" + " AND " + PROFILE_COL1 + " = '" + name + "'";
+                PROFILE_COL0 + " = '" + id + "'";
         Log.d(TAG, "deleteProfile: query: " +query);
-        Log.d(TAG, "deleteProfile: Deleting " + name + " from database.");
         db.execSQL(query);
     }
 
@@ -244,7 +241,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 DEVICE_COL0 + " = '" + id + "'" + " AND " + DEVICE_COL1 + " = '" +
                 name + "'";
         Log.d(TAG, "deleteDeviceName: query: " +query);
-        Log.d(TAG, "deleteDeviceName: Deleting " + name + " from database.");
         db.execSQL(query);
     }
 }

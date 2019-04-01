@@ -1,5 +1,7 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Device;
 
+import advanced.android.ebcm.Constant;
+import advanced.android.ebcm.R;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

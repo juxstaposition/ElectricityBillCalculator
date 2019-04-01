@@ -1,5 +1,8 @@
 package advanced.android.ebcm;
 
+import advanced.android.ebcm.Device.DevicesListActivity;
+import advanced.android.ebcm.Profile.NewProfileActivity;
+import advanced.android.ebcm.Profile.Profile;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.widget.*;
 import java.util.ArrayList;
 
 import static advanced.android.ebcm.Constant.CREATE_PROFILE_ACTIVITY_REQ_CODE;
+import static advanced.android.ebcm.Constant.UPDATE_PROFILE_ACTIVITY_REQ_CODE;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Profile> profiles = new ArrayList<>();
     LinearLayout myVerticalLayout = null;
     ArrayList<Integer> profileIds = new ArrayList<>();
-
-    private static final String TAG = "MainActivity";
 
     DatabaseHelper mDatabaseHelper;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         generateProfileView();
 
-        /**
+        /*
          * Test
          */
         final ImageView clipdel = findViewById(R.id.deleteClipArt);
@@ -61,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Example Delete Clicked!", Toast.LENGTH_SHORT).show();
             }
         });
-        /**
+
+        /*
          *  Test end
          */
 
@@ -102,15 +105,15 @@ public class MainActivity extends AppCompatActivity {
         if ( id == R.id.action_devices){
             Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
             devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
-            startActivity(devicesListActivity);
+            startActivityForResult(devicesListActivity, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
             return true;
         }
-        else if ( id == R.id.action_devices){
-            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
-            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
-            startActivity(devicesListActivity);
-            return true;
-        }
+//        else if ( id == R.id.action_devices){
+//            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
+//            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
+//            startActivity(devicesListActivity);
+//            return true;
+//        }
         else if ( id == R.id.action_help){
             return true;
         }
@@ -125,6 +128,16 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
             addNewProfile();
         }
+
+        else if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
+
+            int id = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
+            String name = getIntent().getStringExtra("PROFILE_NAME");
+            String description = getIntent().getStringExtra("PROFILE_DESCRIPTION");
+            Number price = Float.valueOf("PROFILE_PRICE");
+            updateProfileData(id, name, description, price);
+            Log.d("update_req", "true");
+        }
     }
 
     private void generateProfileView(){
@@ -136,12 +149,12 @@ public class MainActivity extends AppCompatActivity {
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-                    createNewProfile(data,mDatabaseHelper);
+                    createNewProfile(data);
 
                 } while (data.moveToNext());
             }
         } else {
-            Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT).show();
         }
         mDatabaseHelper.close();
 
@@ -172,13 +185,13 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("MAX_VALUE", Integer.toString(max));
 
-        Cursor profileNEW = mDatabaseHelper.getProfileItemByID(Integer.toString(max));
+        Cursor profileNEW = mDatabaseHelper.getProfileItemByID(max);
 
         if (profileNEW != null) {
             if (profileNEW.moveToFirst() && profileNEW.getCount() >= 1) {
                 do {
 
-                    createNewProfile(profileNEW,mDatabaseHelper);
+                    createNewProfile(profileNEW);
 
                 } while (profileNEW.moveToNext());
             }
@@ -195,14 +208,14 @@ public class MainActivity extends AppCompatActivity {
                 profiles.remove(profile);
 
                 mDatabaseHelper = new DatabaseHelper(getApplicationContext());
-                mDatabaseHelper.deleteProfile(profile.getId(),profile.getName());
+                mDatabaseHelper.deleteProfile(profile.getId());
                 mDatabaseHelper.close();
                 break;
             }
         }
     }
 
-    private void createNewProfile(Cursor data, DatabaseHelper mDatabaseHelper){
+    private void createNewProfile(Cursor data){
 
         final int id = Integer.parseInt(data.getString(0));
         final String name = data.getString(1);
@@ -237,5 +250,9 @@ public class MainActivity extends AppCompatActivity {
         });
         Log.d("profileCREATE", Integer.toString(id));
     }   // createNewProfile
+
+    private void updateProfileData(int id, String name, String description, Number price) {
+
+    }
 
 }   // MainActivity
