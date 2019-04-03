@@ -49,17 +49,6 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseHelper = new DatabaseHelper(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mDatabaseHelper.close();
-    }
 
     @Override
     public void finish() {
@@ -139,6 +128,8 @@ public class EditProfileActivity  extends AppCompatActivity implements View.OnCl
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
         mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id);
+
+        mDatabaseHelper.close();
 
         toastMesasge("Profile data updated");
     }

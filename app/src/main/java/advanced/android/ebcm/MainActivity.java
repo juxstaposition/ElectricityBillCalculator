@@ -6,7 +6,6 @@ import advanced.android.ebcm.Profile.Profile;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
         myVerticalLayout = findViewById(R.id.profile_list);
 
+        mDatabaseHelper = new DatabaseHelper(this);
+
         generateProfileView();
+
 
         /*
          * Test
@@ -85,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
                     addNewProfile();
             }
         });
+
+        mDatabaseHelper.close();
+
     }
 
     @Override
@@ -122,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
@@ -131,24 +136,33 @@ public class MainActivity extends AppCompatActivity {
 
         else if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
 
-            int id = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
-            String name = getIntent().getStringExtra("PROFILE_NAME");
-            String description = getIntent().getStringExtra("PROFILE_DESCRIPTION");
-            Number price = Float.valueOf("PROFILE_PRICE");
-            updateProfileData(id, name, description, price);
-            Log.d("update_req", "true");
+            Bundle mBundle = data.getExtras();
+            if (mBundle != null) {
+                if (mBundle.getString("ACTION").equals("UPDATE") ) {
+                    int id = mBundle.getInt("PROFILE_ID");
+                    String name = mBundle.getString("PROFILE_NAME");
+                    String description = mBundle.getString("PROFILE_DESCRIPTION");
+                    Number price = mBundle.getFloat("PROFILE_PRICE");
+                    Log.d("updateMAIN", "id " + id + ", name " +name+", description " + description + ", price " + price );
+
+                    updateProfileData(id, name, description, price);
+                }
+                if (data.getStringExtra("ACTION").equals("DELETE")) {
+                    deleteProfile(mBundle.getInt("PROFILE_ID"));
+                }
+            }
         }
     }
 
     private void generateProfileView(){
 
-        mDatabaseHelper = new DatabaseHelper(this);
 
         Cursor data = mDatabaseHelper.getProfileData();
 
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
+
                     createNewProfile(data);
 
                 } while (data.moveToNext());
@@ -156,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT).show();
         }
-        mDatabaseHelper.close();
 
     }
 
@@ -198,19 +211,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("addingNewProfile", "profileNEW is empty");
         }
-
+        data.close();
+        profileNEW.close();
         mDatabaseHelper.close();
     }   // addNewProfile
 
     private void deleteProfile(int id){
         for (Profile profile : profiles){
             if (profile.getId() == id){
-                profiles.remove(profile);
 
                 mDatabaseHelper = new DatabaseHelper(getApplicationContext());
                 mDatabaseHelper.deleteProfile(profile.getId());
                 mDatabaseHelper.close();
-                break;
+
+                profiles.remove(profile);
+                myVerticalLayout.removeView(profile.getLayout());
+
             }
         }
     }
@@ -222,6 +238,8 @@ public class MainActivity extends AppCompatActivity {
         String description = data.getString(2);
         String price = String.valueOf(data.getFloat(3));
 
+
+
         final Profile profile = new Profile(id,name,description,price);
         profiles.add(profile);
         profile.generateProfile(getApplicationContext(), myVerticalLayout);
@@ -230,8 +248,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, profile.getName() + " deleted", Toast.LENGTH_SHORT).show();
-                myVerticalLayout.removeView(profile.getLayout());
-
                 deleteProfile(profile.getId());
 
         }});
@@ -245,14 +261,23 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
                 intent.putExtra("KEY",Constant.PROFILE_DEVICES);
                 intent.putExtra("PROFILE_ID",Integer.toString(id));
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
             }
         });
         Log.d("profileCREATE", Integer.toString(id));
     }   // createNewProfile
 
     private void updateProfileData(int id, String name, String description, Number price) {
+        for (Profile profile : profiles){
+            if (profile.getId() == id){
 
+                profile.setName(name);
+                profile.setDescription(description);
+                profile.setPrice(String.valueOf(price));
+
+                break;
+            }
+        }
     }
 
 }   // MainActivity

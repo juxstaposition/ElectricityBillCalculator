@@ -21,12 +21,17 @@ import android.view.View;
 import static advanced.android.ebcm.Constant.DELETE_PROFILE_ACTIVITY_REQ_CODE;
 import static advanced.android.ebcm.Constant.EDIT_PROFILE_ACTIVITY_REQ_CODE;
 
-public class DevicesListActivity extends AppCompatActivity {
+public class DevicesListActivity extends AppCompatActivity implements View.OnClickListener {
 
     DatabaseHelper mDatabaseHelper;
     int profileId;
     String profileName, profileDescription;
     Number profilePrice;
+    boolean deleted = false;
+    boolean updated = false;
+    boolean situation = true;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,7 @@ public class DevicesListActivity extends AppCompatActivity {
             Intent devicesListActivity = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
             devicesListActivity.putExtra("KEY",Constant.DELETE_PROFILE);
             devicesListActivity.putExtra("PROFILE_ID", Integer.toString(profileId));
+            devicesListActivity.putExtra("PROFILE_NAME", profileName);
             startActivityForResult(devicesListActivity, DELETE_PROFILE_ACTIVITY_REQ_CODE);
             return true;
         }
@@ -103,28 +109,74 @@ public class DevicesListActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onBackPressed () {
+        Intent returnIntent = new Intent();
+
+        if (deleted) {
+
+            returnIntent.putExtra("ACTION", "DELETE");
+            returnIntent.putExtra("PROFILE_ID", profileId);
+
+            setResult(Activity.RESULT_OK, returnIntent);
+            super.onBackPressed();
+
+        }
+        if (updated) {
+
+            returnIntent.putExtra("ACTION", "UPDATE");
+            returnIntent.putExtra("PROFILE_ID", profileId);
+            returnIntent.putExtra("PROFILE_NAME", profileName);
+            returnIntent.putExtra("PROFILE_DESCRIPTION", profileDescription);
+            returnIntent.putExtra("PROFILE_PRICE", profilePrice);
+
+            setResult(Activity.RESULT_OK, returnIntent);
+            super.onBackPressed();
+
+        }
+        if (situation) {
+            setResult(Activity.RESULT_CANCELED);
+            super.onBackPressed();
+        }
+
+    }
+
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            finish();
+            updated = false;
+            situation = false;
+            deleted = true;
+            getProfile();
+            onBackPressed();
         }
-        else if (requestCode == EDIT_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == EDIT_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            situation = false;
+            updated = true;
             getProfile();
             setTitle(profileName);
         }
+
     }
 
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_left_enter, R.anim.slide_right_exit);
+
     }
 
     void getProfile() {
         mDatabaseHelper = new DatabaseHelper(this);
 
-       Cursor data = mDatabaseHelper.getProfileItemByID(profileId);
+        Cursor data = mDatabaseHelper.getProfileItemByID(profileId);
 
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
