@@ -2,11 +2,14 @@ package advanced.android.ebcm;
 
 import android.graphics.Color;
 import android.icu.text.NumberFormat;
+import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,11 +22,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ResultGraph extends AppCompatActivity {
+public class ResultGraph extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     GraphView graphView;
     ArrayList<CalculationResult> results;
     double maxResult = -1.0;
+    double kWhPrice = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +88,13 @@ public class ResultGraph extends AppCompatActivity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-
-                String masg = +dataPoint.getY() + "W";
+                int x = (int) dataPoint.getX();
+                CalculationResult result = results.get(x);
+                //Log.i(" RESULTGRAPH", "title: " +result.getItemName());
+                String expenditure = String.format("%.2f", result.getResults());
+                String masg = "Device name: " + result.getItemName() + "\n\t" + result.getPower() + " W\n\t" + expenditure + " €";
                 Toast toast = Toast.makeText(ResultGraph.this, masg, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.setGravity(Gravity.TOP | Gravity.START, 120, 40);
                 toast.show();
             }
         });
@@ -146,6 +153,7 @@ public class ResultGraph extends AppCompatActivity {
     }
 
     private ArrayList<CalculationResult> loadData() {
+        kWhPrice = 0.25;
         ArrayList<CalculationResult> resultList = new ArrayList<>();
         resultList.add(new CalculationResult("Lamps", 60.0, 4, 4, 16));
         resultList.add(new CalculationResult("Coffee Machine", 1000.0, 1, .5, 30));
@@ -158,7 +166,49 @@ public class ResultGraph extends AppCompatActivity {
 //        double r = c.getResults() / maxResult;
 //        int rr =(int) Math.round(x/maxResult) * 255;
         int color = Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
-        Log.i("COLOR", Integer.toString(color));
+       //Log.i("COLOR", Integer.toString(color));
         return color;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.i("###RESULTGRAPH", "outTouchEVent X: " + event.getX() + ", Y: " + event.getY());
+
+
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Log.i("RESULTGRAPH", "onDown X: " + e.getX() + ", Y: " + e.getY());
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        Log.i("RESULTGRAPH", "onShowPress X: " + e.getX() + ", Y: " + e.getY());
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Log.i("RESULTGRAPH", "onSingleTapUp X: " + e.getX() + ", Y: " + e.getY());
+return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Log.i("RESULTGRAPH", "onScroll X: " + e1.getX() + ", Y: " + e2.getY());
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Log.i("RESULTGRAPH", "onLongPress X: " + e.getX() + ", Y: " + e.getY());
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.i("RESULTGRAPH", "onFling X: " + e1.getX() + ", Y: " + e2.getY());
+        return false;
     }
 }

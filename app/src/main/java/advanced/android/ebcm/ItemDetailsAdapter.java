@@ -33,9 +33,9 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
         TextView power = convertView.findViewById(R.id.item_power);
 
         name.setText(result.getItemName());
-        units.setText(Double.toString(result.getResults()));
-        time.setText(Double.toString(result.getUsageTimeTotal()));
-        power.setText(Double.toString(result.getPower()));
+        units.setText(Double.toString(result.getResults()) + " kWh");
+        time.setText(Double.toString(result.getUsageTimeTotal()) + " hours");
+        power.setText(Double.toString(result.getPower()) + " W");
 
 //        return super.getView(position, convertView, parent);
         return convertView;
