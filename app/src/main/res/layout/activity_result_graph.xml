@@ -5,42 +5,77 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ResultGraph">
+        tools:context=".GraphView.ResultGraph">
 
-    <TextView
-            android:text="cONSUMPTION OF ELECTRICITY GRAPH (WATTS)"
-            android:layout_width="wrap_content"
-            android:layout_height="111dp" android:id="@+id/textView2"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/graphView" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="25dp" android:gravity="center"
-            tools:shadowColor="@android:color/holo_blue_bright" android:textColor="@android:color/holo_purple"
-            tools:textSize="30sp"/>
-    <com.jjoe64.graphview.GraphView
-            android:layout_width="wrap_content"
-            android:layout_height="298dp"
-            android:id="@+id/graphView"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="50dp" app:layout_constraintVertical_bias="0.98"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="20dp" android:layout_marginStart="100dp"
-            app:layout_constraintHorizontal_bias="0.646"/>
-    <TextView
-            android:text="Highest Consumption "
-            android:layout_width="410dp"
-            android:layout_height="63dp"
-            android:textColor="@color/black"
-            android:id="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/graphView" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="1dp"
-            android:layout_marginStart="100dp" app:layout_constraintHorizontal_bias="0.52"/>
-            android:textSize="20dp"
-            tools:layout_editor_absoluteX="6dp"
-            android:id="@+id/textView"/>
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+
+            <TextView
+                    android:text="CONSUMPTION OF ELECTRICITY GRAPH (WATTS)"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_result"
+                    android:gravity="center"
+                    tools:shadowColor="@android:color/holo_blue_bright"
+                    android:textColor="@android:color/holo_purple"
+                    tools:textSize="30sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+            />
+
+            <com.jjoe64.graphview.GraphView
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:id="@+id/graphView"
+                    app:layout_constraintTop_toBottomOf="@+id/title_result"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginBottom="20dp"
+            />
+
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    android:id="@+id/item_details"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    app:layout_constraintTop_toBottomOf="@+id/graphView"
+                    tools:layout_editor_absoluteX="0dp"
+                    app:layout_constraintVertical_bias="0.415"/>
+
+            <TextView
+                    android:text="Highest Consumption "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:id="@+id/textView"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10sp"
+                    app:layout_constraintTop_toBottomOf="@+id/item_details"
+            />
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/total_details"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+            />
+
+        </LinearLayout>
+    </ScrollView>
+
+
 
 
 </android.support.constraint.ConstraintLayout>
