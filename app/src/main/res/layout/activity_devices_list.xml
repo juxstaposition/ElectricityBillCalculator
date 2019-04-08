@@ -1,37 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context=".MainActivity"
+                                                 android:background="@color/lightBlue">
+
+<ScrollView
+        android:layout_marginTop="55dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Device.DevicesListActivity">
+>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+    >
+
+        <!-- Layout structure for profiles -->
+        <LinearLayout
+                android:id="@+id/device_list"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+            <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <LinearLayout
+                        android:id="@+id/layoutDevice"
+                        android:orientation="vertical"
+                        style="@style/ProfileFormStyle"
+
+                >
+                <TextView
+                        android:id="@+id/noDevicesTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="no devices found"
+                        android:layout_gravity="center"
+                />
+                </LinearLayout>
+
+
+            </android.support.design.widget.CoordinatorLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
 
     <android.support.design.widget.AppBarLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
+        />
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_devices_list"/>
+
+    <include
+            layout="@layout/content_main"
+            android:visibility="gone"
+    >
+
+    </include>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabNewProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            app:layout_anchor="@id/fabCalculateProfile"
+            app:layout_anchorGravity="top"
+            android:layout_marginBottom="80dp"
+            android:scaleType="center"
+            app:maxImageSize="36dp"
+            app:srcCompat="@drawable/add24dp"
+            app:backgroundTint="@color/colorPrimary"
+            app:tint="@color/white"
+    />
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCalculateProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/add24dp"
-            app:maxImageSize="36dp"
-            app:tint="@color/white"
-/>
+            app:maxImageSize="50dp"
+            app:srcCompat="@drawable/bulb_layer"
+            app:backgroundTint="@color/colorPrimary"
+    />
 
 </android.support.design.widget.CoordinatorLayout>

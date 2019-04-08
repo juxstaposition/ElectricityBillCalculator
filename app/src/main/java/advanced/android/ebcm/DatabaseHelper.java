@@ -98,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //adding data to Device table
-    public boolean addDeviceData(String newDeviceName, String newQuantity, String newHours, String newMinutes, String newDays, String newGroup, String newConsumption, String newProfileParent) {
+    public boolean addDeviceData(String newDeviceName, int newQuantity, int newHours, int newMinutes, int newDays, String newGroup, int newConsumption, int newProfileParent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DEVICE_COL1, newDeviceName);

@@ -18,6 +18,8 @@ public class Constant {
     public static final int EDIT_PROFILE_ACTIVITY_REQ_CODE = 300;
     public static final int DELETE_PROFILE_ACTIVITY_REQ_CODE = 400;
 
+    public static final int ADD_DEVICE_TO_PROFILE_REQ_CODE = 500;
+
 
     public void startAnimation(View view, int animationId, Context context){
 

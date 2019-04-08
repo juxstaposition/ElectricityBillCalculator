@@ -41,6 +41,7 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         animation.startAnimation(v,R.anim.blink,getApplicationContext());
 
         if (v.getId() == R.id.buttonDeleteProfileConfirm){
+            returnIntent.putExtra("PROFILE_ID", getIntent().getStringExtra("PROFILE_ID"));
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
 

@@ -17,14 +17,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import static advanced.android.ebcm.Constant.ADD_DEVICE_TO_PROFILE_REQ_CODE;
 import static advanced.android.ebcm.Constant.DELETE_PROFILE_ACTIVITY_REQ_CODE;
 import static advanced.android.ebcm.Constant.EDIT_PROFILE_ACTIVITY_REQ_CODE;
 
 public class DevicesListActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private ArrayList<Device> devices = new ArrayList<>();
+
     DatabaseHelper mDatabaseHelper;
     int profileId;
+    LinearLayout myVerticalLayout = null;
     String profileName, profileDescription;
     Number profilePrice;
     boolean deleted = false;
@@ -45,6 +53,12 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         final String transferredData = getIntent().getStringExtra("KEY");
         System.out.println(transferredData);
 
+        myVerticalLayout = findViewById(R.id.device_list);
+
+        mDatabaseHelper = new DatabaseHelper(this);
+
+        generateDeviceView();
+
 
         if (transferredData.equals(Constant.PROFILE_DEVICES)){
             getProfile();
@@ -57,8 +71,9 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view) {
                 Intent newItemActivity = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
-                newItemActivity.putExtra("KEY", transferredData);
-                startActivity(newItemActivity);
+                newItemActivity.putExtra("PROFILE_ID", String.valueOf(profileId));
+                Log.d("PROFILE_ID", String.valueOf(profileId));
+                startActivityForResult(newItemActivity, ADD_DEVICE_TO_PROFILE_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
             }
         });
@@ -138,11 +153,10 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             super.onBackPressed();
 
         }
-        if (situation) {
-            setResult(Activity.RESULT_CANCELED);
+        else if (situation) {
+            setResult(Activity.RESULT_CANCELED, returnIntent);
             super.onBackPressed();
         }
-
     }
 
 
@@ -163,7 +177,20 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             getProfile();
             setTitle(profileName);
         }
+        else if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            Bundle mBundle = data.getExtras();
+            String deviceName = mBundle.getString("DEVICE_NAME");
+            String deviceConsumption = mBundle.getString("DEVICE_CONSUMPTION");
+            String deviceQuantity = mBundle.getString("DEVICE_QUANTITY");
+            String deviceUsageHours = mBundle.getString("DEVICE_USAGE_HOURS");
+            String deviceUsageMinutes = mBundle.getString("DEVICE_USAGE_MINUTES");
+            String deviceUsageDays = mBundle.getString("DEVICE_USAGE_DAYS");
 
+            Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
+                    deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
+
+            getProfile();
+        }
     }
 
     @Override
@@ -193,9 +220,72 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             Log.d("GET_PROFILE", " is empty");
         }
 
-
-
        mDatabaseHelper.close();
     }
+
+    private void generateDeviceView(){
+
+
+        Cursor data = mDatabaseHelper.getDeviceData();
+
+        if (data != null) {
+            if (data.moveToFirst() && data.getCount() >= 1) {
+                do {
+
+                    createNewDevice(data);
+
+                } while (data.moveToNext());
+            }
+        } else {
+            Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void createNewDevice(Cursor data) {
+        final int id = Integer.parseInt(data.getString(0));
+        final String name = data.getString(1);
+        int quantity = data.getInt(2);
+        int hours = data.getInt(3);
+        int minutes = data.getInt(4);
+        int days = data.getInt(5);
+        String group = data.getString(6);
+        int consumption = data.getInt(7);
+        int profileParent = profileId;
+
+
+
+        final Device device = new Device(id,name,quantity,hours,minutes,days,group, consumption, profileParent );
+        devices.add(device);
+        device.generateDevice(getApplicationContext(), myVerticalLayout);
+
+        device.clipDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
+//                intent.putExtra("PROFILE_NAME", name);
+//                intent.putExtra("PROFILE_ID", Integer.toString(id));
+//                startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
+                Toast.makeText(DevicesListActivity.this, "Delete Device Clicked!!", Toast.LENGTH_SHORT).show();
+            }});
+        device.deviceForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constant animation = new Constant();
+                animation.startAnimation(v,R.anim.blink,getApplicationContext());
+                animation.startAnimation(device.clipDelete,R.anim.blink,getApplicationContext());
+
+//                Intent intent = new Intent(DevicesListActivity.this, DevicesListActivity.class);
+//                intent.putExtra("KEY",Constant.PROFILE_DEVICES);
+//                intent.putExtra("PROFILE_ID",Integer.toString(id));
+//                startActivityForResult(intent, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
+
+                Toast.makeText(DevicesListActivity.this, "Device clicked!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        Log.d("profileCREATE", Integer.toString(id));
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package advanced.android.ebcm;
 
 import advanced.android.ebcm.Device.DevicesListActivity;
+import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
 import advanced.android.ebcm.Profile.Profile;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.widget.*;
 import java.util.ArrayList;
 
 import static advanced.android.ebcm.Constant.CREATE_PROFILE_ACTIVITY_REQ_CODE;
+import static advanced.android.ebcm.Constant.DELETE_PROFILE_ACTIVITY_REQ_CODE;
 import static advanced.android.ebcm.Constant.UPDATE_PROFILE_ACTIVITY_REQ_CODE;
 
 
@@ -108,18 +110,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if ( id == R.id.action_devices){
-            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
-            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
-            startActivityForResult(devicesListActivity, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
-            return true;
-        }
-//        else if ( id == R.id.action_devices){
 //            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
 //            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
-//            startActivity(devicesListActivity);
-//            return true;
-//        }
-        else if ( id == R.id.action_help){
+//            startActivityForResult(devicesListActivity, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
+            return true;
+        }
+        else
+            if ( id == R.id.action_help){
             return true;
         }
 
@@ -130,13 +127,19 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Bundle mBundle = data.getExtras();
+
         if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
             addNewProfile();
         }
 
+        if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            if (mBundle != null) {
+                deleteProfile(mBundle.getInt("PROFILE_ID"));
+            }
+        }
         else if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
 
-            Bundle mBundle = data.getExtras();
             if (mBundle != null) {
                 if (mBundle.getString("ACTION").equals("UPDATE") ) {
                     int id = mBundle.getInt("PROFILE_ID");
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
                     updateProfileData(id, name, description, price);
                 }
-                if (data.getStringExtra("ACTION").equals("DELETE")) {
+                if (mBundle.getString("ACTION").equals("DELETE")) {
                     deleteProfile(mBundle.getInt("PROFILE_ID"));
                 }
             }
@@ -247,9 +250,10 @@ public class MainActivity extends AppCompatActivity {
         profile.clipDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, profile.getName() + " deleted", Toast.LENGTH_SHORT).show();
-                deleteProfile(profile.getId());
-
+                Intent intent = new Intent(MainActivity.this, DeleteProfileActivity.class);
+                intent.putExtra("PROFILE_NAME", name);
+                intent.putExtra("PROFILE_ID", Integer.toString(id));
+                startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
         }});
         profile.profileForm.setOnClickListener(new View.OnClickListener() {
             @Override
