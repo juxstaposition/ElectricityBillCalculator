@@ -1,9 +1,11 @@
 package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.Constant;
+import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -98,7 +100,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     validation = sendWarningToast("At least 1 device must be used!");
                 }
                 if (validation && (usageHours.length() == 0 || Integer.parseInt(usageHours) < 1 && (usageMinutes.length() == 0 || Integer.parseInt(usageMinutes) < 1)) ){
-                    validation = sendWarningToast("Must be used at least 1 minute!");
+                    validation = sendWarningToast("Usage must be used at least 1 minute!");
                 }
     //            if (validation && (usageMinutes.length() == 0 || Integer.parseInt(usageMinutes) < 1)) {
     //                validation = sendWarningToast("Must be used at least 1 minute!");
@@ -110,8 +112,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 // if
                 if (validation){
                     Toast.makeText(NewDeviceActivity.this, "New Device Added!", Toast.LENGTH_LONG).show();
-                    Log.d("NEW_DEVICE", "name: "+ name +", consumption: "+ consumption + ", quantity: "+ quantity +", usageHours: "+
-                            usageHours +", usageMinutes: "+ usageMinutes +", usageDays: "+ usageDays + ", profileParent: "+ profileParent);
+
                     returnIntent.putExtra("DEVICE_NAME", name);
                     returnIntent.putExtra("DEVICE_CONSUMPTION", consumption);
                     returnIntent.putExtra("DEVICE_QUANTITY", quantity);
@@ -119,6 +120,10 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     returnIntent.putExtra("DEVICE_USAGE_MINUTES", usageMinutes);
                     returnIntent.putExtra("DEVICE_USAGE_DAYS", usageDays);
 
+                    String group = "testGroup";
+
+                    addDevice(name, Integer.parseInt(quantity), Integer.parseInt(usageHours), Integer.parseInt(usageMinutes),
+                            Integer.parseInt(usageDays), group, Integer.parseInt(consumption), profileParent);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 } else {
@@ -128,6 +133,23 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
             }
         }
+    }
+
+    private void addDevice(String name, int quantity, int usageHours, int usageMinutes, int usageDays, String group, int consumption, int profileParent) {
+        Log.d("NEW_DEVICE/addDevice", "name: "+ name +", consumption: "+ consumption + ", quantity: "+ quantity +", usageHours: "+
+                usageHours +", usageMinutes: "+ usageMinutes +", usageDays: "+ usageDays + ", profileParent: "+ profileParent);
+
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+
+        boolean insertData = mDatabaseHelper.addDeviceData(name,quantity,usageHours,usageMinutes,usageDays,group,consumption,profileParent);
+
+        if (insertData) {
+            sendWarningToast("Device Successfully Added");
+        } else {
+            sendWarningToast("Something went wrong");
+        }
+
+        mDatabaseHelper.close();
     }
 
     private boolean sendWarningToast(String message){

@@ -57,7 +57,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         mDatabaseHelper = new DatabaseHelper(this);
 
-        generateDeviceView();
+//        generateDeviceView();
 
 
         if (transferredData.equals(Constant.PROFILE_DEVICES)){

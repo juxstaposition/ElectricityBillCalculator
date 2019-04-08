@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         fabCalc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    addNewProfile();
+
             }
         });
 
@@ -135,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
             if (mBundle != null) {
-                deleteProfile(mBundle.getInt("PROFILE_ID"));
+                deleteProfile(Integer.parseInt(mBundle.getString("PROFILE_ID")));
+                Log.d("MainActivity/Delete", ""+mBundle.getInt("PROFILE_ID"));
             }
         }
         else if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
