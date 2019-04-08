@@ -1,6 +1,5 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Graph;
 
-import advanced.android.ebcm.CalculationResult;
 import advanced.android.ebcm.R;
 import android.content.Context;
 import android.support.annotation.Nullable;

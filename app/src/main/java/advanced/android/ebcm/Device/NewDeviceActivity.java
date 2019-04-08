@@ -37,17 +37,10 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.buttonItemCancel).setOnClickListener(this);
         findViewById(R.id.buttonItemAdd).setOnClickListener(this);
 
-//        final String transferredData = getIntent().getStringExtra("KEY");
 
-//        if (transferredData.equals(Constant.FAVOURITE_DEVICES)){
-//            findViewById(R.id.buttonItemPick).setVisibility(View.GONE);
-//            findViewById(R.id.orText).setVisibility(View.GONE);
-//        }
-//        else{
-            findViewById(R.id.buttonItemPick).setVisibility(View.VISIBLE);
-            findViewById(R.id.buttonItemPick).setOnClickListener(this);
-            findViewById(R.id.orText).setVisibility(View.VISIBLE);
-//        }
+        findViewById(R.id.buttonItemPick).setVisibility(View.VISIBLE);
+        findViewById(R.id.buttonItemPick).setOnClickListener(this);
+        findViewById(R.id.orText).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -69,6 +62,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         }
         else if (view.getId() == R.id.buttonItemPick){
             animation.startAnimation(view,R.anim.blink,getApplicationContext());
+            sendWarningToast("Pick an Item button pressed!");
             // to be implemented
         }
         else if (view.getId() == R.id.buttonItemAdd){
@@ -134,6 +128,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
+
+
 
     private void addDevice(String name, int quantity, int usageHours, int usageMinutes, int usageDays, String group, int consumption, int profileParent) {
         Log.d("NEW_DEVICE/addDevice", "name: "+ name +", consumption: "+ consumption + ", quantity: "+ quantity +", usageHours: "+

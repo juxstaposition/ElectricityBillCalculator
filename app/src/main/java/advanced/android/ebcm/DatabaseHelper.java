@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //database info
     private static final String DATABASE_NAME = "ebcm";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     //table names
     private static final String TABLE_PROFILE = "profile_table";
@@ -235,11 +235,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void deleteDeviceName(int id, String name) {
+    public void deleteDeviceName(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_DEVICE + " WHERE " +
-                DEVICE_COL0 + " = '" + id + "'" + " AND " + DEVICE_COL1 + " = '" +
-                name + "'";
+                DEVICE_COL0 + " = '" + id + "'";
         Log.d(TAG, "deleteDeviceName: query: " +query);
         db.execSQL(query);
     }

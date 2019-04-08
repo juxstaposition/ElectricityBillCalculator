@@ -1,4 +1,4 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Graph;
 
 public class CalculationResult implements Comparable {
 

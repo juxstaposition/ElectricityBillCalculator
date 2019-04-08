@@ -58,8 +58,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         mDatabaseHelper = new DatabaseHelper(this);
 
-//        generateDeviceView();
-
+        generateDeviceView();
 
         if (transferredData.equals(Constant.PROFILE_DEVICES)){
             getProfile();
@@ -270,37 +269,36 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         int profileParent = profileId;
 
 
-
         final Device device = new Device(id,name,quantity,hours,minutes,days,group, consumption, profileParent );
-        devices.add(device);
-        device.generateDevice(getApplicationContext(), myVerticalLayout);
-
-        device.clipDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
-//                intent.putExtra("PROFILE_NAME", name);
-//                intent.putExtra("PROFILE_ID", Integer.toString(id));
-//                startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
-                Toast.makeText(DevicesListActivity.this, "Delete Device Clicked!!", Toast.LENGTH_SHORT).show();
-            }});
-        device.deviceForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Constant animation = new Constant();
-                animation.startAnimation(v,R.anim.blink,getApplicationContext());
-                animation.startAnimation(device.clipDelete,R.anim.blink,getApplicationContext());
-
-//                Intent intent = new Intent(DevicesListActivity.this, DevicesListActivity.class);
-//                intent.putExtra("KEY",Constant.PROFILE_DEVICES);
-//                intent.putExtra("PROFILE_ID",Integer.toString(id));
-//                startActivityForResult(intent, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
-
-                Toast.makeText(DevicesListActivity.this, "Device clicked!", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        Log.d("profileCREATE", Integer.toString(id));
+//        devices.add(device);
+//        device.generateDevice(getApplicationContext(), myVerticalLayout);
+//
+//        device.clipDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intent = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
+////                intent.putExtra("PROFILE_NAME", name);
+////                intent.putExtra("PROFILE_ID", Integer.toString(id));
+////                startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
+//                Toast.makeText(DevicesListActivity.this, "Delete Device Clicked!!", Toast.LENGTH_SHORT).show();
+//            }});
+//        device.deviceForm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Constant animation = new Constant();
+//                animation.startAnimation(v,R.anim.blink,getApplicationContext());
+//                animation.startAnimation(device.clipDelete,R.anim.blink,getApplicationContext());
+//
+////                Intent intent = new Intent(DevicesListActivity.this, DevicesListActivity.class);
+////                intent.putExtra("KEY",Constant.PROFILE_DEVICES);
+////                intent.putExtra("PROFILE_ID",Integer.toString(id));
+////                startActivityForResult(intent, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
+//
+//                Toast.makeText(DevicesListActivity.this, "Device clicked!", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+        Log.d("deviceCREATE", Integer.toString(device.getId()));
     }
 
 

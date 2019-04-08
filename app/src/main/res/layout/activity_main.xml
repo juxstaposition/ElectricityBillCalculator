@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            app:layout_anchor="@id/fabCalculateProfile"
+            app:layout_anchor="@id/fabCompareProfile"
             app:layout_anchorGravity="top"
             android:layout_marginBottom="80dp"
             android:scaleType="center"
@@ -81,7 +81,7 @@
             app:tint="@color/white"
     />
     <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabCalculateProfile"
+            android:id="@+id/fabCompareProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

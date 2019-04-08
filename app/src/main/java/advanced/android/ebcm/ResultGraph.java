@@ -1,8 +1,7 @@
 package advanced.android.ebcm;
 
-import advanced.android.ebcm.CalculationResult;
-import advanced.android.ebcm.ItemDetailsAdapter;
-import advanced.android.ebcm.R;
+import advanced.android.ebcm.Graph.CalculationResult;
+import advanced.android.ebcm.Graph.ItemDetailsAdapter;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
