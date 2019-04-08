@@ -45,38 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
         generateProfileView();
 
-
-        /*
-         * Test
-         */
-        final ImageView clipdel = findViewById(R.id.deleteClipArt);
-
-        LinearLayout test = findViewById(R.id.layoutProfile);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Constant animation = new Constant();
-                animation.startAnimation(v,R.anim.blink,getApplicationContext());
-                animation.startAnimation(clipdel,R.anim.blink,getApplicationContext());
-            }
-        });
-
-        clipdel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Example Delete Clicked!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        /*
-         *  Test end
-         */
-
         FloatingActionButton fab = findViewById(R.id.fabNewProfile);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent newProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
+                newProfileActivity.putExtra("KEY",Constant.NEW_PROFILE);
                 startActivityForResult(newProfileActivity, CREATE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
             }
@@ -108,15 +82,8 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if ( id == R.id.action_devices){
-//            Intent devicesListActivity = new Intent(MainActivity.this, DevicesListActivity.class);
-//            devicesListActivity.putExtra("KEY",Constant.FAVOURITE_DEVICE);
-//            startActivityForResult(devicesListActivity, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
-            return true;
-        }
-        else
-            if ( id == R.id.action_help){
+
+        if ( id == R.id.action_help) {
             return true;
         }
 
