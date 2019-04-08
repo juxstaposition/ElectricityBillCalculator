@@ -25,11 +25,10 @@
         <activity
                 android:name=".Profile.DeleteProfileActivity"
                 android:theme="@style/AppTheme.InputPopUpStyle"/>
-        <activity        
-                android:name=".NewItem"
-                android:theme="@style/AppTheme.NewItemTheme"/>
+        <activity android:name=".ResultGraph"
+                  android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".ResultGraph"
+                android:name=".MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar"

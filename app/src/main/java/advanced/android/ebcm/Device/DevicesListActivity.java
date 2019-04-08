@@ -5,6 +5,7 @@ import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
 import advanced.android.ebcm.R;
+import advanced.android.ebcm.ResultGraph;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -69,6 +70,8 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         }
 
         FloatingActionButton addDeviceFab = findViewById(R.id.fabNewProfile);
+        FloatingActionButton fabCalc = findViewById(R.id.fabCalculateProfile);
+
 
         addDeviceFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +82,14 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 Log.d("PROFILE_ID", String.valueOf(profileId));
                 startActivityForResult(newItemActivity, ADD_DEVICE_TO_PROFILE_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
+            }
+        });
+
+        fabCalc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DevicesListActivity.this, ResultGraph.class);
+                startActivity(intent);
             }
         });
 
