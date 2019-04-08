@@ -37,7 +37,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
 //        final String transferredData = getIntent().getStringExtra("KEY");
 
-//        if (transferredData.equals(Constant.FAVOURITE_DEVICE)){
+//        if (transferredData.equals(Constant.FAVOURITE_DEVICES)){
 //            findViewById(R.id.buttonItemPick).setVisibility(View.GONE);
 //            findViewById(R.id.orText).setVisibility(View.GONE);
 //        }

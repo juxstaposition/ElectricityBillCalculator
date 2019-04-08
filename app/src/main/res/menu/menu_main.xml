@@ -7,13 +7,5 @@
             android:orderInCategory="100"
             android:title="@string/action_help"
             app:showAsAction="never" />
-    <item
-            android:id="@+id/action_devices"
-            android:orderInCategory="100"
-            android:title="@string/action_devices"
-            app:showAsAction="never"
-            android:enabled="true"/>
-
-
 
 </menu>

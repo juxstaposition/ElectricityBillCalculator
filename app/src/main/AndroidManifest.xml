@@ -23,9 +23,6 @@
                 android:name=".Profile.NewProfileActivity"
                 android:theme="@style/AppTheme.InputPopUpStyle"/>
         <activity
-                android:name=".Profile.EditProfileActivity"
-                android:theme="@style/AppTheme.InputPopUpStyle"/>
-        <activity
                 android:name=".Profile.DeleteProfileActivity"
                 android:theme="@style/AppTheme.InputPopUpStyle"/>
         <activity

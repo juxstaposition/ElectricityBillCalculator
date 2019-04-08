@@ -3,7 +3,7 @@ package advanced.android.ebcm.Device;
 import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
-import advanced.android.ebcm.Profile.EditProfileActivity;
+import advanced.android.ebcm.Profile.NewProfileActivity;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -64,6 +64,9 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             getProfile();
             setTitle(profileName);
         }
+        else if (transferredData.equals(Constant.FAVOURITE_DEVICES)){
+            setTitle(Constant.FAVOURITE_DEVICES);
+        }
 
         FloatingActionButton addDeviceFab = findViewById(R.id.fabNewProfile);
 
@@ -71,6 +74,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view) {
                 Intent newItemActivity = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
+                newItemActivity.putExtra("KEY",Constant.NEW_DEVICE);
                 newItemActivity.putExtra("PROFILE_ID", String.valueOf(profileId));
                 Log.d("PROFILE_ID", String.valueOf(profileId));
                 startActivityForResult(newItemActivity, ADD_DEVICE_TO_PROFILE_REQ_CODE);
@@ -99,21 +103,22 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         //noinspection SimplifiableIfStatement
         if ( id == R.id.edit_profile_menu){
-            Intent devicesListActivity = new Intent(DevicesListActivity.this, EditProfileActivity.class);
-            devicesListActivity.putExtra("KEY",Constant.EDIT_PROFILE);
-            devicesListActivity.putExtra("PROFILE_ID", Integer.toString(profileId));
-            devicesListActivity.putExtra("PROFILE_NAME", profileName);
-            devicesListActivity.putExtra("PROFILE_DESCRIPTION", profileDescription);
-            devicesListActivity.putExtra("PROFILE_PRICE", String.valueOf(profilePrice));
-            startActivityForResult(devicesListActivity, EDIT_PROFILE_ACTIVITY_REQ_CODE);
+            Intent editProfile = new Intent(DevicesListActivity.this, NewProfileActivity.class);
+            editProfile.putExtra("KEY",Constant.EDIT_PROFILE);
+            editProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
+            editProfile.putExtra("PROFILE_NAME", profileName);
+            editProfile.putExtra("PROFILE_DESCRIPTION", profileDescription);
+            editProfile.putExtra("PROFILE_PRICE", String.valueOf(profilePrice));
+            startActivityForResult(editProfile, EDIT_PROFILE_ACTIVITY_REQ_CODE);
+            overridePendingTransition(R.anim.blink,0);
             return true;
         }
         else if ( id == R.id.delete_profile_menu){
-            Intent devicesListActivity = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
-            devicesListActivity.putExtra("KEY",Constant.DELETE_PROFILE);
-            devicesListActivity.putExtra("PROFILE_ID", Integer.toString(profileId));
-            devicesListActivity.putExtra("PROFILE_NAME", profileName);
-            startActivityForResult(devicesListActivity, DELETE_PROFILE_ACTIVITY_REQ_CODE);
+            Intent deleteProfile = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
+            deleteProfile.putExtra("KEY",Constant.DELETE_PROFILE);
+            deleteProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
+            deleteProfile.putExtra("PROFILE_NAME", profileName);
+            startActivityForResult(deleteProfile, DELETE_PROFILE_ACTIVITY_REQ_CODE);
             return true;
         }
         else if ( id == R.id.action_help){

@@ -6,11 +6,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 public class Constant {
-    public static final String FAVOURITE_DEVICE = "FAVOURITE_DEVICE";
+    public static final String FAVOURITE_DEVICES = "FAVOURITE_DEVICES";
     public static final String PROFILE_DEVICES = "PROFILE_DEVICES";
+    public static final String NEW_PROFILE = "NEW_PROFILE";
     public static final String EDIT_PROFILE = "EDIT_PROFILE";
     public static final String DELETE_PROFILE = "DELETE_PROFILE";
-    public static final String UPDATE_PROFILE = "UPDATE_PROFILE";
+    public static final String NEW_DEVICE = "NEW_DEVICE";
+    public static final String EDIT_DEVICE = "EDIT_DEVICE";
+
 
 
     public static final int UPDATE_PROFILE_ACTIVITY_REQ_CODE = 100;

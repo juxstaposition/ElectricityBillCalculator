@@ -5,16 +5,21 @@ import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
+    TextInputEditText name, description, price;
+
+    boolean newProfile = true;
 
     DatabaseHelper mDatabaseHelper;
 
@@ -28,14 +33,27 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profileDescriptionInput = findViewById(R.id.editProfileDescription);
         profilePriceInput = findViewById(R.id.editProfilePrice);
 
-        //final String transferredData = getIntent().getStringExtra("KEY");
-        //System.out.print(transferredData);
+        final String transferredData = getIntent().getStringExtra("KEY");
+        System.out.print(transferredData);
 
-//        if (transferredData.equals(Constant.EDIT_PROFILE)) {
-//            TextView profileTitle = findViewById(R.id.newProfileTitle);
-//            profileTitle.setText(R.string.edit_profile);
-//            //
-//        }
+        if (transferredData.equals(Constant.EDIT_PROFILE)) {
+            newProfile = false;
+
+            TextView profileTitle = findViewById(R.id.newProfileTitle);
+            profileTitle.setText(R.string.edit_profile);
+
+            TextView buttonAdd = findViewById(R.id.buttonProfileAdd);
+            buttonAdd.setText(R.string.confirm);
+
+            name = findViewById(R.id.edit_profile_name);
+            name.setText(getIntent().getStringExtra("PROFILE_NAME"));
+
+            description = findViewById(R.id.edit_profile_description);
+            description.setText(getIntent().getStringExtra("PROFILE_DESCRIPTION"));
+
+            price = findViewById(R.id.edit_profile_price);
+            price.setText(getIntent().getStringExtra("PROFILE_PRICE"));
+        }
 
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
         findViewById(R.id.buttonDeleteProfileCancel).setOnClickListener(this);
@@ -66,9 +84,9 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
             if (profileName.length() == 0){
                 validation = sendWarningToast("Insert Profile Name!");
-                TextInputLayout newProfileName = findViewById(R.id.editProfileName);
-                newProfileName.setErrorEnabled(true);
-                newProfileName.setError(getString(R.string.add));
+//                TextInputLayout newProfileName = findViewById(R.id.editProfileName);
+//                newProfileName.setErrorEnabled(true);
+//                newProfileName.setError(getString(R.string.add));
             }
 
             if (validation && profileDescription.length() == 0 ){
@@ -84,14 +102,19 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 returnIntent.putExtra("PROFILE_NAME",profileName);
                 returnIntent.putExtra("PROFILE_PRICE",profilePrice);
                 returnIntent.putExtra("PROFILE_DESCRIPTION",profileDescription);
-                setResult(Activity.RESULT_OK, returnIntent);
 
                 Log.d("PROFILE", profileName +", " + profileDescription + ", " + profilePrice);
 
-                mDatabaseHelper = new DatabaseHelper(this);
-                addProfileToDatabase(profileName, profileDescription, profilePrice);
-                mDatabaseHelper.close();
+                if (newProfile) {
+                    mDatabaseHelper = new DatabaseHelper(this);
+                    addProfileToDatabase(profileName, profileDescription, profilePrice);
+                    mDatabaseHelper.close();
+                }
+                else {
+                    updateProfile();
+                }
 
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
         }
@@ -101,10 +124,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private boolean sendWarningToast(String message){
-        Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
-        return false;
-    }
 
     private void addProfileToDatabase (String name, String description, String price) {
         boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
@@ -114,6 +133,35 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         } else {
             toastMessage("Something went wrong");
         }
+    }
+
+    private void updateProfile () {
+
+        Intent receivedIntent = getIntent();
+
+        TextView name = findViewById(R.id.edit_profile_name);
+        TextView description = findViewById(R.id.edit_profile_description);
+        TextView price = findViewById(R.id.edit_profile_price);
+
+        int id = Integer.parseInt(receivedIntent.getStringExtra("PROFILE_ID"));
+
+        String newName = name.getText().toString();
+        String newDescription = description.getText().toString();
+        String newPrice = price.getText().toString();
+
+
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+
+        mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id);
+
+        mDatabaseHelper.close();
+
+        toastMessage("Profile data updated");
+    }
+
+    private boolean sendWarningToast(String message){
+        Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     /**
