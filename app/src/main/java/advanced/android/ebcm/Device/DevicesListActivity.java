@@ -88,6 +88,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DevicesListActivity.this, ResultGraph.class);
+                intent.putExtra("PROFILE_PARENT",String.valueOf(profileId));
                 startActivity(intent);
             }
         });
@@ -96,6 +97,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -241,7 +243,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
     private void generateDeviceView(){
 
 
-        Cursor data = mDatabaseHelper.getDeviceData();
+        Cursor data = mDatabaseHelper.getDeviceData(profileId);
 
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
