@@ -33,7 +33,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
     DatabaseHelper mDatabaseHelper;
     int profileId;
-    LinearLayout myVerticalLayout = null;
+    LinearLayout deviceLayout = null;
     String profileName, profileDescription;
     Number profilePrice;
     boolean deleted = false;
@@ -54,7 +54,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         final String transferredData = getIntent().getStringExtra("KEY");
         System.out.println(transferredData);
 
-        myVerticalLayout = findViewById(R.id.device_list);
+        deviceLayout = findViewById(R.id.device_list);
 
         mDatabaseHelper = new DatabaseHelper(this);
 
@@ -75,6 +75,10 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         addDeviceFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Device test = new Device(1,"TestDevice",1,3,12,1,"Group",1,1);
+                test.generateDevice(getApplicationContext(),deviceLayout);
+
+
                 Intent newItemActivity = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
                 newItemActivity.putExtra("KEY",Constant.NEW_DEVICE);
                 newItemActivity.putExtra("PROFILE_ID", String.valueOf(profileId));

@@ -2,6 +2,7 @@ package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.R;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
@@ -33,8 +34,8 @@ public class Device {
     private TextView deviceName;
     private TextView deviceConsumption;
     private TextView deviceQuantity;
-    private TextView deviceHours;
-    private TextView deviceMinutes;
+    private TextView deviceTime;
+    private TextView deviceDays;
     private TextView deviceTotalUsage;
 
 
@@ -126,16 +127,17 @@ public class Device {
 
 
 
-    public void generateDevice(final Context context, LinearLayout myVerticalLayout){
-
-        String titlesFont = "sans-serif-black";
-        int titlesTextSize = 14;
-        String descriptionsFont = "serif-monospace";
-        int descriptionsTextSize = 16;
+    public void generateDevice(final Context context, LinearLayout deviceLayout){
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
 
-        // Instantiation of base linear layout for profile panel
+        String titlesFont = "sans-serif-black";
+        int titlesTextSize = 16;
+        String descriptionsFont = "serif-monospace";
+        int descriptionsTextSize = 22;
+
+
+        // Instantiation of base linear layout for device panel
         deviceForm = new LinearLayout(
                 /* Assigning theme of panel */
                 new ContextThemeWrapper(context, R.style.ProfileFormStyle), null, 0
@@ -143,32 +145,28 @@ public class Device {
         // Setting margins, with each component new Layout parameters have to be instantiated
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+
         deviceForm.setLayoutParams(lp);
-        deviceForm.setOrientation(LinearLayout.VERTICAL);
+        deviceForm.setWeightSum(4);
+        deviceForm.setOrientation(LinearLayout.HORIZONTAL);
         // setting panel to be clickable and adding function
         // needs to be done where object is instantiated
 
         // Panel is made of linear layouts, first line contains titles
-        LinearLayout firstLine = new LinearLayout(context);
-        firstLine.setOrientation(LinearLayout.VERTICAL);
-        firstLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        firstLine.setGravity(Gravity.CENTER);
+        LinearLayout firstCol = generatedDescriptionColumn(context);
+
         // Creating new text component for title
 
         TextView deviceTitle = createTextView("Name",context, titlesFont,titlesTextSize);
-        firstLine.addView(deviceTitle);
+        firstCol.addView(deviceTitle);
+
+        deviceName = createTextView(name,context, descriptionsFont,descriptionsTextSize);
+        firstCol.addView(deviceName);
 
 
-        deviceName = createTextView(name,context, "cursive",25);
-        deviceName.setTextColor(Color.BLACK);
-        firstLine.addView(deviceName);
 
 
-        deviceConsumption = createTextView(Integer.toString(consumption),context, descriptionsFont,16);
-        deviceConsumption.setLayoutParams(setMargin(5,0,0,0,dm));
-
-        supportLayout = new CoordinatorLayout(context);
+        /*supportLayout = new CoordinatorLayout(context);
         supportLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT,
                 CoordinatorLayout.LayoutParams.MATCH_PARENT));
         clipDelete = new ImageView(
@@ -178,47 +176,36 @@ public class Device {
                 CoordinatorLayout.LayoutParams.WRAP_CONTENT);
         lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-5,dm),convertDpToPx(-5,dm),convertDpToPx(0,dm));
         lllp.gravity = Gravity.RIGHT;
-        clipDelete.setLayoutParams(lllp);
+        clipDelete.setLayoutParams(lllp);*/
 
-
-        // should be changed to constrained layout
-        LinearLayout thirdLine = new LinearLayout(context);
-        thirdLine.setOrientation(LinearLayout.HORIZONTAL);
-        thirdLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-
-        LinearLayout firstCol = generatedDescriptionColumn(context);
-        addTitlesToDescription(firstCol,"Price:","Cost:",titlesFont,titlesTextSize,context);
 
         LinearLayout secondCol = generatedDescriptionColumn(context);
-        deviceQuantity = createTextView(Integer.toString(quantity), context,descriptionsFont,descriptionsTextSize);
-        secondCol.addView(deviceQuantity);
-        deviceTotalUsage = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
-        secondCol.addView(deviceTotalUsage);
+        TextView powerTitle = createTextView("Power",context,titlesFont,titlesTextSize);
+        secondCol.addView(powerTitle);
+        deviceConsumption = createTextView(Integer.toString(consumption), context, descriptionsFont, descriptionsTextSize);
+        secondCol.addView(deviceConsumption);
 
-//        LinearLayout thirdCol = generatedDescriptionColumn(context);
-//        addTitlesToDescription(thirdCol,"Power:","Time:",titlesFont,titlesTextSize,context);
-//
-//        LinearLayout fourthCol = generatedDescriptionColumn(context);
-//        profilePower = createTextView(0+"W", context,descriptionsFont,descriptionsTextSize);
-//        fourthCol.addView(profilePower);
-//        profileTime = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
-//        fourthCol.addView(profileTime);
+        LinearLayout thirdCol = generatedDescriptionColumn(context);
+        TextView timeTitle = createTextView("Time",context,titlesFont,titlesTextSize);
+        thirdCol.addView(timeTitle);
+        deviceTime = createTextView(hours + ":" + minutes, context, descriptionsFont, descriptionsTextSize);
+        thirdCol.addView(deviceTime);
 
-        thirdLine.addView(firstCol);
-        thirdLine.addView(secondCol);
-//        thirdLine.addView(thirdCol);
-//        thirdLine.addView(fourthCol);
+        LinearLayout fourthCol = generatedDescriptionColumn(context);
+        TextView daysTitle = createTextView("Days", context,titlesFont,titlesTextSize);
+        fourthCol.addView(daysTitle);
+        deviceDays = createTextView(Integer.toString(days), context, descriptionsFont, descriptionsTextSize);
+        fourthCol.addView(deviceDays);
 
-        deviceForm.addView(firstLine);
-        deviceForm.addView(deviceQuantity);
-        deviceForm.addView(thirdLine);
+        deviceForm.addView(firstCol);
+        deviceForm.addView(secondCol);
+        deviceForm.addView(thirdCol);
+        deviceForm.addView(fourthCol);
 
-        supportLayout.addView(deviceForm);
-        supportLayout.addView(clipDelete);
+        //supportLayout.addView(deviceForm);
+        //supportLayout.addView(clipDelete);
 
-        myVerticalLayout.addView(supportLayout);
+        deviceLayout.addView(deviceForm);
     }
 
     private LinearLayout generatedDescriptionColumn(Context context) {
@@ -226,22 +213,14 @@ public class Device {
         LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);
 
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        // setMargins(left,top,right,bottom)
-        lp.setMargins( convertDpToPx(5,dm),convertDpToPx(0,dm), convertDpToPx(5,dm),0 );
+                LinearLayout.LayoutParams.WRAP_CONTENT,1f);
+        lp.setMargins(5,0,0,0);
+
         column.setLayoutParams(lp);
 
         return column;
-    }
 
-    private void addTitlesToDescription(LinearLayout layout,String firstTitle, String secondTitle,
-                                        String font, int size, Context context){
-        TextView profileFirstTitle = createTextView(firstTitle, context, font,size);
-        layout.addView(profileFirstTitle);
-        TextView profileSecondTitle = createTextView(secondTitle, context, font, size);
-        layout.addView(profileSecondTitle);
     }
 
     private TextView createTextView(String text, Context context, String style,int textSize){
