@@ -4,6 +4,7 @@ import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
+import advanced.android.ebcm.Profile.Profile;
 import advanced.android.ebcm.R;
 import advanced.android.ebcm.ResultGraph;
 import android.app.Activity;
@@ -33,6 +34,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
     DatabaseHelper mDatabaseHelper;
     int profileId;
+    Profile profile = null;
     LinearLayout deviceLayout = null;
     String profileName, profileDescription;
     Number profilePrice;
@@ -51,6 +53,8 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         profileId  = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
 
+
+
         final String transferredData = getIntent().getStringExtra("KEY");
         System.out.println(transferredData);
 
@@ -60,13 +64,10 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         generateDeviceView();
 
-        if (transferredData.equals(Constant.PROFILE_DEVICES)){
-            getProfile();
-            setTitle(profileName);
-        }
-        else if (transferredData.equals(Constant.FAVOURITE_DEVICES)){
-            setTitle(Constant.FAVOURITE_DEVICES);
-        }
+
+        getProfile();
+        setTitle(profileName);
+
 
         FloatingActionButton addDeviceFab = findViewById(R.id.fabNewProfile);
         FloatingActionButton fabCalc = findViewById(R.id.fabCalculateProfile);
@@ -75,10 +76,6 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         addDeviceFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Device test = new Device(1,"TestDevice",1,3,12,1,"Group",1,1);
-                test.generateDevice(getApplicationContext(),deviceLayout);
-
-
                 Intent newItemActivity = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
                 newItemActivity.putExtra("KEY",Constant.NEW_DEVICE);
                 newItemActivity.putExtra("PROFILE_ID", String.valueOf(profileId));
@@ -211,6 +208,12 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                     deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
 
             getProfile();
+
+            final Device device = new Device(0,deviceName,Integer.parseInt(deviceQuantity),
+                    Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
+                    Integer.parseInt(deviceUsageDays),"undefined", Integer.parseInt(deviceConsumption), profileId );
+            device.generateDevice(getApplicationContext(),deviceLayout);
+
         }
     }
 
@@ -229,8 +232,10 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
+                    System.out.println("__________________________");
 
                     profileId = data.getInt(0);
+                    System.out.println(profileId);
                     profileName = data.getString(1);
                     profileDescription = data.getString(2);
                     profilePrice = data.getFloat(3);
@@ -241,7 +246,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             Log.d("GET_PROFILE", " is empty");
         }
 
-       mDatabaseHelper.close();
+        mDatabaseHelper.close();
     }
 
     private void generateDeviceView(){
@@ -276,6 +281,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
 
         final Device device = new Device(id,name,quantity,hours,minutes,days,group, consumption, profileParent );
+        device.generateDevice(getApplicationContext(),deviceLayout);
 //        devices.add(device);
 //        device.generateDevice(getApplicationContext(), myVerticalLayout);
 //

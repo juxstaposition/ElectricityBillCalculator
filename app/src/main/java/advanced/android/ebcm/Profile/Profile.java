@@ -116,6 +116,8 @@ public class Profile {
         // Setting margins, with each component new Layout parameters have to be instantiated
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                                                      LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        lp.setMargins(convertDpToPx(0,dm),convertDpToPx(10,dm),convertDpToPx(0,dm),convertDpToPx(0,dm));
         profileForm.setLayoutParams(lp);
         profileForm.setOrientation(LinearLayout.VERTICAL);
         // setting panel to be clickable and adding function
@@ -149,7 +151,7 @@ public class Profile {
         );
         CoordinatorLayout.LayoutParams lllp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT,
                                                 CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-5,dm),convertDpToPx(-5,dm),convertDpToPx(0,dm));
+        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(5,dm),convertDpToPx(-5,dm),convertDpToPx(0,dm));
         lllp.gravity = Gravity.RIGHT;
         clipDelete.setLayoutParams(lllp);
 
