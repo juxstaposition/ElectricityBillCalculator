@@ -136,6 +136,9 @@ public class Device {
         String descriptionsFont = "serif-monospace";
         int descriptionsTextSize = 22;
 
+        int screenWidth = dm.widthPixels;
+        int colWidth = (screenWidth - convertDpToPx(18*2,dm) ) / 6;
+
 
         // Instantiation of base linear layout for device panel
         deviceForm = new LinearLayout(
@@ -145,22 +148,27 @@ public class Device {
         // Setting margins, with each component new Layout parameters have to be instantiated
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-
+        lp.setMargins(convertDpToPx(0,dm),convertDpToPx(5,dm),convertDpToPx(0,dm),convertDpToPx(0,dm));
         deviceForm.setLayoutParams(lp);
-        deviceForm.setWeightSum(4);
         deviceForm.setOrientation(LinearLayout.HORIZONTAL);
         // setting panel to be clickable and adding function
         // needs to be done where object is instantiated
 
         // Panel is made of linear layouts, first line contains titles
-        LinearLayout firstCol = generatedDescriptionColumn(context);
+        LinearLayout firstCol = generatedDescriptionColumn(context,colWidth*3);
 
         // Creating new text component for title
-
         TextView deviceTitle = createTextView("Name",context, titlesFont,titlesTextSize);
-        firstCol.addView(deviceTitle);
 
-        deviceName = createTextView(name,context, descriptionsFont,descriptionsTextSize);
+        firstCol.addView(deviceTitle);
+        String displayName;
+        if (quantity > 1 ){
+            displayName = name + "(" + quantity + ")";
+        }
+        else{
+            displayName = name;
+        }
+        deviceName = createTextView(displayName,context, descriptionsFont,descriptionsTextSize);
         firstCol.addView(deviceName);
 
 
@@ -179,19 +187,19 @@ public class Device {
         clipDelete.setLayoutParams(lllp);*/
 
 
-        LinearLayout secondCol = generatedDescriptionColumn(context);
+        LinearLayout secondCol = generatedDescriptionColumn(context,colWidth);
         TextView powerTitle = createTextView("Power",context,titlesFont,titlesTextSize);
         secondCol.addView(powerTitle);
         deviceConsumption = createTextView(Integer.toString(consumption), context, descriptionsFont, descriptionsTextSize);
         secondCol.addView(deviceConsumption);
 
-        LinearLayout thirdCol = generatedDescriptionColumn(context);
+        LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth);
         TextView timeTitle = createTextView("Time",context,titlesFont,titlesTextSize);
         thirdCol.addView(timeTitle);
         deviceTime = createTextView(hours + ":" + minutes, context, descriptionsFont, descriptionsTextSize);
         thirdCol.addView(deviceTime);
 
-        LinearLayout fourthCol = generatedDescriptionColumn(context);
+        LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth);
         TextView daysTitle = createTextView("Days", context,titlesFont,titlesTextSize);
         fourthCol.addView(daysTitle);
         deviceDays = createTextView(Integer.toString(days), context, descriptionsFont, descriptionsTextSize);
@@ -208,14 +216,16 @@ public class Device {
         deviceLayout.addView(deviceForm);
     }
 
-    private LinearLayout generatedDescriptionColumn(Context context) {
+    private LinearLayout generatedDescriptionColumn(Context context,int widthSize) {
 
         LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,1f);
-        lp.setMargins(5,0,0,0);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(widthSize,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        lp.setMargins(convertDpToPx(0,dm),0,0,0);
 
         column.setLayoutParams(lp);
 
@@ -230,9 +240,10 @@ public class Device {
         newTextView.setTextSize(textSize);
         newTextView.setTextColor(Color.BLACK);
 
-        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         newTextView.setLayoutParams(nameParams);
+
         Typeface typeface = Typeface.create(style, Typeface.NORMAL);
         newTextView.setTypeface(typeface);
 

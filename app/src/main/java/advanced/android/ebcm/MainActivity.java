@@ -252,4 +252,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public Profile getProfiles (int id){
+        for (Profile temp : profiles){
+            if (temp.getId() == id){
+                return temp;
+            }
+        }
+        return null;
+    }
+
 }   // MainActivity

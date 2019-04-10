@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
     >
 
         <!-- Layout structure for profiles -->
@@ -39,13 +39,6 @@
                         style="@style/ProfileFormStyle"
 
                 >
-                <TextView
-                        android:id="@+id/noDevicesTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="no devices found"
-                        android:layout_gravity="center"
-                />
                 </LinearLayout>
 
 
