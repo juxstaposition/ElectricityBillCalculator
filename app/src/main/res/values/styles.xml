@@ -62,8 +62,6 @@
     </style>
 
     <!-- Animations -->
-
-
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_right_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_left_exit</item>
