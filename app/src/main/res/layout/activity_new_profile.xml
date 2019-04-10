@@ -52,7 +52,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="7dp"/>
+                android:layout_marginEnd="7dp"/>
         <TextView
                 android:text="@string/cancel"
                 android:textColor="@color/red"
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/buttonDeleteProfileCancel"
-                android:layout_marginLeft="7dp"
+                android:layout_marginStart="7dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>

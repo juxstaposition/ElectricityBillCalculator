@@ -33,10 +33,10 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<Device> devices = new ArrayList<>();
 
     DatabaseHelper mDatabaseHelper;
-    int profileId;
+    int profileId, deviceId, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes ;
     Profile profile = null;
     LinearLayout deviceLayout = null;
-    String profileName, profileDescription;
+    String profileName, profileDescription, deviceName, deviceGroup;
     Number profilePrice;
     boolean deleted = false;
     boolean updated = false;
@@ -186,7 +186,6 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             updated = false;
             situation = false;
             deleted = true;
-            getProfile();
             onBackPressed();
         }
         if (requestCode == EDIT_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
@@ -207,7 +206,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
                     deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
 
-            getProfile();
+            getUpdatedDevice(deviceId);
 
             final Device device = new Device(0,deviceName,Integer.parseInt(deviceQuantity),
                     Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
@@ -227,7 +226,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
     void getProfile() {
         mDatabaseHelper = new DatabaseHelper(this);
 
-        Cursor data = mDatabaseHelper.getProfileItemByID(profileId);
+        Cursor data = mDatabaseHelper.getDeviceByID(profileId);
 
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
@@ -239,6 +238,34 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                     profileName = data.getString(1);
                     profileDescription = data.getString(2);
                     profilePrice = data.getFloat(3);
+
+                } while (data.moveToNext());
+            }
+        } else {
+            Log.d("GET_PROFILE", " is empty");
+        }
+
+        mDatabaseHelper.close();
+    }
+
+    void getUpdatedDevice(int deviceId) {
+        mDatabaseHelper = new DatabaseHelper(this);
+
+        Cursor data = mDatabaseHelper.getDeviceByID(profileId);
+
+        if (data != null) {
+            if (data.moveToFirst() && data.getCount() >= 1) {
+                do {
+                    System.out.println("__________________________");
+
+                    System.out.println(deviceId);
+                    deviceName = data.getString(1);
+                    deviceGroup = data.getString(6);
+                    deviceQuantity = data.getInt(2);
+                    deviceConsumption = data.getInt(7);
+                    deviceUsageHours = data.getInt(3);
+                    deviceUsageMinutes = data.getInt(4);
+                    deviceUsageDays = data.getInt(5);
 
                 } while (data.moveToNext());
             }
