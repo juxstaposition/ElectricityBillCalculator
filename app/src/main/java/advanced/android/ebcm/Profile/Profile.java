@@ -144,13 +144,12 @@ public class Profile {
         supportLayout = new CoordinatorLayout(context);
         supportLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT,
                                                                          CoordinatorLayout.LayoutParams.MATCH_PARENT));
-        clipDelete = new ImageView(
-                new ContextThemeWrapper(context, R.style.DeleteClipArt),null,0
-        );
+        clipDelete = new ImageView(context);
+        clipDelete.setBackgroundResource(R.drawable.delete_button_clipart);
         CoordinatorLayout.LayoutParams lllp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT,
                                                 CoordinatorLayout.LayoutParams.WRAP_CONTENT);
         lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(5,dm),convertDpToPx(-5,dm),convertDpToPx(0,dm));
-        lllp.gravity = Gravity.RIGHT;
+        lllp.gravity = Gravity.END;
         clipDelete.setLayoutParams(lllp);
 
 

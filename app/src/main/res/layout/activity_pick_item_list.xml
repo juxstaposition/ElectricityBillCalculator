@@ -33,7 +33,7 @@
                 android:id="@+id/pick_text"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:text="Pick An Item"
+                android:text="@string/pick_an_item"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

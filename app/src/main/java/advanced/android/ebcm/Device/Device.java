@@ -32,10 +32,8 @@ public class Device {
 
     private TextView deviceName;
     private TextView deviceConsumption;
-    private TextView deviceQuantity;
     private TextView deviceTime;
     private TextView deviceDays;
-    private TextView deviceTotalUsage;
 
 
     public Device(int id, String name, int quantity, int hours, int minutes, int days, String group, int consumption, int profile_parent) {

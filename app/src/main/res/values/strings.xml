@@ -13,6 +13,8 @@
     <string name="create_new_item">Create Device</string>
     <string name="name_title">Name</string>
     <string name="price_title">Price</string>
+    <string name="result_graph_title">CONSUMPTION OF ELECTRICITY GRAPH (WATTS)</string>
+    <string name="highest_consumption">Highest Consumption</string>
 
     <!--hints-->
     <string name="description">Description</string>
