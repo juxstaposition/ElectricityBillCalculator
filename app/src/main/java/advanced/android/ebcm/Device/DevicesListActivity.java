@@ -89,6 +89,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(DevicesListActivity.this, ResultGraph.class);
                 intent.putExtra("PROFILE_PARENT",String.valueOf(profileId));
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
             }
         });
 
