@@ -2,6 +2,7 @@ package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
+import advanced.android.ebcm.PickItemList;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -61,8 +62,10 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             finish();
         }
         else if (view.getId() == R.id.buttonItemPick){
+            Intent intent = new Intent(getApplicationContext(), PickItemList.class);
             animation.startAnimation(view,R.anim.blink,getApplicationContext());
-            sendWarningToast("Pick an Item button pressed!");
+            startActivity(intent);
+            //sendWarningToast("Pick an Item button pressed!");
             // to be implemented
         }
         else if (view.getId() == R.id.buttonItemAdd){
