@@ -11,6 +11,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".PickItemList">
+        </activity>
         <activity
                 android:name=".Device.DevicesListActivity"
                 android:label="@string/title_activity_devices_list"
@@ -25,8 +27,9 @@
         <activity
                 android:name=".Profile.DeleteProfileActivity"
                 android:theme="@style/AppTheme.InputPopUpStyle"/>
-        <activity android:name=".ResultGraph"
-                  android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".ResultGraph"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"
