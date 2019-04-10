@@ -33,7 +33,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         results = loadData();
         setContentView(R.layout.activity_result_graph);
-        GraphView graphView = (GraphView) findViewById(R.id.graphView);
+        GraphView graphView = findViewById(R.id.graphView);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(8);

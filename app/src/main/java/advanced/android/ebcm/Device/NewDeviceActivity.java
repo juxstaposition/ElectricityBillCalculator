@@ -6,7 +6,6 @@ import advanced.android.ebcm.PickItemList;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

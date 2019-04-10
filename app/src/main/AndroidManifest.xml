@@ -10,26 +10,33 @@
             android:roundIcon="@mipmap/app_launcher_icon_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:fullBackupContent="true"
             tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".PickItemList">
         </activity>
         <activity
                 android:name=".Device.DevicesListActivity"
                 android:label="@string/title_activity_devices_list"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait"
+        >
         </activity>
         <activity
                 android:name=".Device.NewDeviceActivity"
-                android:theme="@style/AppTheme.InputPopUpStyle"/>
+                android:theme="@style/AppTheme.InputPopUpStyle"
+        />
         <activity
                 android:name=".Profile.NewProfileActivity"
-                android:theme="@style/AppTheme.InputPopUpStyle"/>
+                android:theme="@style/AppTheme.InputPopUpStyle"
+        />
         <activity
                 android:name=".Profile.DeleteProfileActivity"
-                android:theme="@style/AppTheme.InputPopUpStyle"/>
-        <activity
-                android:name=".ResultGraph"
-                android:theme="@style/AppTheme.NoActionBar"/>
+                android:theme="@style/AppTheme.InputPopUpStyle"
+        />
+        <activity android:name=".ResultGraph"
+                  android:theme="@style/AppTheme.NoActionBar"
+                  android:screenOrientation="portrait"
+        />
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"

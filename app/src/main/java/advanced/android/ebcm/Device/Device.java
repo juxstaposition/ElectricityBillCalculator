@@ -2,7 +2,6 @@ package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.R;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;

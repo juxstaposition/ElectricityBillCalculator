@@ -140,9 +140,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //device
-    public Cursor getDeviceData(){
+    public Cursor getDeviceData(int profileParent){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_DEVICE;
+        String query = "SELECT * FROM " + TABLE_DEVICE + " WHERE " + DEVICE_COL8 + " = '" + profileParent + "'" ;
         Cursor data = db.rawQuery(query, null);
         return data;
     }
