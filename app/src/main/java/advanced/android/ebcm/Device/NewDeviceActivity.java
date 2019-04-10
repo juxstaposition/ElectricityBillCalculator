@@ -139,7 +139,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
-        boolean insertData = mDatabaseHelper.addDeviceData(name,quantity,usageHours,usageMinutes,usageDays,group,consumption,profileParent);
+        boolean insertData = mDatabaseHelper.addDeviceData(name,quantity,usageHours,usageMinutes,usageDays,consumption,profileParent);
 
         if (insertData) {
             sendWarningToast("Device Successfully Added");

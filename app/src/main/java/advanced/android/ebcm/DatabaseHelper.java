@@ -98,7 +98,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //adding data to Device table
-    public boolean addDeviceData(String newDeviceName, int newQuantity, int newHours, int newMinutes, int newDays, String newGroup, int newConsumption, int newProfileParent) {
+    public boolean addDeviceData(String newDeviceName, int newQuantity, int newHours, int newMinutes, int newDays, int newConsumption, int newProfileParent) {
+        String newGroup = "none";
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DEVICE_COL1, newDeviceName);
@@ -205,7 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //device
-    public void updateDevice(String newName, String newConsumption, String newQuantity, String newHours, String newMinutes, String newDays, String newGroup, String newProfileParent,  int id, String oldName) {
+    public void updateDevice(String newName, String newConsumption, String newQuantity, String newHours, String newMinutes, String newDays, String newProfileParent,  int id, String oldName) {
         SQLiteDatabase db = this.getWritableDatabase();
 //        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 +
 //                " = '" + newName + "' WHERE " + DEVICE_COL0 + " = '" + id +"'" +
@@ -213,12 +214,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 +
                 " = '" + newName + "', " + DEVICE_COL2 + " = " + newQuantity + ", " + DEVICE_COL3 + " = " + newHours + ", " + DEVICE_COL4 + " = " + newMinutes
-                + ", " + DEVICE_COL5 + " = " + newDays +", " + DEVICE_COL6 + " = '" + newGroup + "', " + DEVICE_COL7 + " = " + newConsumption + ", " + DEVICE_COL8 + " = " + newProfileParent + " WHERE "
+                + ", " + DEVICE_COL5 + " = " + newDays + "', " + DEVICE_COL7 + " = " + newConsumption + ", " + DEVICE_COL8 + " = " + newProfileParent + " WHERE "
                 + DEVICE_COL0 + " = " + id + " AND " + DEVICE_COL1 + " = '" + oldName + "'";
 
         Log.d(TAG, "updateDevice: query: " + query);
         Log.d(TAG, "updateDevice: Setting device where ID = " + id + " to - name: " + newName + ", quantity: " + newQuantity + ", consumption: " + newConsumption + ", hours: " + newHours +
-                ", minutes:" + newMinutes + ", days: " + newDays + ", group: " + newGroup + ", profile_parent:" + newProfileParent);
+                ", minutes:" + newMinutes + ", days: " + newDays + ", profile_parent:" + newProfileParent);
         db.execSQL(query);
     }
 

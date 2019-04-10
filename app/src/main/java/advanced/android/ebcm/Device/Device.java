@@ -21,7 +21,6 @@ public class Device {
     private Integer hours;
     private Integer minutes;
     private Integer days;
-    private String group;
     private Integer consumption;
     private Integer profile_parent;
 
@@ -36,14 +35,13 @@ public class Device {
     private TextView deviceDays;
 
 
-    public Device(int id, String name, int quantity, int hours, int minutes, int days, String group, int consumption, int profile_parent) {
+    public Device(int id, String name, int quantity, int hours, int minutes, int days, int consumption, int profile_parent) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.hours = hours;
         this.minutes = minutes;
         this.days = days;
-        this.group = group;
         this.consumption = consumption;
         this.profile_parent = profile_parent;
     }
@@ -95,14 +93,6 @@ public class Device {
 
     public void setDays(Integer days) {
         this.days = days;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
     }
 
     public Integer getConsumption() {

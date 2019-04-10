@@ -24,9 +24,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static advanced.android.ebcm.Constant.ADD_DEVICE_TO_PROFILE_REQ_CODE;
-import static advanced.android.ebcm.Constant.DELETE_PROFILE_ACTIVITY_REQ_CODE;
-import static advanced.android.ebcm.Constant.EDIT_PROFILE_ACTIVITY_REQ_CODE;
+import static advanced.android.ebcm.Constant.*;
 
 public class DevicesListActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,7 +34,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
     int profileId, deviceId, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes ;
     Profile profile = null;
     LinearLayout deviceLayout = null;
-    String profileName, profileDescription, deviceName, deviceGroup;
+    String profileName, profileDescription, deviceName;
     Number profilePrice;
     boolean deleted = false;
     boolean updated = false;
@@ -210,8 +208,17 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
             final Device device = new Device(0,deviceName,Integer.parseInt(deviceQuantity),
                     Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
-                    Integer.parseInt(deviceUsageDays),"undefined", Integer.parseInt(deviceConsumption), profileId );
+                    Integer.parseInt(deviceUsageDays),Integer.parseInt(deviceConsumption), profileId );
             device.generateDevice(getApplicationContext(),deviceLayout);
+            device.deviceForm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
+                    intent.putExtra("KEY", EDIT_DEVICE);
+//                    deviceId, deviceName, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes
+
+                }
+            });
 
         }
     }
@@ -226,12 +233,11 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
     void getProfile() {
         mDatabaseHelper = new DatabaseHelper(this);
 
-        Cursor data = mDatabaseHelper.getDeviceByID(profileId);
+        Cursor data = mDatabaseHelper.getProfileItemByID(profileId);
 
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-                    profileId = data.getInt(0);
                     profileName = data.getString(1);
                     profileDescription = data.getString(2);
                     profilePrice = data.getFloat(3);
@@ -257,7 +263,6 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
                     System.out.println(deviceId);
                     deviceName = data.getString(1);
-                    deviceGroup = data.getString(6);
                     deviceQuantity = data.getInt(2);
                     deviceConsumption = data.getInt(7);
                     deviceUsageHours = data.getInt(3);
@@ -299,12 +304,11 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         int hours = data.getInt(3);
         int minutes = data.getInt(4);
         int days = data.getInt(5);
-        String group = data.getString(6);
         int consumption = data.getInt(7);
         int profileParent = profileId;
 
 
-        final Device device = new Device(id,name,quantity,hours,minutes,days,group, consumption, profileParent );
+        final Device device = new Device(id,name,quantity,hours,minutes,days, consumption, profileParent );
         device.generateDevice(getApplicationContext(),deviceLayout);
 //        devices.add(device);
 //        device.generateDevice(getApplicationContext(), myVerticalLayout);
