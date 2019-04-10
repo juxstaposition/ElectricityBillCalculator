@@ -231,10 +231,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-                    System.out.println("__________________________");
-
                     profileId = data.getInt(0);
-                    System.out.println(profileId);
                     profileName = data.getString(1);
                     profileDescription = data.getString(2);
                     profilePrice = data.getFloat(3);

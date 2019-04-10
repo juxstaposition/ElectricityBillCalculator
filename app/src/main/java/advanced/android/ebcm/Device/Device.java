@@ -32,10 +32,8 @@ public class Device {
 
     private TextView deviceName;
     private TextView deviceConsumption;
-    private TextView deviceQuantity;
     private TextView deviceTime;
     private TextView deviceDays;
-    private TextView deviceTotalUsage;
 
 
     public Device(int id, String name, int quantity, int hours, int minutes, int days, String group, int consumption, int profile_parent) {
@@ -140,10 +138,8 @@ public class Device {
 
 
         // Instantiation of base linear layout for device panel
-        deviceForm = new LinearLayout(
-                /* Assigning theme of panel */
-                new ContextThemeWrapper(context, R.style.ProfileFormStyle), null, 0
-        );
+        deviceForm = new LinearLayout(context);
+        deviceForm.setBackgroundResource(R.drawable.profile_view);
         // Setting margins, with each component new Layout parameters have to be instantiated
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
