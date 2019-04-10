@@ -150,11 +150,21 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor data = mDatabaseHelper.getProfileData();
 
-        if (data != null) {
-            if (data.moveToFirst() && data.getCount() >= 1) {
-                do {
-                    profileIds.add(data.getInt(0));
-                } while (data.moveToNext());
+        try {
+            if (data != null) {
+                if (data.moveToFirst() && data.getCount() >= 1) {
+                    do {
+                        profileIds.add(data.getInt(0));
+                    } while (data.moveToNext());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            data.close();
+        } finally {
+            if (data != null) {
+                data.close();
             }
         }
 
@@ -171,19 +181,32 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor profileNEW = mDatabaseHelper.getProfileItemByID(max);
 
-        if (profileNEW != null) {
-            if (profileNEW.moveToFirst() && profileNEW.getCount() >= 1) {
-                do {
+        try {
+            if (profileNEW != null) {
+                if (profileNEW.moveToFirst() && profileNEW.getCount() >= 1) {
+                    do {
 
-                    createNewProfile(profileNEW);
+                        createNewProfile(profileNEW);
 
-                } while (profileNEW.moveToNext());
+                    } while (profileNEW.moveToNext());
+                }
+            } else {
+                Log.d("addingNewProfile", "profileNEW is empty");
             }
-        } else {
-            Log.d("addingNewProfile", "profileNEW is empty");
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(profileNEW != null) {
+                profileNEW.close();
+            }
+        } finally {
+            if (profileNEW != null) {
+                profileNEW.close();
+
+            }
         }
-        data.close();
-        profileNEW.close();
+
+
+
         mDatabaseHelper.close();
     }   // addNewProfile
 
