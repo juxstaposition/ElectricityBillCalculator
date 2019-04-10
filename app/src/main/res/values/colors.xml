@@ -11,5 +11,5 @@
     <color name="lightGrey">#E0DFDF</color>
     <color name="lightBlue">#CCDBFD</color>
     <color name="shadowedBackground">#65000000</color>
-
+    <color name="translucent">#00000000</color>
 </resources>
