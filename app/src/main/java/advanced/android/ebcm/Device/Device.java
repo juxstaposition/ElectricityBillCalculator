@@ -61,6 +61,7 @@ public class Device {
 
     public void setName(String name) {
         this.name = name;
+        this.deviceName.setText(name);
     }
 
     public Integer getQuantity() {
@@ -69,6 +70,13 @@ public class Device {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public void setTime(int hours, int minutes){
+        this.hours = hours;
+        this.minutes = minutes;
+        String newTime = hours + ":" + minutes;
+        this.deviceTime.setText(newTime);
     }
 
     public Integer getHours() {
@@ -93,6 +101,8 @@ public class Device {
 
     public void setDays(Integer days) {
         this.days = days;
+        String newDays = Integer.toString(days);
+        this.deviceDays.setText(newDays);
     }
 
     public Integer getConsumption() {
@@ -110,8 +120,6 @@ public class Device {
     public void setProfile_parent(Integer profile_parent) {
         this.profile_parent = profile_parent;
     }
-
-
 
 
     public void generateDevice(final Context context, LinearLayout deviceLayout){
