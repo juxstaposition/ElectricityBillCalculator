@@ -86,7 +86,7 @@
             android:scaleType="center"
             app:maxImageSize="36dp"
             app:srcCompat="@drawable/add24dp"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorSecondary"
             app:tint="@color/white"
     />
     <android.support.design.widget.FloatingActionButton
@@ -97,7 +97,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:maxImageSize="50dp"
             app:srcCompat="@drawable/bulb_layer"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorSecondary"
     />
 
 </android.support.design.widget.CoordinatorLayout>
