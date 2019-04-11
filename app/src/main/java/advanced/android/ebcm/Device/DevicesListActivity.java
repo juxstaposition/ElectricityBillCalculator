@@ -405,6 +405,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
                 Integer.parseInt(deviceUsageDays),Integer.parseInt(deviceConsumption), profileId );
         device.generateDevice(getApplicationContext(),deviceLayout);
+        devices.add(device);
         device.deviceForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
