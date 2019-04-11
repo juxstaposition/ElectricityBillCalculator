@@ -20,7 +20,7 @@
     <!--hints-->
     <string name="description">Description</string>
     <string name="new_profile_name">New Profile Name</string>
-    <string name="consumption">Power W</string>
+    <string name="power">Power W</string>
     <string name="quantity">Quantity</string>
     <string name="usage_h_day">Usage h/Day</string>
     <string name="usage_min_day">Usage min/Day</string>

@@ -118,15 +118,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColorHint="@color/colorSecondary"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="9"
                 >
 
                     <android.support.design.widget.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/new_item"
-                            android:maxLength="9"
                             android:textColor="@color/black"
                             android:inputType="text"/>
                 </android.support.design.widget.TextInputLayout>
