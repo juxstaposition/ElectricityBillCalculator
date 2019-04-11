@@ -11,17 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import static advanced.android.ebcm.Constant.EDIT_DEVICE;
 
 public class NewDeviceActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextInputLayout nameInput = null, consumptionInput = null,
         quantityInput = null, usageHoursInput = null, usageMinutesInput = null, usageDaysInput = null;
     int profileParent;
+    Button btnUpdate;
+    TextView title;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_device);
 
         nameInput = findViewById(R.id.newItemName);
@@ -30,7 +38,24 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         usageHoursInput = findViewById(R.id.newItemUsageHours);
         usageMinutesInput = findViewById(R.id.newItemUsageMinutes);
         usageDaysInput = findViewById(R.id.newItemUsageDays);
-        profileParent = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
+
+        if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
+            title= findViewById(R.id.title);
+            title.setText(R.string.edit_device_item);
+
+            btnUpdate = findViewById(R.id.buttonItemAdd);
+            btnUpdate.setText(R.string.update);
+
+            nameInput.getEditText().setText(getIntent().getStringExtra("DEVICE_NAME"));
+            consumptionInput.getEditText().setText(getIntent().getStringExtra("DEVICE_CONSUMPTION"));
+            quantityInput.getEditText().setText(getIntent().getStringExtra("DEVICE_QUANTITY"));
+            usageHoursInput.getEditText().setText(getIntent().getStringExtra("DEVICE_USAGE_HOURS"));
+            usageMinutesInput.getEditText().setText(getIntent().getStringExtra("DEVICE_USAGE_MINUTES"));
+            usageDaysInput.getEditText().setText(getIntent().getStringExtra("DEVICE_USAGE_DAYS"));
+        } else {
+            profileParent = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
+        }
+
 
 
         findViewById(R.id.backViewNavigation).setOnClickListener(this);
@@ -68,7 +93,9 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             // to be implemented
         }
         else if (view.getId() == R.id.buttonItemAdd){
-            if (profileParent == -1) {
+            if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
+                updateDevice();
+            } else if (profileParent == -1) {
                 Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
             }
             else {
@@ -122,9 +149,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                             Integer.parseInt(usageDays), group, Integer.parseInt(consumption), profileParent);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
-                } else {
-                    setResult(Activity.RESULT_CANCELED, returnIntent);
-                    finish();
                 }
 
             }
@@ -148,6 +172,13 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         }
 
         mDatabaseHelper.close();
+    }
+
+    private void updateDevice() {
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+
+//        mDatabaseHelper.updateDevice();
+
     }
 
     private boolean sendWarningToast(String message){

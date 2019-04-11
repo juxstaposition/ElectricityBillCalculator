@@ -193,14 +193,14 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             getProfile();
             setTitle(profileName);
         }
-        else if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
             Bundle mBundle = data.getExtras();
-            String deviceName = mBundle.getString("DEVICE_NAME");
-            String deviceConsumption = mBundle.getString("DEVICE_CONSUMPTION");
-            String deviceQuantity = mBundle.getString("DEVICE_QUANTITY");
-            String deviceUsageHours = mBundle.getString("DEVICE_USAGE_HOURS");
-            String deviceUsageMinutes = mBundle.getString("DEVICE_USAGE_MINUTES");
-            String deviceUsageDays = mBundle.getString("DEVICE_USAGE_DAYS");
+            final String deviceName = mBundle.getString("DEVICE_NAME");
+            final String deviceConsumption = mBundle.getString("DEVICE_CONSUMPTION");
+            final String deviceQuantity = mBundle.getString("DEVICE_QUANTITY");
+            final String deviceUsageHours = mBundle.getString("DEVICE_USAGE_HOURS");
+            final String deviceUsageMinutes = mBundle.getString("DEVICE_USAGE_MINUTES");
+            final String deviceUsageDays = mBundle.getString("DEVICE_USAGE_DAYS");
 
             Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
                     deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
@@ -214,13 +214,28 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             device.deviceForm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Constant animation = new Constant();
+                    animation.startAnimation(v,R.anim.blink,getApplicationContext());
+                    animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
+
                     Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
                     intent.putExtra("KEY", EDIT_DEVICE);
-//                    deviceId, deviceName, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes
+                    intent.putExtra("DEVICE_ID", String.valueOf(deviceId));
+                    intent.putExtra("DEVICE_NAME", String.valueOf(deviceName));
+                    intent.putExtra("DEVICE_QUANTITY", String.valueOf(deviceQuantity));
+                    intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(deviceConsumption));
+                    intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(deviceUsageHours));
+                    intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(deviceUsageMinutes));
+                    intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(deviceUsageDays));
 
+                    startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
+
+                    Toast.makeText(DevicesListActivity.this, String.valueOf(device.getId()) + " " + device.getName(), Toast.LENGTH_SHORT).show();
                 }
             });
-
+        }
+        if (requestCode == EDIT_DEVICE_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            //fun...
         }
     }
 
@@ -281,7 +296,6 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
     private void generateDeviceView(){
 
-
         Cursor data = mDatabaseHelper.getDeviceData(profileId);
 
         if (data != null) {
@@ -311,6 +325,28 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         final Device device = new Device(id,name,quantity,hours,minutes,days, consumption, profileParent );
         device.generateDevice(getApplicationContext(),deviceLayout);
+        device.deviceForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constant animation = new Constant();
+                animation.startAnimation(v,R.anim.blink,getApplicationContext());
+                animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
+
+                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
+                intent.putExtra("KEY", EDIT_DEVICE);
+                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
+                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
+                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
+                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getConsumption()));
+                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
+                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
+                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
+
+                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
+            }
+        });
+
+        devices.add(device);
 //        devices.add(device);
 //        device.generateDevice(getApplicationContext(), myVerticalLayout);
 //

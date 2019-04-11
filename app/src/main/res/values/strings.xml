@@ -11,6 +11,7 @@
     <string name="create_new_profile">Create Profile</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="create_new_item">Create Device</string>
+    <string name="edit_device_item">Edit Device</string>
     <string name="name_title">Name</string>
     <string name="price_title">Price</string>
     <string name="result_graph_title">CONSUMPTION OF ELECTRICITY GRAPH (WATTS)</string>
