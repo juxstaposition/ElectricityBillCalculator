@@ -21,7 +21,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
     TextInputLayout nameInput = null, consumptionInput = null,
         quantityInput = null, usageHoursInput = null, usageMinutesInput = null, usageDaysInput = null;
-    int profileParent;
+    int profileParent, deviceId;
     Button btnUpdate;
     TextView title;
 
@@ -46,6 +46,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             btnUpdate = findViewById(R.id.buttonItemAdd);
             btnUpdate.setText(R.string.update);
 
+            deviceId = Integer.parseInt(getIntent().getStringExtra("DEVICE_ID"));
             nameInput.getEditText().setText(getIntent().getStringExtra("DEVICE_NAME"));
             consumptionInput.getEditText().setText(getIntent().getStringExtra("DEVICE_CONSUMPTION"));
             quantityInput.getEditText().setText(getIntent().getStringExtra("DEVICE_QUANTITY"));
@@ -95,6 +96,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         else if (view.getId() == R.id.buttonItemAdd){
             if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
                 updateDevice();
+
             } else if (profileParent == -1) {
                 Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
             }
@@ -177,7 +179,31 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
     private void updateDevice() {
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
-//        mDatabaseHelper.updateDevice();
+        String name = nameInput.getEditText().getText().toString();
+        int consumption =Integer.parseInt(consumptionInput.getEditText().getText().toString());
+        int quantity = Integer.parseInt(quantityInput.getEditText().getText().toString());
+        int usageHours = Integer.parseInt(usageHoursInput.getEditText().getText().toString());
+        int usageMinutes = Integer.parseInt(usageMinutesInput.getEditText().getText().toString());
+        int usageDays = Integer.parseInt(usageDaysInput.getEditText().getText().toString());
+
+        mDatabaseHelper.updateDevice(name,consumption,quantity,usageHours,usageMinutes,usageDays, deviceId);
+
+        mDatabaseHelper.close();
+
+        sendWarningToast("Device in Database updated");
+
+        Intent returnIntent = new Intent();
+
+        returnIntent.putExtra("DEVICE_ID", deviceId);
+        returnIntent.putExtra("DEVICE_NAME", name);
+        returnIntent.putExtra("DEVICE_CONSUMPTION", consumption);
+        returnIntent.putExtra("DEVICE_QUANTITY", quantity);
+        returnIntent.putExtra("DEVICE_USAGE_HOURS", usageHours);
+        returnIntent.putExtra("DEVICE_USAGE_MINUTES", usageMinutes);
+        returnIntent.putExtra("DEVICE_USAGE_DAYS", usageDays);
+
+        setResult(RESULT_OK, returnIntent);
+        finish();
 
     }
 

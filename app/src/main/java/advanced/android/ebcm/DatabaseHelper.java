@@ -206,16 +206,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //device
-    public void updateDevice(String newName, String newConsumption, String newQuantity, String newHours, String newMinutes, String newDays, int id, String oldName) {
+    public void updateDevice(String newName, int newConsumption, int newQuantity, int newHours, int newMinutes, int newDays, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-//        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 +
-//                " = '" + newName + "' WHERE " + DEVICE_COL0 + " = '" + id +"'" +
-//                " AND " + DEVICE_COL1 + " ='" + oldName + "'";
 
-        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 +
-                " = '" + newName + "', " + DEVICE_COL2 + " = " + newQuantity + ", " + DEVICE_COL3 + " = " + newHours + ", " + DEVICE_COL4 + " = " + newMinutes
-                + ", " + DEVICE_COL5 + " = " + newDays + "', " + DEVICE_COL7 + " = " + newConsumption + " WHERE "
-                + DEVICE_COL0 + " = " + id + " AND " + DEVICE_COL1 + " = '" + oldName + "'";
+        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 + " = '" + newName + "', " + DEVICE_COL2 + " = " + newQuantity + ", "
+                + DEVICE_COL3 + " = " + newHours + ", " + DEVICE_COL4 + " = " + newMinutes + ", " + DEVICE_COL5 + " = " + newDays + ", "
+                + DEVICE_COL7 + " = " + newConsumption + " WHERE " + DEVICE_COL0 + " = " + id;
 
         Log.d(TAG, "updateDevice: query: " + query);
         Log.d(TAG, "updateDevice: Setting device where ID = " + id + " to - name: " + newName + ", quantity: " + newQuantity + ", consumption: " + newConsumption + ", hours: " + newHours +

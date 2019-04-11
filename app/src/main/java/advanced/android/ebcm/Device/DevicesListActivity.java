@@ -32,8 +32,8 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
     DatabaseHelper mDatabaseHelper;
     int profileId, deviceId, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes ;
-    Profile profile = null;
-    LinearLayout deviceLayout = null;
+    Profile profile;
+    LinearLayout deviceLayout;
     String profileName, profileDescription, deviceName;
     Number profilePrice;
     boolean deleted = false;
@@ -192,6 +192,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             updated = true;
             getProfile();
             setTitle(profileName);
+
         }
         if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
             Bundle mBundle = data.getExtras();
@@ -205,7 +206,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
                     deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
 
-            getUpdatedDevice(deviceId);
+//            getUpdatedDevice(deviceId);
 
             final Device device = new Device(0,deviceName,Integer.parseInt(deviceQuantity),
                     Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
@@ -220,22 +221,22 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
                     Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
                     intent.putExtra("KEY", EDIT_DEVICE);
-                    intent.putExtra("DEVICE_ID", String.valueOf(deviceId));
-                    intent.putExtra("DEVICE_NAME", String.valueOf(deviceName));
-                    intent.putExtra("DEVICE_QUANTITY", String.valueOf(deviceQuantity));
-                    intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(deviceConsumption));
-                    intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(deviceUsageHours));
-                    intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(deviceUsageMinutes));
-                    intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(deviceUsageDays));
+                    intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
+                    intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
+                    intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
+                    intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getConsumption()));
+                    intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
+                    intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
+                    intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
 
                     startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
-
+                    overridePendingTransition(R.anim.blink,0);
                     Toast.makeText(DevicesListActivity.this, String.valueOf(device.getId()) + " " + device.getName(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
         if (requestCode == EDIT_DEVICE_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            //fun...
+            updateExistingDevice(data);
         }
     }
 
@@ -378,5 +379,25 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         Log.d("deviceCREATE", Integer.toString(device.getId()));
     }
 
+    private void updateExistingDevice(Intent data) {
+
+        if (data != null) {
+            for (Device device: devices){
+                if (device.getId() == data.getIntExtra("DEVICE_ID", -1)){
+
+                    device.setName(data.getStringExtra("DEVICE_NAME"));
+                    device.setConsumption(data.getIntExtra("DEVICE_CONSUMPTION", -1));
+                    device.setQuantity(data.getIntExtra("DEVICE_QUANTITY",-1));
+                    device.setHours(data.getIntExtra("DEVICE_USAGE_DAYS",-1));
+                    device.setMinutes(data.getIntExtra("DEVICE_USAGE_MINUTES",-1));
+                    device.setDays(data.getIntExtra("DEVICE_USAGE_DAYS",-1));
+                    break;
+                }
+            }
+        } else {
+            Toast.makeText(this,"Could not update the list pleas re-open Profile", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 }
