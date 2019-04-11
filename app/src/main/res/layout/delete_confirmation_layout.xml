@@ -10,7 +10,7 @@
 >
 
     <View
-            android:id="@+id/back_view_delete_profile"
+            android:id="@+id/back_view_delete"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
     />
@@ -56,7 +56,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/new_profile_name"
+                    android:hint="@string/delete_name"
                     android:textSize="20sp"
                     android:textColor="@color/colorPrimary"
                     android:layout_marginTop="8dp"
@@ -108,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:id="@+id/buttonDeleteProfileCancel"
+                        android:id="@+id/buttonDeleteCancel"
                         android:background="@color/translucent"/>
                 <Button
                         android:layout_width="20dp"
@@ -122,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:id="@+id/buttonDeleteProfileConfirm"
+                        android:id="@+id/buttonDeleteConfirm"
                         android:background="@color/translucent"/>
         </LinearLayout>
 

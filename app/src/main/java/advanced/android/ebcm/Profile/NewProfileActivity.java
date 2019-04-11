@@ -56,7 +56,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         }
 
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
-        findViewById(R.id.buttonDeleteProfileCancel).setOnClickListener(this);
+        findViewById(R.id.buttonDeleteCancel).setOnClickListener(this);
         findViewById(R.id.back_view_edit_profile).setOnClickListener(this);
 
     }
@@ -125,7 +125,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
         }
-        else if (view.getId() == R.id.buttonDeleteProfileCancel || view.getId() == R.id.back_view_edit_profile){
+        else if (view.getId() == R.id.buttonDeleteCancel || view.getId() == R.id.back_view_edit_profile){
             setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
         }

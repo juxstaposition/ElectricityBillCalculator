@@ -37,6 +37,9 @@
                   android:theme="@style/AppTheme.NoActionBar"
                   android:screenOrientation="portrait"
         />
+        <activity android:name=".Device.DeleteDeviceActivity"
+                  android:theme="@style/AppTheme.NoActionBar"
+        />
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"

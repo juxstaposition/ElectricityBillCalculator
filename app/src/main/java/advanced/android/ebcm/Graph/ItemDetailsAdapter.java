@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
@@ -40,19 +40,19 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
         TextView time = convertView.findViewById(R.id.item_total_time);
         TextView power = convertView.findViewById(R.id.item_power);
 
-        if (pickItems){
-            name.setText(result.getItemName());
-            power.setVisibility(View.GONE);
-            time.setVisibility(View.GONE);
-            double Power = result.getPower();
-            DecimalFormat numberFormat = new DecimalFormat("#");
-            units.setText(numberFormat.format(Power) + " W");
-        } else {
+//        if (pickItems){
+//            name.setText(result.getItemName());
+//            power.setVisibility(View.GONE);
+//            time.setVisibility(View.GONE);
+//            double Power = result.getPower();
+//            DecimalFormat numberFormat = new DecimalFormat("#");
+//            units.setText(numberFormat.format(Power) + " W");
+//        } else {
             name.setText(result.getItemName());
             units.setText(Double.toString(result.getResults()) + " kWh");
             time.setText(Double.toString(result.getUsageTimeTotal()) + " hours");
             power.setText(Double.toString(result.getPower()) + " W");
-        }
+       // }
 
 
 //        return super.getView(position, convertView, parent);

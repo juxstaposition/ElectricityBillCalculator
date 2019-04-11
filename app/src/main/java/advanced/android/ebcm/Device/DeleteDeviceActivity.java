@@ -1,4 +1,4 @@
-package advanced.android.ebcm.Profile;
+package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.R;
@@ -10,21 +10,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+public class DeleteDeviceActivity  extends AppCompatActivity implements View.OnClickListener {
 
-public class DeleteProfileActivity extends AppCompatActivity implements View.OnClickListener {
-
-    TextView btnCancel, btnConfirm, profileName;
+    TextView btnCancel, btnConfirm, deviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_confirmation_layout);
 
-        profileName = findViewById(R.id.delete_profile_name);
+        deviceName = findViewById(R.id.delete_profile_name);
         btnCancel = findViewById(R.id.buttonDeleteCancel);
         btnConfirm = findViewById(R.id.buttonDeleteConfirm);
 
-        profileName.setText(getIntent().getStringExtra("PROFILE_NAME"));
+        deviceName.setText(getIntent().getStringExtra("DEVICE_NAME"));
 
         findViewById(R.id.buttonDeleteCancel).setOnClickListener(this);
         findViewById(R.id.buttonDeleteConfirm).setOnClickListener(this);
@@ -41,7 +40,7 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         animation.startAnimation(v,R.anim.blink,getApplicationContext());
 
         if (v.getId() == R.id.buttonDeleteConfirm){
-            returnIntent.putExtra("PROFILE_ID", getIntent().getStringExtra("PROFILE_ID"));
+            returnIntent.putExtra("DEVICE_ID", getIntent().getStringExtra("DEVICE_ID"));
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
 

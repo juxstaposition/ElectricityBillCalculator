@@ -11,6 +11,7 @@
     <string name="create_new_profile">Create Profile</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="create_new_item">Create Device</string>
+    <string name="edit_device_item">Edit Device</string>
     <string name="name_title">Name</string>
     <string name="price_title">Price</string>
     <string name="result_graph_title">CONSUMPTION OF ELECTRICITY GRAPH (WATTS)</string>
@@ -26,6 +27,7 @@
     <string name="usage_d_month">Usage d/Month</string>
     <string name="new_item">New Item</string>
     <string name="profile_price">Price kWh</string>
+    <string name="delete_name">Delete Name</string>
 
     <!--buttons-->
     <string name="add">Add</string>

@@ -206,20 +206,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //device
-    public void updateDevice(String newName, String newConsumption, String newQuantity, String newHours, String newMinutes, String newDays, String newProfileParent,  int id, String oldName) {
+    public void updateDevice(String newName, int newConsumption, int newQuantity, int newHours, int newMinutes, int newDays, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-//        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 +
-//                " = '" + newName + "' WHERE " + DEVICE_COL0 + " = '" + id +"'" +
-//                " AND " + DEVICE_COL1 + " ='" + oldName + "'";
 
-        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 +
-                " = '" + newName + "', " + DEVICE_COL2 + " = " + newQuantity + ", " + DEVICE_COL3 + " = " + newHours + ", " + DEVICE_COL4 + " = " + newMinutes
-                + ", " + DEVICE_COL5 + " = " + newDays + "', " + DEVICE_COL7 + " = " + newConsumption + ", " + DEVICE_COL8 + " = " + newProfileParent + " WHERE "
-                + DEVICE_COL0 + " = " + id + " AND " + DEVICE_COL1 + " = '" + oldName + "'";
+        String query = "UPDATE " + TABLE_DEVICE + " SET " + DEVICE_COL1 + " = '" + newName + "', " + DEVICE_COL2 + " = " + newQuantity + ", "
+                + DEVICE_COL3 + " = " + newHours + ", " + DEVICE_COL4 + " = " + newMinutes + ", " + DEVICE_COL5 + " = " + newDays + ", "
+                + DEVICE_COL7 + " = " + newConsumption + " WHERE " + DEVICE_COL0 + " = " + id;
 
         Log.d(TAG, "updateDevice: query: " + query);
         Log.d(TAG, "updateDevice: Setting device where ID = " + id + " to - name: " + newName + ", quantity: " + newQuantity + ", consumption: " + newConsumption + ", hours: " + newHours +
-                ", minutes:" + newMinutes + ", days: " + newDays + ", profile_parent:" + newProfileParent);
+                ", minutes:" + newMinutes + ", days: " + newDays );
         db.execSQL(query);
     }
 
@@ -229,18 +225,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param id integer
      */
     public void deleteProfile(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_PROFILE + " WHERE " +
-                PROFILE_COL0 + " = '" + id + "'";
-        Log.d(TAG, "deleteProfile: query: " +query);
-        db.execSQL(query);
+        if (id != -1) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_PROFILE + " WHERE " +
+                    PROFILE_COL0 + " = " + id;
+            Log.d(TAG, "deleteProfile: query: " +query);
+            db.execSQL(query);
+        }
+
     }
 
-    public void deleteDeviceName(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_DEVICE + " WHERE " +
-                DEVICE_COL0 + " = '" + id + "'";
-        Log.d(TAG, "deleteDeviceName: query: " +query);
-        db.execSQL(query);
+    public void deleteDevice(int id) {
+        if ( id != -1) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_DEVICE + " WHERE " +
+                    DEVICE_COL0 + " = " + id;
+            Log.d(TAG, "deleteDeviceName: query: " +query);
+            db.execSQL(query);
+        }
     }
 }
