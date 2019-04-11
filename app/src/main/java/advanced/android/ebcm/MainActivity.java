@@ -211,6 +211,9 @@ public class MainActivity extends AppCompatActivity {
     }   // addNewProfile
 
     private void deleteProfile(int id){
+
+        deleteDevices(id);
+
         for (Profile profile : profiles){
             if (profile.getId() == id){
 
@@ -245,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("PROFILE_NAME", name);
                 intent.putExtra("PROFILE_ID", Integer.toString(id));
                 startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
+                overridePendingTransition(R.anim.blink,0);
         }});
         profile.profileForm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,6 +276,24 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             }
+        }
+    }
+
+    private void deleteDevices(int profileParent) {
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+        Cursor data = mDatabaseHelper.getDeviceData(profileParent);
+
+        if (data != null) {
+            if (data.moveToFirst() && data.getCount() >= 1) {
+                do {
+
+                    deleteProfile(data.getInt(0));
+                    Toast.makeText(this,"Deleted device with id "+ data.getInt(0), Toast.LENGTH_LONG).show();
+
+                } while (data.moveToNext());
+            }
+        } else {
+            Toast.makeText(this, "No devices to delete with DB", Toast.LENGTH_SHORT).show();
         }
     }
 

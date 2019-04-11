@@ -225,18 +225,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param id integer
      */
     public void deleteProfile(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_PROFILE + " WHERE " +
-                PROFILE_COL0 + " = '" + id + "'";
-        Log.d(TAG, "deleteProfile: query: " +query);
-        db.execSQL(query);
+        if (id != -1) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_PROFILE + " WHERE " +
+                    PROFILE_COL0 + " = " + id;
+            Log.d(TAG, "deleteProfile: query: " +query);
+            db.execSQL(query);
+        }
+
     }
 
-    public void deleteDeviceName(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_DEVICE + " WHERE " +
-                DEVICE_COL0 + " = '" + id + "'";
-        Log.d(TAG, "deleteDeviceName: query: " +query);
-        db.execSQL(query);
+    public void deleteDevice(int id) {
+        if ( id != -1) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_DEVICE + " WHERE " +
+                    DEVICE_COL0 + " = " + id;
+            Log.d(TAG, "deleteDeviceName: query: " +query);
+            db.execSQL(query);
+        }
     }
 }

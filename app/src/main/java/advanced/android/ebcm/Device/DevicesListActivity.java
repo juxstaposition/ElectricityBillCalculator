@@ -29,6 +29,7 @@ import static advanced.android.ebcm.Constant.*;
 public class DevicesListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ArrayList<Device> devices = new ArrayList<>();
+    private ArrayList<Integer> deviceIds = new ArrayList<>();
 
     DatabaseHelper mDatabaseHelper;
     int profileId, deviceId, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes ;
@@ -131,6 +132,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             deleteProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
             deleteProfile.putExtra("PROFILE_NAME", profileName);
             startActivityForResult(deleteProfile, DELETE_PROFILE_ACTIVITY_REQ_CODE);
+            overridePendingTransition(R.anim.blink,0);
             return true;
         }
         else if ( id == R.id.action_help){
@@ -195,48 +197,13 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         }
         if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            Bundle mBundle = data.getExtras();
-            final String deviceName = mBundle.getString("DEVICE_NAME");
-            final String deviceConsumption = mBundle.getString("DEVICE_CONSUMPTION");
-            final String deviceQuantity = mBundle.getString("DEVICE_QUANTITY");
-            final String deviceUsageHours = mBundle.getString("DEVICE_USAGE_HOURS");
-            final String deviceUsageMinutes = mBundle.getString("DEVICE_USAGE_MINUTES");
-            final String deviceUsageDays = mBundle.getString("DEVICE_USAGE_DAYS");
-
-            Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
-                    deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
-
-//            getUpdatedDevice(deviceId);
-
-            final Device device = new Device(0,deviceName,Integer.parseInt(deviceQuantity),
-                    Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
-                    Integer.parseInt(deviceUsageDays),Integer.parseInt(deviceConsumption), profileId );
-            device.generateDevice(getApplicationContext(),deviceLayout);
-            device.deviceForm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Constant animation = new Constant();
-                    animation.startAnimation(v,R.anim.blink,getApplicationContext());
-                    animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
-
-                    Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
-                    intent.putExtra("KEY", EDIT_DEVICE);
-                    intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
-                    intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
-                    intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
-                    intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getConsumption()));
-                    intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
-                    intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
-                    intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
-
-                    startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
-                    overridePendingTransition(R.anim.blink,0);
-                    Toast.makeText(DevicesListActivity.this, String.valueOf(device.getId()) + " " + device.getName(), Toast.LENGTH_SHORT).show();
-                }
-            });
+          addDeviceView(data);
         }
         if (requestCode == EDIT_DEVICE_REQ_CODE && resultCode == Activity.RESULT_OK) {
             updateExistingDevice(data);
+        }
+        if (requestCode == DELETE_DEVICE_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            deleteDevice(data);
         }
     }
 
@@ -333,17 +300,25 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 animation.startAnimation(v,R.anim.blink,getApplicationContext());
                 animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
 
-                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
-                intent.putExtra("KEY", EDIT_DEVICE);
-                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
-                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
-                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
-                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getConsumption()));
-                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
-                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
-                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
+//                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
+//                intent.putExtra("KEY", EDIT_DEVICE);
+//                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
+//                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
+//                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
+//                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getPower()));
+//                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
+//                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
+//                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
+//
+//                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
+//                overridePendingTransition(R.anim.blink, 0);
 
-                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
+                Intent intent = new Intent(DevicesListActivity.this, DeleteDeviceActivity.class);
+                intent.putExtra("KEY", DELETE_DEVICE);
+                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
+                intent.putExtra("DEVICE_NAME", device.getName());
+                startActivityForResult(intent, DELETE_DEVICE_REQ_CODE);
+                overridePendingTransition(R.anim.blink, 0);
             }
         });
 
@@ -379,17 +354,89 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         Log.d("deviceCREATE", Integer.toString(device.getId()));
     }
 
+    private void addDeviceView(Intent data) {
+        mDatabaseHelper = new DatabaseHelper(this);
+
+        Cursor deviceIdData = mDatabaseHelper.getDeviceData(profileId);
+
+        try {
+            if (data != null) {
+                if (deviceIdData.moveToFirst() && deviceIdData.getCount() >= 1) {
+                    do {
+                        deviceIds.add(deviceIdData.getInt(0));
+                    } while (deviceIdData.moveToNext());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            deviceIdData.close();
+        } finally {
+            if (deviceIdData != null) {
+                deviceIdData.close();
+            }
+        }
+
+        int max = 0;
+
+        for ( int i = 0; i < deviceIds.size(); i++ ) {
+
+            if ( max < deviceIds.get(i) ){
+                max = deviceIds.get(i);
+                System.out.println(max);
+            }
+        }
+        Log.d("MAX_VALUE", Integer.toString(max));
+
+        Bundle mBundle = data.getExtras();
+        final String deviceName = mBundle.getString("DEVICE_NAME");
+        final String deviceConsumption = mBundle.getString("DEVICE_CONSUMPTION");
+        final String deviceQuantity = mBundle.getString("DEVICE_QUANTITY");
+        final String deviceUsageHours = mBundle.getString("DEVICE_USAGE_HOURS");
+        final String deviceUsageMinutes = mBundle.getString("DEVICE_USAGE_MINUTES");
+        final String deviceUsageDays = mBundle.getString("DEVICE_USAGE_DAYS");
+
+
+        Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
+                deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
+
+
+        final Device device = new Device(max,deviceName,Integer.parseInt(deviceQuantity),
+                Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
+                Integer.parseInt(deviceUsageDays),Integer.parseInt(deviceConsumption), profileId );
+        device.generateDevice(getApplicationContext(),deviceLayout);
+        device.deviceForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constant animation = new Constant();
+                animation.startAnimation(v,R.anim.blink,getApplicationContext());
+                animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
+
+                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
+                intent.putExtra("KEY", EDIT_DEVICE);
+                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
+                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
+                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
+                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getPower()));
+                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
+                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
+                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
+
+                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
+                overridePendingTransition(R.anim.blink,0);
+                Toast.makeText(DevicesListActivity.this, String.valueOf(device.getId()) + " " + device.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void updateExistingDevice(Intent data) {
 
         if (data != null) {
             for (Device device: devices){
                 if (device.getId() == data.getIntExtra("DEVICE_ID", -1)){
-
-                    device.setName(data.getStringExtra("DEVICE_NAME"));
-                    device.setConsumption(data.getIntExtra("DEVICE_CONSUMPTION", -1));
-                    device.setQuantity(data.getIntExtra("DEVICE_QUANTITY",-1));
-                    device.setHours(data.getIntExtra("DEVICE_USAGE_DAYS",-1));
-                    device.setMinutes(data.getIntExtra("DEVICE_USAGE_MINUTES",-1));
+                    device.setName(data.getStringExtra("DEVICE_NAME"), data.getIntExtra("DEVICE_QUANTITY",-1) );
+                    device.setPower(data.getIntExtra("DEVICE_CONSUMPTION", -1));
+                    device.setTime(data.getIntExtra("DEVICE_USAGE_HOURS",-1),data.getIntExtra("DEVICE_USAGE_MINUTES",-1));
                     device.setDays(data.getIntExtra("DEVICE_USAGE_DAYS",-1));
                     break;
                 }
@@ -398,6 +445,21 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this,"Could not update the list pleas re-open Profile", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void deleteDevice(Intent receivedIntent) {
+        for (Device device: devices){
+            if (device.getId() == Integer.parseInt(receivedIntent.getStringExtra("DEVICE_ID"))){
+
+                mDatabaseHelper = new DatabaseHelper(getApplicationContext());
+                mDatabaseHelper.deleteDevice(device.getId());
+                mDatabaseHelper.close();
+
+                devices.remove(device);
+                deviceLayout.removeView(device.getLayout());
+
+            }
+        }
     }
 
 }

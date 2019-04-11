@@ -7,8 +7,6 @@ import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +19,7 @@ public class Device {
     private Integer hours;
     private Integer minutes;
     private Integer days;
-    private Integer consumption;
+    private Integer power;
     private Integer profile_parent;
 
     public LinearLayout deviceForm;
@@ -30,19 +28,19 @@ public class Device {
 
 
     private TextView deviceName;
-    private TextView deviceConsumption;
+    private TextView devicePower;
     private TextView deviceTime;
     private TextView deviceDays;
 
 
-    public Device(int id, String name, int quantity, int hours, int minutes, int days, int consumption, int profile_parent) {
+    public Device(int id, String name, int quantity, int hours, int minutes, int days, int power, int profile_parent) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.hours = hours;
         this.minutes = minutes;
         this.days = days;
-        this.consumption = consumption;
+        this.power = power;
         this.profile_parent = profile_parent;
     }
 
@@ -59,18 +57,18 @@ public class Device {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name, int quantity) {
         this.name = name;
-        this.deviceName.setText(name);
+        String displayQuantity = name + "(" + quantity + ")";
+        this.deviceName.setText(displayQuantity);
+        this.quantity = quantity;
     }
 
     public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+
 
     public void setTime(int hours, int minutes){
         this.hours = hours;
@@ -105,12 +103,22 @@ public class Device {
         this.deviceDays.setText(newDays);
     }
 
-    public Integer getConsumption() {
-        return consumption;
+    public void setDeviceName(String name, int quantity){
+
     }
 
-    public void setConsumption(Integer consumption) {
-        this.consumption = consumption;
+    public Integer getPower() {
+        return power;
+    }
+
+    public void setPower(Integer power) {
+        this.power = power;
+        String displayConsumption = String.valueOf(power);
+        this.devicePower.setText(displayConsumption);
+    }
+
+    public LinearLayout getLayout() {
+        return deviceForm;
     }
 
     public Integer getProfile_parent() {
@@ -183,8 +191,8 @@ public class Device {
         LinearLayout secondCol = generatedDescriptionColumn(context,colWidth);
         TextView powerTitle = createTextView("Power",context,titlesFont,titlesTextSize);
         secondCol.addView(powerTitle);
-        deviceConsumption = createTextView(Integer.toString(consumption), context, descriptionsFont, descriptionsTextSize);
-        secondCol.addView(deviceConsumption);
+        devicePower = createTextView(Integer.toString(power), context, descriptionsFont, descriptionsTextSize);
+        secondCol.addView(devicePower);
 
         LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth);
         TextView timeTitle = createTextView("Time",context,titlesFont,titlesTextSize);
