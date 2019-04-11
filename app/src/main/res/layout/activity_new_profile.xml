@@ -123,7 +123,6 @@
                 >
 
             <android.support.design.widget.TextInputEditText
-                    android:maxLength="8"
                     android:id="@+id/edit_profile_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
