@@ -90,7 +90,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(getApplicationContext(), PickItemList.class);
             animation.startAnimation(view,R.anim.blink,getApplicationContext());
             startActivityForResult(intent, Constant.PICK_AN_ITEM_REQ_CODE);
-            overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
+            overridePendingTransition(R.anim.blink,0);
         }
         else if (view.getId() == R.id.buttonItemAdd){
             if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){

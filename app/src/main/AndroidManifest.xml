@@ -12,7 +12,10 @@
             android:theme="@style/AppTheme"
             android:fullBackupContent="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PickItemList">
+        <activity
+                android:name=".PickItemList"
+                android:theme="@style/AppTheme.InputPopUpStyle"
+        >
         </activity>
         <activity
                 android:name=".Device.DevicesListActivity"

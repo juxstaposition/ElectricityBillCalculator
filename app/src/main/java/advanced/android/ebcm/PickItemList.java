@@ -16,7 +16,7 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-public class PickItemList extends AppCompatActivity {
+public class PickItemList extends AppCompatActivity implements View.OnClickListener {
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
@@ -27,6 +27,8 @@ public class PickItemList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_item_list);
+
+        findViewById(R.id.backViewNavigationItemPick).setOnClickListener(this);
 
         expListView = findViewById(R.id.list_expand);
 
@@ -99,19 +101,29 @@ public class PickItemList extends AppCompatActivity {
     }
 
     @Override
+    public void onClick(View view){
+        if (view.getId() == R.id.backViewNavigationItemPick){
+            failureClosing();
+        }
+    }
+
+    @Override
     public void finish(){
         super.finish();
-        overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_right_exit);
+        overridePendingTransition(0,R.anim.fade);
     }
 
 
     @Override
     public void onBackPressed(){
+        failureClosing();
+    }
+
+    public void failureClosing(){
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
     }
-
     /*
      * Preparing the list data
      */
