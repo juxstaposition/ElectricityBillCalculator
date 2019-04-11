@@ -226,9 +226,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 usageHours = "0";
             }
         }
-        else{
-            validation = sendWarningToast("Usage must be used at least 1 minute!");
-        }
+
 
         if (validation && (usageHours.length() == 0 || Integer.parseInt(usageHours) < 1 &&
                 (usageMinutes.length() == 0 || Integer.parseInt(usageMinutes) < 1)) ){
