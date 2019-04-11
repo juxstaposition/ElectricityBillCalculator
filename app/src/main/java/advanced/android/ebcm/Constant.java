@@ -25,6 +25,7 @@ public class Constant {
     public static final int ADD_DEVICE_TO_PROFILE_REQ_CODE = 500;
     public static final int EDIT_DEVICE_REQ_CODE = 600;
     public static final int DELETE_DEVICE_REQ_CODE = 700;
+    public static final int PICK_AN_ITEM_REQ_CODE=800;
 
 
     public void startAnimation(View view, int animationId, Context context){

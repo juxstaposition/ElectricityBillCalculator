@@ -63,9 +63,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         else if (view.getId() == R.id.buttonItemPick){
             Intent intent = new Intent(getApplicationContext(), PickItemList.class);
             animation.startAnimation(view,R.anim.blink,getApplicationContext());
-            startActivity(intent);
-            //sendWarningToast("Pick an Item button pressed!");
-            // to be implemented
+            startActivityForResult(intent, Constant.PICK_AN_ITEM_REQ_CODE);
+            overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
         }
         else if (view.getId() == R.id.buttonItemAdd){
             if (profileParent == -1) {
@@ -128,6 +127,15 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 }
 
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        Bundle mBundle = data.getExtras();
+        if (requestCode == Constant.PICK_AN_ITEM_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            nameInput.getEditText().setText(mBundle.getString("NAME"));
         }
     }
 
