@@ -3,7 +3,6 @@ package advanced.android.ebcm;
 import advanced.android.ebcm.Device.Device;
 import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.Graph.ItemDetailsAdapter;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -26,11 +25,10 @@ import java.util.Collections;
 
 public class ResultGraph extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
-    GraphView graphView;
     ArrayList<CalculationResult> results;
     ArrayList<CalculationResult> resultList;
-
     ArrayList<Device> devicesList;
+    GraphView graphView;
     double maxResult;
     double kWhPrice;
     int profileId;
@@ -41,17 +39,97 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         super.onCreate(savedInstanceState);
 
         profileId = getIntent().getIntExtra("PROFILE_ID", -1);
-        Toast.makeText(this, ""+profileId, Toast.LENGTH_LONG).show();
+
+        if (profileId == 0 || profileId == -1) {
+            finish();
+        }
 
         //used to fill the graph
         results = loadData();
+
+        drawGraph();
+        
+    } // end of onCreate
+
+    private DataPoint[] getDataPoints() {
+        Collections.sort(results);
+        DataPoint[] dataPoints = new DataPoint[results.size()];
+
+        for (int i = 0; i < dataPoints.length; i++) {
+            double result = results.get(i).getResults();
+            if (result > maxResult) {
+                maxResult = result;
+            }
+            dataPoints[i] = new DataPoint(i+1, result);
+        }
+
+        return dataPoints;
+    }
+
+    private ArrayList<CalculationResult> loadData() {
         resultList = new ArrayList<>();
 
+        getProfileCost();
+        getDevices();
+
+        for (Device device : devicesList ) {
+            resultList.add(new CalculationResult(device.getName(), device.getPower(),device.getQuantity(),
+                    device.getHours(),device.getMinutes(), device.getDays()));
+        }
+
+        return resultList;
+    }
+
+
+    private void getDevices() {
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor devices = mDatabaseHelper.getDeviceData(profileId);
+        devicesList = new ArrayList<>();
+        graphView = findViewById(R.id.graphView);
+
+        if (devices != null) {
+            if (devices.moveToFirst() && devices.getCount() >= 1) {
+                do {
+
+                    devicesList.add(new Device(devices.getInt(0),devices.getString(1),devices.getInt(2),
+                                                devices.getInt(3),devices.getInt(4),devices.getInt(5),
+                            devices.getInt(7), devices.getInt(8)));
+
+                } while (devices.moveToNext());
+            }
+            devices.close();
+        }
+        mDatabaseHelper.close();
+    }
+
+    private void getProfileCost() {
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor profile = mDatabaseHelper.getProfileItemByID(profileId);
+
+        if (profile != null) {
+            if (profile.moveToFirst() && profile.getCount() >= 1) {
+                do {
+
+                    kWhPrice = profile.getFloat(3);
+
+                } while (profile.moveToNext());
+            }
+            profile.close();
+        }
+        mDatabaseHelper.close();
+
+    }
+
+    void drawGraph() {
         setContentView(R.layout.activity_result_graph);
-        GraphView graphView = findViewById(R.id.graphView);
+        graphView = findViewById(R.id.graphView);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(8);
+        if (results.size() != 0){
+            graphView.getViewport().setMaxX(results.size()+1);
+        } else {
+            graphView.getViewport().setMaxX(1);
+        }
 
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
@@ -89,11 +167,12 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
                 int x = (int) dataPoint.getX();
-                CalculationResult result = results.get(x);
+                CalculationResult result = results.get(x-1);
 
                 BigDecimal expenditure = round(result.getResults(), 2);
                 String message = "Device name: " + result.getItemName() + "\n\t" + "Power: " + result.getPower() +
-                                " W\n\t"+ "Consumption total: " + expenditure + " kWh";
+                        " W\n\t"+ "Consumption total: " + expenditure + " kWh";
+
                 Toast toast = Toast.makeText(ResultGraph.this, message, Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.TOP | Gravity.START, 120, 40);
                 toast.show();
@@ -103,18 +182,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-//                return getColor(data.getY());
                 return getColor(data.getX());
-//                if (0 <= data.getY() && data.getY() < 1500)  {
-//
-//                    return Color.GREEN;
-//
-//                    } else if(1500<= data.getY() && data.getY()<8000){
-//
-//                    return Color.BLUE;
-//                } else {
-//                    return Color.RED;
-//                }
             }
         });
         series.setSpacing(50);
@@ -122,90 +190,20 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         series.setValuesOnTopColor(Color.BLACK);
 
         ListView itemDetailsView = findViewById(R.id.item_details);
-        ListView totalDetailsView = findViewById(R.id.total_details);
 
-        ArrayList<String> itemDetailsList = new ArrayList<>();
-        ArrayList<String> totalDetailsList = new ArrayList<>();
+//        ArrayList<String> itemDetailsList = new ArrayList<>();
 
-        for (CalculationResult result : results) {
-
-            BigDecimal timeResult = round(result.getUsageTimeTotal(), 2);
-
-            String itemDetail = result.getItemName() + " " + result.getResults() + "Units\n" +
-                    timeResult + " hours/minutes, " + result.getPower() + " W";
-            itemDetailsList.add(itemDetail);
-        }
+//        for (CalculationResult result : results) {
+//
+//            BigDecimal timeResult = round(result.getUsageTimeTotal(), 2);
+//
+//            String itemDetail = result.getItemName() + " " + result.getResults() + "Units\n" +
+//                    timeResult + " hours/minutes, " + result.getPower() + " W";
+////            itemDetailsList.add(itemDetail);
+//        }
         final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
-//        final ArrayAdapter<String> aa =
-//                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itemDetailsList);
         itemDetailsView.setAdapter(ida);
 
-
-    }
-
-    private DataPoint[] getDataPoints() {
-        Collections.sort(results);
-        DataPoint[] dataPoints = new DataPoint[results.size()];
-        for (int i = 0; i < dataPoints.length; i++) {
-            double result = results.get(i).getResults();
-            if (result > maxResult) {
-                maxResult = result;
-            }
-            dataPoints[i] = new DataPoint(i, result);
-        }
-        return dataPoints;
-    }
-
-    private ArrayList<CalculationResult> loadData() {
-        resultList = new ArrayList<>();
-
-        getProfileCost();
-        getDevices();
-
-        for (Device device : devicesList ) {
-            resultList.add(new CalculationResult(device.getName(), device.getPower(),device.getQuantity(),
-                    device.getHours(),device.getMinutes(), device.getDays()));
-        }
-
-        return resultList;
-    }
-
-
-    private void getDevices() {
-        mDatabaseHelper = new DatabaseHelper(this);
-        Cursor devices = mDatabaseHelper.getDeviceData(profileId);
-        devicesList = new ArrayList<>();
-
-        if (devices != null) {
-            if (devices.moveToFirst() && devices.getCount() >= 1) {
-                do {
-
-                    devicesList.add(new Device(devices.getInt(0),devices.getString(1),devices.getInt(2),
-                                                devices.getInt(3),devices.getInt(4),devices.getInt(5),
-                            devices.getInt(7), devices.getInt(8)));
-
-                } while (devices.moveToNext());
-            }
-            devices.close();
-        }
-        mDatabaseHelper.close();
-    }
-
-    private void getProfileCost() {
-        mDatabaseHelper = new DatabaseHelper(this);
-        Cursor profile = mDatabaseHelper.getProfileItemByID(profileId);
-
-        if (profile != null) {
-            if (profile.moveToFirst() && profile.getCount() >= 1) {
-                do {
-
-                    kWhPrice = profile.getFloat(3);
-
-                } while (profile.moveToNext());
-            }
-            profile.close();
-        }
-        mDatabaseHelper.close();
 
     }
 
