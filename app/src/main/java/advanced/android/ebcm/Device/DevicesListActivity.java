@@ -88,15 +88,11 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DevicesListActivity.this, ResultGraph.class);
-                intent.putExtra("PROFILE_PARENT",String.valueOf(profileId));
+                intent.putExtra("PROFILE_ID",profileId);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
             }
         });
-
-
-
-
     }
 
 
@@ -197,7 +193,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         }
         if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
-          addDeviceView(data);
+            addDeviceView(data);
         }
         if (requestCode == EDIT_DEVICE_REQ_CODE && resultCode == Activity.RESULT_OK) {
             updateExistingDevice(data);
@@ -269,8 +265,9 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-
-                    createNewDevice(data);
+                    createNewDevice(Integer.parseInt(data.getString(0)),data.getString(1),
+                            data.getInt(2),data.getInt(3),data.getInt(4),
+                            data.getInt(5),data.getInt(7),profileId );
 
                 } while (data.moveToNext());
             }
@@ -280,38 +277,37 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void createNewDevice(Cursor data) {
-        final int id = Integer.parseInt(data.getString(0));
-        final String name = data.getString(1);
-        int quantity = data.getInt(2);
-        int hours = data.getInt(3);
-        int minutes = data.getInt(4);
-        int days = data.getInt(5);
-        int consumption = data.getInt(7);
-        int profileParent = profileId;
-
+    private void createNewDevice(int id, String name, int quantity, int hours, int minutes,
+                                 int days, int consumption, int profileParent ) {
 
         final Device device = new Device(id,name,quantity,hours,minutes,days, consumption, profileParent );
         device.generateDevice(getApplicationContext(),deviceLayout);
+        final Constant animation = new Constant();
+
         device.deviceForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Constant animation = new Constant();
                 animation.startAnimation(v,R.anim.blink,getApplicationContext());
-                animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
+                animation.startAnimation(device.clipDeleteDevice,R.anim.blink,getApplicationContext());
 
-//                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
-//                intent.putExtra("KEY", EDIT_DEVICE);
-//                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
-//                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
-//                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
-//                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getPower()));
-//                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
-//                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
-//                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
-//
-//                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
-//                overridePendingTransition(R.anim.blink, 0);
+                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
+                intent.putExtra("KEY", EDIT_DEVICE);
+                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
+                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
+                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
+                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getPower()));
+                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
+                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
+                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
+
+                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
+                overridePendingTransition(R.anim.blink, 0);
+            }
+        });
+        device.clipDeleteDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animation.startAnimation(device.clipDeleteDevice,R.anim.blink,getApplicationContext());
 
                 Intent intent = new Intent(DevicesListActivity.this, DeleteDeviceActivity.class);
                 intent.putExtra("KEY", DELETE_DEVICE);
@@ -319,38 +315,9 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("DEVICE_NAME", device.getName());
                 startActivityForResult(intent, DELETE_DEVICE_REQ_CODE);
                 overridePendingTransition(R.anim.blink, 0);
-            }
-        });
-
+        }});
         devices.add(device);
-//        devices.add(device);
-//        device.generateDevice(getApplicationContext(), myVerticalLayout);
-//
-//        device.clipDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intent = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
-////                intent.putExtra("PROFILE_NAME", name);
-////                intent.putExtra("PROFILE_ID", Integer.toString(id));
-////                startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
-//                Toast.makeText(DevicesListActivity.this, "Delete Device Clicked!!", Toast.LENGTH_SHORT).show();
-//            }});
-//        device.deviceForm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Constant animation = new Constant();
-//                animation.startAnimation(v,R.anim.blink,getApplicationContext());
-//                animation.startAnimation(device.clipDelete,R.anim.blink,getApplicationContext());
-//
-////                Intent intent = new Intent(DevicesListActivity.this, DevicesListActivity.class);
-////                intent.putExtra("KEY",Constant.PROFILE_DEVICES);
-////                intent.putExtra("PROFILE_ID",Integer.toString(id));
-////                startActivityForResult(intent, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
-//
-//                Toast.makeText(DevicesListActivity.this, "Device clicked!", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
+
         Log.d("deviceCREATE", Integer.toString(device.getId()));
     }
 
@@ -401,33 +368,10 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
 
 
-        final Device device = new Device(max,deviceName,Integer.parseInt(deviceQuantity),
-                Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
-                Integer.parseInt(deviceUsageDays),Integer.parseInt(deviceConsumption), profileId );
-        device.generateDevice(getApplicationContext(),deviceLayout);
-        devices.add(device);
-        device.deviceForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Constant animation = new Constant();
-                animation.startAnimation(v,R.anim.blink,getApplicationContext());
-                animation.startAnimation(device.deviceForm,R.anim.blink,getApplicationContext());
+        createNewDevice(max,deviceName,Integer.parseInt(deviceQuantity),
+                        Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
+                        Integer.parseInt(deviceUsageDays),Integer.parseInt(deviceConsumption), profileId );
 
-                Intent intent = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
-                intent.putExtra("KEY", EDIT_DEVICE);
-                intent.putExtra("DEVICE_ID", String.valueOf(device.getId()));
-                intent.putExtra("DEVICE_NAME", String.valueOf(device.getName()));
-                intent.putExtra("DEVICE_QUANTITY", String.valueOf(device.getQuantity()));
-                intent.putExtra("DEVICE_CONSUMPTION", String.valueOf(device.getPower()));
-                intent.putExtra("DEVICE_USAGE_HOURS", String.valueOf(device.getHours()));
-                intent.putExtra("DEVICE_USAGE_MINUTES", String.valueOf(device.getMinutes()));
-                intent.putExtra("DEVICE_USAGE_DAYS", String.valueOf(device.getDays()));
-
-                startActivityForResult(intent, EDIT_DEVICE_REQ_CODE);
-                overridePendingTransition(R.anim.blink,0);
-                Toast.makeText(DevicesListActivity.this, String.valueOf(device.getId()) + " " + device.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void updateExistingDevice(Intent data) {
@@ -449,16 +393,18 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void deleteDevice(Intent receivedIntent) {
-        for (Device device: devices){
-            if (device.getId() == Integer.parseInt(receivedIntent.getStringExtra("DEVICE_ID"))){
+        if (receivedIntent != null) {
+            for (Device device: devices) {
+                if (device.getId() == Integer.parseInt(receivedIntent.getStringExtra("DEVICE_ID"))) {
 
-                mDatabaseHelper = new DatabaseHelper(getApplicationContext());
-                mDatabaseHelper.deleteDevice(device.getId());
-                mDatabaseHelper.close();
+                    mDatabaseHelper = new DatabaseHelper(getApplicationContext());
+                    mDatabaseHelper.deleteDevice(device.getId());
+                    mDatabaseHelper.close();
 
-                devices.remove(device);
-                deviceLayout.removeView(device.getLayout());
-
+                    devices.remove(device);
+                    deviceLayout.removeView(device.getLayout());
+                    break;
+                }
             }
         }
     }

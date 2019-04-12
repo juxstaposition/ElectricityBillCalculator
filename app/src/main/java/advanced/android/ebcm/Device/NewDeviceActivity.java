@@ -100,19 +100,63 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
             }
             else {
-
                 animation.startAnimation(view,R.anim.blink,getApplicationContext());
                 // request input content
-                String  name = nameInput.getEditText().getText().toString(),
-                consumption = consumptionInput.getEditText().getText().toString(),
-                quantity = quantityInput.getEditText().getText().toString(),
-                usageHours = usageHoursInput.getEditText().getText().toString(),
-                usageMinutes = usageMinutesInput.getEditText().getText().toString(),
-                usageDays = usageDaysInput.getEditText().getText().toString();
+                String name = nameInput.getEditText().getText().toString();
+                String quantity = quantityInput.getEditText().getText().toString();
+                String usageHours = usageHoursInput.getEditText().getText().toString();
+                String consumption = consumptionInput.getEditText().getText().toString();
+                String usageMinutes = usageMinutesInput.getEditText().getText().toString();
+                String usageDays = usageDaysInput.getEditText().getText().toString();
                 Intent returnIntent = new Intent();
 
                 // validation of input parameters
-                boolean validation = validate(name,consumption,quantity,usageHours,usageMinutes,usageDays);
+                boolean validation =true;
+
+                if( name.length() == 0){
+                    validation = sendWarningToast("Insert Device Name!");
+                }
+                if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 ) ){
+                    validation = sendWarningToast("Consumption must be greater than 0!");
+                }
+                if (validation && (quantity.length() == 0 || Integer.parseInt(quantity) < 1 )){
+                    validation = sendWarningToast("At least 1 device must be used!");
+                }
+
+                if (validation && usageHours.length() == 0 && usageMinutes.length() == 0){
+                    validation = sendWarningToast("Usage must be used at least 1 minute!");
+                }
+                else if (validation && (usageHours.length() == 0 || usageMinutes.length() == 0)) {
+
+                    // if hours is empty but minutes is correct, automatically fills  hours
+                    if (usageHours.length() == 0 &&  usageMinutes.length() > 0 ){
+                        if (Integer.parseInt(usageMinutes) > 59 ){
+                            validation = sendWarningToast("Invalid time format");
+                        }
+                        else{
+                            usageHours = "0";
+                        }
+                    }
+                    else if (usageMinutes.length() == 0 &&  usageHours.length() > 0 ) {
+                        if (Integer.parseInt(usageHours) > 24) {
+                            validation = sendWarningToast("Invalid time format");
+                        } else {
+                            usageMinutes = "0";
+                        }
+                    }
+                }
+                else {
+                    if(Integer.parseInt(usageHours) == 24){
+                        usageMinutes = "0";
+                    }
+                    else if (Integer.parseInt(usageMinutes) > 59 || Integer.parseInt(usageHours) > 24) {
+                        validation = sendWarningToast("Invalid time format");
+                    }
+                }
+
+                if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1) ){
+                    validation = sendWarningToast("Must be used at least 1 day!");
+                }
 
                 if (validation){
                     Toast.makeText(NewDeviceActivity.this, "New Device Added!", Toast.LENGTH_LONG).show();
@@ -132,7 +176,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     finish();
                 }
             }
-        }
+        }// end if button item add
     }
 
     @Override
@@ -193,59 +237,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         finish();
 
     }
-
-    /**
-     *
-     * @param name          Name of the device from user input
-     * @param consumption   Consumption of the device from user input
-     * @param quantity      Quantity of the devices from user input
-     * @param usageHours    Hours from user input
-     * @param usageMinutes  Minutes from user input
-     * @param usageDays     Days fom user input
-     * @return returns boolean result of validation
-     */
-    private boolean validate(String name, String consumption, String quantity, String usageHours, String usageMinutes, String usageDays){
-        boolean validation = true;
-
-        if( name.length() == 0){
-            validation = sendWarningToast("Insert Device Name!");
-        }
-        if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 ) ){
-            validation = sendWarningToast("Consumption must be greater than 0!");
-        }
-        if (validation && (quantity.length() == 0 || Integer.parseInt(quantity) < 1 )){
-            validation = sendWarningToast("At least 1 device must be used!");
-        }
-
-        // if hours is empty but minutes is correct, automatically fills  hours
-        if (validation && usageHours.length() == 0 &&  usageMinutes.length() > 0 ){
-            if (Integer.parseInt(usageMinutes) > 59 ){
-                validation = sendWarningToast("Invalid time format");
-            }
-            else{
-                usageHours = "0";
-            }
-        }
-
-
-        if (validation && (usageHours.length() == 0 || Integer.parseInt(usageHours) < 1 &&
-                (usageMinutes.length() == 0 || Integer.parseInt(usageMinutes) < 1)) ){
-            validation = sendWarningToast("Usage must be used at least 1 minute!");
-        }
-        //            if (validation && (usageMinutes.length() == 0 || Integer.parseInt(usageMinutes) < 1)) {
-        //                validation = sendWarningToast("Must be used at least 1 minute!");
-        //            }
-        if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1) ){
-            validation = sendWarningToast("Must be used at least 1 day!");
-        }
-
-                /*
-                if (validation && Integer.parseInt(usageHours) >= 24 || Integer.parseInt(usageMinutes) >= 59 ||
-                                  (Integer.parseInt(usageHours) == 24 || Integer.parseInt(usageMinutes) < 0  ) ){
-                    validation = sendWarningToast("Invalid time format");
-                }*/
-        return validation;
-    }// end validate
 
     /**
      * @param message   Message to be displayed
