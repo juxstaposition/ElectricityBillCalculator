@@ -407,6 +407,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         }
+
     }
 
 }
