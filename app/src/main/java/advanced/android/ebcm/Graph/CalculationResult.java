@@ -5,15 +5,15 @@ public class CalculationResult implements Comparable {
     private String itemName;
     private double power;
     private int quantity;
-    private double usageTime;
+    private int usageTime;
     private int usageDays;
     private double results;
 
-    public CalculationResult(String itemName, double power, int quantity, double usageTime, int usageDays) {
+    public CalculationResult(String itemName, double power, int quantity, int hours, int minutes, int usageDays) {
         this.itemName = itemName;
         this.power = power;
         this.quantity = quantity;
-        this.usageTime = usageTime;
+        this.usageTime = (hours*60)+ minutes;
         this.usageDays = usageDays;
         this.results = calculateResults();
     }
@@ -71,7 +71,7 @@ public class CalculationResult implements Comparable {
         return usageTime;
     }
 
-    public void setUsageTime(double usageTime) {
+    public void setUsageTime(int usageTime) {
         this.usageTime = usageTime;
     }
 

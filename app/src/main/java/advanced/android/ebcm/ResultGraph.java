@@ -27,6 +27,8 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
     GraphView graphView;
     ArrayList<CalculationResult> results;
+    ArrayList<CalculationResult> resultList;
+
     ArrayList<Device> devicesList;
     double maxResult;
     double kWhPrice;
@@ -42,6 +44,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         //used to fill the graph
         results = loadData();
+        resultList = new ArrayList<>();
 
         setContentView(R.layout.activity_result_graph);
         GraphView graphView = findViewById(R.id.graphView);
@@ -162,26 +165,29 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private ArrayList<CalculationResult> loadData() {
-
-
-//        Cursor devices = mDatabaseHelper.getDeviceData(profileId);
+        resultList = new ArrayList<>();
 
         getProfileCost();
         getDevices();
 
+        for (Device device : devicesList ) {
+            resultList.add(new CalculationResult(device.getName(), device.getPower(),device.getQuantity(),
+                    device.getHours(),device.getMinutes(), device.getDays()));
+        }
 
-
-        ArrayList<CalculationResult> resultList = new ArrayList<>();
-        resultList.add(new CalculationResult("Lamps", 60.0, 4, 4, 16));
-        resultList.add(new CalculationResult("Coffee Machine", 1000.0, 1, .5, 30));
-        resultList.add(new CalculationResult("TV", 500.0, 1, 6, 20));
-        resultList.add(new CalculationResult("Vacuum Cleaner", 900.0, 1, 2, 6));
+        //        resultList.add(new CalculationResult("Lamps", 60.0, 4, 4, 16));
+//        resultList.add(new CalculationResult("Coffee Machine", 1000.0, 1, .5, 30));
+//        resultList.add(new CalculationResult("TV", 500.0, 1, 6, 20));
+//        resultList.add(new CalculationResult("Vacuum Cleaner", 900.0, 1, 2, 6));
         return resultList;
     }
+
 
     private void getDevices() {
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor devices = mDatabaseHelper.getDeviceData(profileId);
+        devicesList = new ArrayList<>();
+
 
         if (devices != null) {
             if (devices.moveToFirst() && devices.getCount() >= 1) {
