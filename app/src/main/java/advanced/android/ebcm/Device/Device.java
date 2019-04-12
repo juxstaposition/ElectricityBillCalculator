@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class Device {
     private Integer profile_parent;
 
     public LinearLayout deviceForm;
-    public ImageView clipDelete;
+    public ImageView clipDeleteDevice;
     public CoordinatorLayout supportLayout;
 
 
@@ -113,8 +114,8 @@ public class Device {
         this.devicePower.setText(displayConsumption);
     }
 
-    public LinearLayout getLayout() {
-        return deviceForm;
+    public CoordinatorLayout getLayout() {
+        return supportLayout;
     }
 
     public Integer getProfile_parent() {
@@ -129,14 +130,14 @@ public class Device {
     public void generateDevice(final Context context, LinearLayout deviceLayout){
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-
-        String titlesFont = "sans-serif-black";
-        int titlesTextSize = 16;
-        String descriptionsFont = "serif-monospace";
-        int descriptionsTextSize = 22;
-
         int screenWidth = dm.widthPixels;
         int colWidth = (screenWidth - convertDpToPx(18*2,dm) ) / 6;
+
+        String titlesFont = "sans-serif-black";
+        int titlesTextSize = 14;
+        String descriptionsFont = "serif-monospace";
+        int descriptionsTextSize = 20;
+
 
 
         // Instantiation of base linear layout for device panel
@@ -171,17 +172,17 @@ public class Device {
 
 
 
-        /*supportLayout = new CoordinatorLayout(context);
+        supportLayout = new CoordinatorLayout(context);
         supportLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT,
                 CoordinatorLayout.LayoutParams.MATCH_PARENT));
-        clipDelete = new ImageView(
-                new ContextThemeWrapper(context, R.style.DeleteClipArt),null,0
-        );
+
         CoordinatorLayout.LayoutParams lllp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT,
                 CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-5,dm),convertDpToPx(-5,dm),convertDpToPx(0,dm));
+        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-4,dm),convertDpToPx(-9,dm),convertDpToPx(0,dm));
         lllp.gravity = Gravity.RIGHT;
-        clipDelete.setLayoutParams(lllp);*/
+        clipDeleteDevice = new ImageView(context);
+        clipDeleteDevice.setBackgroundResource(R.drawable.delete_button_clipart);
+        clipDeleteDevice.setLayoutParams(lllp);
 
 
         LinearLayout secondCol = generatedDescriptionColumn(context,colWidth);
@@ -207,10 +208,10 @@ public class Device {
         deviceForm.addView(thirdCol);
         deviceForm.addView(fourthCol);
 
-        //supportLayout.addView(deviceForm);
-        //supportLayout.addView(clipDelete);
+        supportLayout.addView(deviceForm);
+        supportLayout.addView(clipDeleteDevice);
 
-        deviceLayout.addView(deviceForm);
+        deviceLayout.addView(supportLayout);
     }
 
     private LinearLayout generatedDescriptionColumn(Context context,int widthSize) {
@@ -222,7 +223,7 @@ public class Device {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        lp.setMargins(convertDpToPx(0,dm),0,0,0);
+        lp.setMargins(convertDpToPx(5,dm),5,0,0);
 
         column.setLayoutParams(lp);
 

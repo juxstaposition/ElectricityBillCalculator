@@ -41,7 +41,7 @@
                   android:screenOrientation="portrait"
         />
         <activity android:name=".Device.DeleteDeviceActivity"
-                  android:theme="@style/AppTheme.NoActionBar"
+                  android:theme="@style/AppTheme.InputPopUpStyle"
         />
         <activity
                 android:name=".MainActivity"
