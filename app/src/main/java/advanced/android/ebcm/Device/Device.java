@@ -138,9 +138,18 @@ public class Device {
         int colWidth = (screenWidth - convertDpToPx(18*2,dm) ) / 6;
 
         String titlesFont = "sans-serif-black";
-        int titlesTextSize = 14;
+        int titlesTextSize = 12;
         String descriptionsFont = "serif-monospace";
-        int descriptionsTextSize = 20;
+        int descriptionsTextSize = 18;
+
+        if (screenWidth > 700 && screenWidth < 1200){
+            titlesTextSize = 14;
+            descriptionsTextSize = 20;
+        }
+        else if (screenWidth >= 1200){
+            titlesTextSize = 18;
+            descriptionsTextSize = 24;
+        }
 
 
 
@@ -157,7 +166,7 @@ public class Device {
         // needs to be done where object is instantiated
 
         // Panel is made of linear layouts, first line contains titles
-        LinearLayout firstCol = generatedDescriptionColumn(context,colWidth*3);
+        LinearLayout firstCol = generatedDescriptionColumn(context,colWidth*5/2);
 
         // Creating new text component for title
         TextView deviceTitle = createTextView("Name",context, titlesFont,titlesTextSize);
@@ -182,26 +191,26 @@ public class Device {
 
         CoordinatorLayout.LayoutParams lllp = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT,
                 CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-4,dm),convertDpToPx(-9,dm),convertDpToPx(0,dm));
+        lllp.setMargins(convertDpToPx(0,dm),convertDpToPx(-8,dm),convertDpToPx(-25/2,dm),convertDpToPx(0,dm));
         lllp.gravity = Gravity.RIGHT;
         clipDeleteDevice = new ImageView(context);
         clipDeleteDevice.setBackgroundResource(R.drawable.delete_button_clipart);
         clipDeleteDevice.setLayoutParams(lllp);
 
 
-        LinearLayout secondCol = generatedDescriptionColumn(context,colWidth);
+        LinearLayout secondCol = generatedDescriptionColumn(context,colWidth*29/25);
         TextView powerTitle = createTextView("Power",context,titlesFont,titlesTextSize);
         secondCol.addView(powerTitle);
         devicePower = createTextView(Integer.toString(power), context, descriptionsFont, descriptionsTextSize);
         secondCol.addView(devicePower);
 
-        LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth);
+        LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth*29/25);
         TextView timeTitle = createTextView("Time",context,titlesFont,titlesTextSize);
         thirdCol.addView(timeTitle);
         deviceTime = createTextView(hours + ":" + minutes, context, descriptionsFont, descriptionsTextSize);
         thirdCol.addView(deviceTime);
 
-        LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth);
+        LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth*29/25);
         TextView daysTitle = createTextView("Days", context,titlesFont,titlesTextSize);
         fourthCol.addView(daysTitle);
         deviceDays = createTextView(Integer.toString(days), context, descriptionsFont, descriptionsTextSize);

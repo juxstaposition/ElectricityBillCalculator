@@ -117,7 +117,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     validation = sendWarningToast("Insert Device Name!");
                 }
                 if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 ) ){
-                    validation = sendWarningToast("Consumption must be greater than 0!");
+                    validation = sendWarningToast("Power must be greater than 0!");
                 }
                 if (validation && (quantity.length() == 0 || Integer.parseInt(quantity) < 1 )){
                     validation = sendWarningToast("At least 1 device must be used!");
