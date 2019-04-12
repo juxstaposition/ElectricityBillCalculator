@@ -3,24 +3,25 @@ package advanced.android.ebcm.Graph;
 public class CalculationResult implements Comparable {
 
     private String itemName;
-    private double power;
+    private int power;
     private int quantity;
-    private int usageTime;
+    private float usageTime;
     private int usageDays;
-    private double results;
+    private float results;
 
-    public CalculationResult(String itemName, double power, int quantity, int hours, int minutes, int usageDays) {
+
+    public CalculationResult(String itemName, int power, int quantity, int hours, int minutes, int usageDays) {
         this.itemName = itemName;
         this.power = power;
         this.quantity = quantity;
-        this.usageTime = (hours*60)+ minutes;
+        this.usageTime = (float) ((hours*60)+ minutes)/60;
         this.usageDays = usageDays;
         this.results = calculateResults();
     }
 
 
-    private double calculateResults() {
-        double results;
+    private float calculateResults() {
+        float results;
         results = this.power * this.quantity * this.usageTime * this.usageDays;//w * h
         return results / 1000;
     }
@@ -31,11 +32,11 @@ public class CalculationResult implements Comparable {
         return (int) Math.round(c.results - this.results);
     }
 
-    public double getResults() {
+    public float getResults() {
         return results;
     }
 
-    public double getUsageTimeTotal() {
+    public float getUsageTimeTotal() {
         if (this.usageDays > 0) {
             return this.usageTime * this.usageDays;
         } else {
@@ -51,11 +52,11 @@ public class CalculationResult implements Comparable {
         this.itemName = itemName;
     }
 
-    public double getPower() {
+    public float getPower() {
         return power;
     }
 
-    public void setPower(double power) {
+    public void setPower(int power) {
         this.power = power;
     }
 
@@ -67,11 +68,11 @@ public class CalculationResult implements Comparable {
         this.quantity = quantity;
     }
 
-    public double getUsageTime() {
+    public float getUsageTime() {
         return usageTime;
     }
 
-    public void setUsageTime(int usageTime) {
+    public void setUsageTime(float usageTime) {
         this.usageTime = usageTime;
     }
 

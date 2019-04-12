@@ -19,6 +19,7 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -139,8 +140,11 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         ArrayList<String> totalDetailsList = new ArrayList<>();
 
         for (CalculationResult result : results) {
+
+            BigDecimal timeResult = round(result.getUsageTimeTotal(), 2);
+
             String itemDetail = result.getItemName() + " " + result.getResults() + "Units\n" +
-                    result.getUsageTimeTotal() + " hours, " + result.getPower() + " W";
+                    timeResult + " hours/minutes, " + result.getPower() + " W";
             itemDetailsList.add(itemDetail);
         }
         final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
@@ -271,5 +275,11 @@ return false;
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         Log.i("RESULTGRAPH", "onFling X: " + e1.getX() + ", Y: " + e2.getY());
         return false;
+    }
+
+    public static BigDecimal round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd;
     }
 }

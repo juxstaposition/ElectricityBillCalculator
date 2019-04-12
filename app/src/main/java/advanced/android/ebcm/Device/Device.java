@@ -103,10 +103,6 @@ public class Device {
         this.deviceDays.setText(newDays);
     }
 
-    public void setDeviceName(String name, int quantity){
-
-    }
-
     public Integer getPower() {
         return power;
     }
