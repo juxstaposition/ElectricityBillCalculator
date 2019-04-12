@@ -79,20 +79,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         });
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(getDataPoints());
-//        new DataPoint(0, 0),
-//                new DataPoint(1, 700),
-//                new DataPoint(2, 100),
-//                new DataPoint(3, 200),
-//                new DataPoint(4, 90),
-//                new DataPoint(5, 170),
-//                new DataPoint(6, 7000),
-//                new DataPoint(7, 0),
-//                new DataPoint(8, 700),
-//                new DataPoint(9, 300),
-//                new DataPoint(10, 2500),
-//                new DataPoint(11, 25),
-//                new DataPoint(12, 17060),
-//                new DataPoint(13, 700),
+
         graphView.getViewport().setMaxY(maxResult * 1.2);
 
         graphView.addSeries(series);
@@ -103,10 +90,11 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
             public void onTap(Series series, DataPointInterface dataPoint) {
                 int x = (int) dataPoint.getX();
                 CalculationResult result = results.get(x);
-                //Log.i(" RESULTGRAPH", "title: " +result.getItemName());
-                String expenditure = String.format("%.2f", result.getResults());
-                String masg = "Device name: " + result.getItemName() + "\n\t" + result.getPower() + " W\n\t" + expenditure + " €";
-                Toast toast = Toast.makeText(ResultGraph.this, masg, Toast.LENGTH_LONG);
+
+                BigDecimal expenditure = round(result.getResults(), 2);
+                String message = "Device name: " + result.getItemName() + "\n\t" + "Power: " + result.getPower() +
+                                " W\n\t"+ "Consumption total: " + expenditure + " kWh";
+                Toast toast = Toast.makeText(ResultGraph.this, message, Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.TOP | Gravity.START, 120, 40);
                 toast.show();
             }
@@ -179,10 +167,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
                     device.getHours(),device.getMinutes(), device.getDays()));
         }
 
-        //        resultList.add(new CalculationResult("Lamps", 60.0, 4, 4, 16));
-//        resultList.add(new CalculationResult("Coffee Machine", 1000.0, 1, .5, 30));
-//        resultList.add(new CalculationResult("TV", 500.0, 1, 6, 20));
-//        resultList.add(new CalculationResult("Vacuum Cleaner", 900.0, 1, 2, 6));
         return resultList;
     }
 
@@ -191,7 +175,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor devices = mDatabaseHelper.getDeviceData(profileId);
         devicesList = new ArrayList<>();
-
 
         if (devices != null) {
             if (devices.moveToFirst() && devices.getCount() >= 1) {
