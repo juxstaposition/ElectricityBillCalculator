@@ -3,7 +3,6 @@ package advanced.android.ebcm;
 import advanced.android.ebcm.Device.Device;
 import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.Graph.ItemDetailsAdapter;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -19,17 +18,17 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
 public class ResultGraph extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
-    GraphView graphView;
     ArrayList<CalculationResult> results;
     ArrayList<CalculationResult> resultList;
-
     ArrayList<Device> devicesList;
+    GraphView graphView;
     double maxResult;
     double kWhPrice;
     int profileId;
@@ -40,127 +39,30 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         super.onCreate(savedInstanceState);
 
         profileId = getIntent().getIntExtra("PROFILE_ID", -1);
-        Toast.makeText(this, ""+profileId, Toast.LENGTH_LONG).show();
+
+        if (profileId == 0 || profileId == -1) {
+            finish();
+        }
 
         //used to fill the graph
         results = loadData();
-        resultList = new ArrayList<>();
 
-        setContentView(R.layout.activity_result_graph);
-        GraphView graphView = findViewById(R.id.graphView);
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(8);
-
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(0);
-//        graphView.getViewport().setMaxY(400);
-//        graphView.setHorizontalScrollBarEnabled(true);
-
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setScrollableY(true);
-
-        graphView.getViewport().setScalable(true);
-        graphView.getViewport().setScalableY(true);
-
-
-
-        graphView.getGridLabelRenderer(). setLabelFormatter(new DefaultLabelFormatter() {
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX) {
-                    return super.formatLabel(value, isValueX);
-                } else {
-                    return super.formatLabel(value, isValueX) + "W";
-                }
-            }
-
-        });
-
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(getDataPoints());
-//        new DataPoint(0, 0),
-//                new DataPoint(1, 700),
-//                new DataPoint(2, 100),
-//                new DataPoint(3, 200),
-//                new DataPoint(4, 90),
-//                new DataPoint(5, 170),
-//                new DataPoint(6, 7000),
-//                new DataPoint(7, 0),
-//                new DataPoint(8, 700),
-//                new DataPoint(9, 300),
-//                new DataPoint(10, 2500),
-//                new DataPoint(11, 25),
-//                new DataPoint(12, 17060),
-//                new DataPoint(13, 700),
-        graphView.getViewport().setMaxY(maxResult * 1.2);
-
-        graphView.addSeries(series);
-        series.setAnimated(true);
-
-        series.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                int x = (int) dataPoint.getX();
-                CalculationResult result = results.get(x);
-                //Log.i(" RESULTGRAPH", "title: " +result.getItemName());
-                String expenditure = String.format("%.2f", result.getResults());
-                String masg = "Device name: " + result.getItemName() + "\n\t" + result.getPower() + " W\n\t" + expenditure + " €";
-                Toast toast = Toast.makeText(ResultGraph.this, masg, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.TOP | Gravity.START, 120, 40);
-                toast.show();
-            }
-        });
-
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-//                return getColor(data.getY());
-                return getColor(data.getX());
-//                if (0 <= data.getY() && data.getY() < 1500)  {
-//
-//                    return Color.GREEN;
-//
-//                    } else if(1500<= data.getY() && data.getY()<8000){
-//
-//                    return Color.BLUE;
-//                } else {
-//                    return Color.RED;
-//                }
-            }
-        });
-        series.setSpacing(50);
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.BLACK);
-
-        ListView itemDetailsView = findViewById(R.id.item_details);
-        ListView totalDetailsView = findViewById(R.id.total_details);
-
-        ArrayList<String> itemDetailsList = new ArrayList<>();
-        ArrayList<String> totalDetailsList = new ArrayList<>();
-
-        for (CalculationResult result : results) {
-            String itemDetail = result.getItemName() + " " + result.getResults() + "Units\n" +
-                    result.getUsageTimeTotal() + " hours, " + result.getPower() + " W";
-            itemDetailsList.add(itemDetail);
-        }
-        final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
-//        final ArrayAdapter<String> aa =
-//                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itemDetailsList);
-        itemDetailsView.setAdapter(ida);
-
-
-    }
+        drawGraph();
+        
+    } // end of onCreate
 
     private DataPoint[] getDataPoints() {
         Collections.sort(results);
         DataPoint[] dataPoints = new DataPoint[results.size()];
+
         for (int i = 0; i < dataPoints.length; i++) {
             double result = results.get(i).getResults();
             if (result > maxResult) {
                 maxResult = result;
             }
-            dataPoints[i] = new DataPoint(i, result);
+            dataPoints[i] = new DataPoint(i+1, result);
         }
+
         return dataPoints;
     }
 
@@ -175,10 +77,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
                     device.getHours(),device.getMinutes(), device.getDays()));
         }
 
-        //        resultList.add(new CalculationResult("Lamps", 60.0, 4, 4, 16));
-//        resultList.add(new CalculationResult("Coffee Machine", 1000.0, 1, .5, 30));
-//        resultList.add(new CalculationResult("TV", 500.0, 1, 6, 20));
-//        resultList.add(new CalculationResult("Vacuum Cleaner", 900.0, 1, 2, 6));
         return resultList;
     }
 
@@ -187,7 +85,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor devices = mDatabaseHelper.getDeviceData(profileId);
         devicesList = new ArrayList<>();
-
+        graphView = findViewById(R.id.graphView);
 
         if (devices != null) {
             if (devices.moveToFirst() && devices.getCount() >= 1) {
@@ -219,6 +117,93 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
             profile.close();
         }
         mDatabaseHelper.close();
+
+    }
+
+    void drawGraph() {
+        setContentView(R.layout.activity_result_graph);
+        graphView = findViewById(R.id.graphView);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(0);
+        if (results.size() != 0){
+            graphView.getViewport().setMaxX(results.size()+1);
+        } else {
+            graphView.getViewport().setMaxX(1);
+        }
+
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setMinY(0);
+//        graphView.getViewport().setMaxY(400);
+//        graphView.setHorizontalScrollBarEnabled(true);
+
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScrollableY(true);
+
+        graphView.getViewport().setScalable(true);
+        graphView.getViewport().setScalableY(true);
+
+
+
+        graphView.getGridLabelRenderer(). setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    return super.formatLabel(value, isValueX);
+                } else {
+                    return super.formatLabel(value, isValueX) + "W";
+                }
+            }
+
+        });
+
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(getDataPoints());
+
+        graphView.getViewport().setMaxY(maxResult * 1.2);
+
+        graphView.addSeries(series);
+        series.setAnimated(true);
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                int x = (int) dataPoint.getX();
+                CalculationResult result = results.get(x-1);
+
+                BigDecimal expenditure = round(result.getResults(), 2);
+                String message = "Device name: " + result.getItemName() + "\n\t" + "Power: " + result.getPower() +
+                        " W\n\t"+ "Consumption total: " + expenditure + " kWh";
+
+                Toast toast = Toast.makeText(ResultGraph.this, message, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP | Gravity.START, 120, 40);
+                toast.show();
+            }
+        });
+
+        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                return getColor(data.getX());
+            }
+        });
+        series.setSpacing(50);
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.BLACK);
+
+        ListView itemDetailsView = findViewById(R.id.item_details);
+
+//        ArrayList<String> itemDetailsList = new ArrayList<>();
+
+//        for (CalculationResult result : results) {
+//
+//            BigDecimal timeResult = round(result.getUsageTimeTotal(), 2);
+//
+//            String itemDetail = result.getItemName() + " " + result.getResults() + "Units\n" +
+//                    timeResult + " hours/minutes, " + result.getPower() + " W";
+////            itemDetailsList.add(itemDetail);
+//        }
+        final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
+        itemDetailsView.setAdapter(ida);
+
 
     }
 
@@ -271,5 +256,11 @@ return false;
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         Log.i("RESULTGRAPH", "onFling X: " + e1.getX() + ", Y: " + e2.getY());
         return false;
+    }
+
+    public static BigDecimal round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd;
     }
 }

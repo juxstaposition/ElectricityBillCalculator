@@ -1,7 +1,7 @@
 package advanced.android.ebcm.Graph;
 
-import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.R;
+import advanced.android.ebcm.ResultGraph;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import org.jetbrains.annotations.NotNull;
 
-//import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
@@ -40,19 +40,17 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
         TextView time = convertView.findViewById(R.id.item_total_time);
         TextView power = convertView.findViewById(R.id.item_power);
 
-//        if (pickItems){
-//            name.setText(result.getItemName());
-//            power.setVisibility(View.GONE);
-//            time.setVisibility(View.GONE);
-//            double Power = result.getPower();
-//            DecimalFormat numberFormat = new DecimalFormat("#");
-//            units.setText(numberFormat.format(Power) + " W");
-//        } else {
+
             name.setText(result.getItemName());
-            units.setText(Double.toString(result.getResults()) + " kWh");
-            time.setText(Double.toString(result.getUsageTimeTotal()) + " hours");
-            power.setText(Double.toString(result.getPower()) + " W");
-       // }
+            units.setText(ResultGraph.round(result.getResults(),2) + " kWh");
+
+            int hours = (int)(result.getUsageTimeTotal() / 60);
+            float minutes = (result.getUsageTimeTotal() / 60)%1;
+            BigDecimal usageTotal = ResultGraph.round((float)hours + minutes, 2);
+
+            time.setText(usageTotal + " hours/minutes");
+
+            power.setText(result.getPower() + " W");
 
 
 //        return super.getView(position, convertView, parent);

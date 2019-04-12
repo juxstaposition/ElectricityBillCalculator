@@ -16,6 +16,7 @@
     <string name="price_title">Price</string>
     <string name="result_graph_title">CONSUMPTION OF ELECTRICITY GRAPH (WATTS)</string>
     <string name="highest_consumption">Highest Consumption</string>
+    <string name="cost_info">Cost Information</string>
 
     <!--hints-->
     <string name="description">Description</string>

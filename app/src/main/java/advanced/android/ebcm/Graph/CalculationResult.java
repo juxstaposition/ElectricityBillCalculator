@@ -3,26 +3,30 @@ package advanced.android.ebcm.Graph;
 public class CalculationResult implements Comparable {
 
     private String itemName;
-    private double power;
+    private int power;
     private int quantity;
-    private int usageTime;
+    private float usageTimeMinutesTotal;
     private int usageDays;
-    private double results;
+    private float results;
 
-    public CalculationResult(String itemName, double power, int quantity, int hours, int minutes, int usageDays) {
+
+    public CalculationResult(String itemName, int power, int quantity, int hours, int minutes, int usageDays) {
         this.itemName = itemName;
         this.power = power;
         this.quantity = quantity;
-        this.usageTime = (hours*60)+ minutes;
+        this.usageTimeMinutesTotal = (float) (hours*60) + (float) (minutes);
         this.usageDays = usageDays;
         this.results = calculateResults();
     }
 
 
-    private double calculateResults() {
-        double results;
-        results = this.power * this.quantity * this.usageTime * this.usageDays;//w * h
-        return results / 1000;
+    private float calculateResults() {
+        float results;
+
+        float hoursTotal = (this.usageTimeMinutesTotal * this.usageDays)/60;
+
+        results =  ((float) this.power / 1000) * this.quantity * hoursTotal;//w * h
+        return results ;
     }
 
     @Override
@@ -31,15 +35,15 @@ public class CalculationResult implements Comparable {
         return (int) Math.round(c.results - this.results);
     }
 
-    public double getResults() {
+    public float getResults() {
         return results;
     }
 
-    public double getUsageTimeTotal() {
+    public float getUsageTimeTotal() {
         if (this.usageDays > 0) {
-            return this.usageTime * this.usageDays;
+            return this.usageTimeMinutesTotal * this.usageDays;
         } else {
-            return this.usageTime;
+            return this.usageTimeMinutesTotal;
         }
     }
 
@@ -51,11 +55,11 @@ public class CalculationResult implements Comparable {
         this.itemName = itemName;
     }
 
-    public double getPower() {
+    public float getPower() {
         return power;
     }
 
-    public void setPower(double power) {
+    public void setPower(int power) {
         this.power = power;
     }
 
@@ -67,12 +71,12 @@ public class CalculationResult implements Comparable {
         this.quantity = quantity;
     }
 
-    public double getUsageTime() {
-        return usageTime;
+    public float getUsageTimeMinutesTotal() {
+        return usageTimeMinutesTotal;
     }
 
-    public void setUsageTime(int usageTime) {
-        this.usageTime = usageTime;
+    public void setUsageTimeMinutesTotal(float usageTimeMinutesTotal) {
+        this.usageTimeMinutesTotal = usageTimeMinutesTotal;
     }
 
     public int getUsageDays() {
