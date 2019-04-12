@@ -1,7 +1,10 @@
 package advanced.android.ebcm;
 
+import advanced.android.ebcm.Device.Device;
 import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.Graph.ItemDetailsAdapter;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,14 +27,22 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
     GraphView graphView;
     ArrayList<CalculationResult> results;
-    double maxResult = -1.0;
-    double kWhPrice = -1;
+    ArrayList<Device> devicesList;
+    double maxResult;
+    double kWhPrice;
+    int profileId;
+    DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        profileId = getIntent().getIntExtra("PROFILE_ID", -1);
+        Toast.makeText(this, ""+profileId, Toast.LENGTH_LONG).show();
+
+        //used to fill the graph
         results = loadData();
+
         setContentView(R.layout.activity_result_graph);
         GraphView graphView = findViewById(R.id.graphView);
         graphView.getViewport().setXAxisBoundsManual(true);
@@ -151,13 +162,58 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private ArrayList<CalculationResult> loadData() {
-        kWhPrice = 0.25;
+
+
+//        Cursor devices = mDatabaseHelper.getDeviceData(profileId);
+
+        getProfileCost();
+        getDevices();
+
+
+
         ArrayList<CalculationResult> resultList = new ArrayList<>();
         resultList.add(new CalculationResult("Lamps", 60.0, 4, 4, 16));
         resultList.add(new CalculationResult("Coffee Machine", 1000.0, 1, .5, 30));
         resultList.add(new CalculationResult("TV", 500.0, 1, 6, 20));
         resultList.add(new CalculationResult("Vacuum Cleaner", 900.0, 1, 2, 6));
         return resultList;
+    }
+
+    private void getDevices() {
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor devices = mDatabaseHelper.getDeviceData(profileId);
+
+        if (devices != null) {
+            if (devices.moveToFirst() && devices.getCount() >= 1) {
+                do {
+
+                    devicesList.add(new Device(devices.getInt(0),devices.getString(1),devices.getInt(2),
+                                                devices.getInt(3),devices.getInt(4),devices.getInt(5),
+                            devices.getInt(7), devices.getInt(8)));
+
+                } while (devices.moveToNext());
+            }
+            devices.close();
+        }
+        mDatabaseHelper.close();
+    }
+
+    private void getProfileCost() {
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor profile = mDatabaseHelper.getProfileItemByID(profileId);
+
+        if (profile != null) {
+            if (profile.moveToFirst() && profile.getCount() >= 1) {
+                do {
+
+                    kWhPrice = profile.getFloat(3);
+
+                } while (profile.moveToNext());
+            }
+            profile.close();
+        }
+        mDatabaseHelper.close();
+
     }
 
     private int getColor(double x) {

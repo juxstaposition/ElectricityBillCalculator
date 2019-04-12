@@ -18,11 +18,9 @@ public class CalculationResult implements Comparable {
         this.results = calculateResults();
     }
 
-    public CalculationResult() {
-    }
 
     private double calculateResults() {
-        double results = -1.0;
+        double results;
         results = this.power * this.quantity * this.usageTime * this.usageDays;//w * h
         return results / 1000;
     }
