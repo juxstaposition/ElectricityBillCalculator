@@ -2,6 +2,7 @@ package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
+import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.PickItemList;
 import advanced.android.ebcm.R;
 import android.app.Activity;
@@ -14,6 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.CacheRequest;
 
 import static advanced.android.ebcm.Constant.EDIT_DEVICE;
 
@@ -24,6 +29,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
     int profileParent, deviceId;
     Button btnUpdate;
     TextView title;
+    private CalculationResult pickDevice;
 
 
     @Override
@@ -184,7 +190,14 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         Bundle mBundle = data.getExtras();
         if (requestCode == Constant.PICK_AN_ITEM_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            nameInput.getEditText().setText(mBundle.getString("NAME"));
+            try {
+                JSONObject jsonObj = new JSONObject(mBundle.getString("NAME"));
+                nameInput.getEditText().setText(jsonObj.get("itemName").toString());
+                consumptionInput.getEditText().setText(jsonObj.get("power").toString());
+
+            } catch (JSONException e) {
+                Log.e("JSONERROR", e.getLocalizedMessage());
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import advanced.android.ebcm.Graph.CalculationResult;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +16,15 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PickItemList extends AppCompatActivity implements View.OnClickListener {
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<CalculationResult>> listDataChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +83,19 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
                                         int groupPosition, int childPosition, long id) {
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("NAME",listDataChild.get( listDataHeader.get(groupPosition))
-                        .get( childPosition) );
+                CalculationResult extra = listDataChild.get( listDataHeader.get(groupPosition)).get( childPosition);
+                JSONObject jsonObjectExtra = new JSONObject();
+                try {
+                    jsonObjectExtra.put("itemName", extra.getItemName());
+                    jsonObjectExtra.put("power", extra.getPower());
+                    jsonObjectExtra.put("quantity", 1);
+                    jsonObjectExtra.put("usageTimeMinutesTotal", 1);
+                    jsonObjectExtra.put("usageDays", 1);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                returnIntent.putExtra("NAME", jsonObjectExtra.toString());
 
                 Toast.makeText(
                         getApplicationContext(),
@@ -129,7 +143,7 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
      */
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<CalculationResult>>();
 
         // Adding child data
         listDataHeader.add("Lamps");
@@ -137,17 +151,22 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
         listDataHeader.add("Living Room");
 
         // Adding child data
-        List<String> lamps = new ArrayList<String>();
-        lamps.add("Light bulb 40W");
-        lamps.add("Light bulb 60W");
+        List<CalculationResult> lamps = new ArrayList<>();
+        lamps.add(new CalculationResult("Light Bulb", 40,1, 1, 1, 1));
+        lamps.add(new CalculationResult("Light Bulb", 60,1, 1, 1, 1));
+//        lamps.add("Light bulb 40W");
+//        lamps.add("Light bulb 60W");
 
-        List<String> kitchenAppliances = new ArrayList<String>();
-        kitchenAppliances.add("Refrigerator 1000W");
-        kitchenAppliances.add("Micro Oven 500W");
+        List<CalculationResult> kitchenAppliances = new ArrayList<>();
+        kitchenAppliances.add(new CalculationResult("Refrigerator", 1000,1, 1, 1, 1));
+        kitchenAppliances.add(new CalculationResult("Micro Wave Oven", 500,1, 1, 1, 1));
+//        kitchenAppliances.add("Refrigerator 1000W");
+//        kitchenAppliances.add("Micro Oven 500W");
 
 
-        List<String> livingRoom = new ArrayList<String>();
-        livingRoom.add("TV");
+        List<CalculationResult> livingRoom = new ArrayList<>();
+        //livingRoom.add("TV");
+        livingRoom.add(new CalculationResult("Micro Wave Oven", 500,1, 1, 1, 1));
 
 
 

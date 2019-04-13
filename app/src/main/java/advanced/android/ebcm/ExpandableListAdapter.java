@@ -1,8 +1,10 @@
 package advanced.android.ebcm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import advanced.android.ebcm.Graph.CalculationResult;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -16,13 +18,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<CalculationResult>> _listDataChild;
+    //private HashMap<String, List<CalculationResult>> _listData;
+
+   // public ExpandableListAdapter(Context context, List<String> listDataHeader,
+   //HashMap<String, List<String>> listChildData) {
+      //  this._context = context;
+    //    this._listDataHeader = listDataHeader;
+    //    this._listDataChild = listChildData;
+    //}
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<CalculationResult>> listData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this._listDataChild = listData;
     }
 
     @Override
@@ -40,7 +50,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final CalculationResult childText = (CalculationResult) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -50,9 +60,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
+        TextView txtListPower = convertView.findViewById(R.id.item_units);
+        TextView unitsText = convertView.findViewById(R.id.item_units);
 
-        txtListChild.setText(childText);
+        txtListChild.setText(childText.getItemName());
+        unitsText.setText(childText.getPower() + " W");
         return convertView;
+
     }
 
     @Override
