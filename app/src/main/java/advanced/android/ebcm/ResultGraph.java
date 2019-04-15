@@ -48,7 +48,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         results = loadData();
 
         drawGraph();
-        
+
     } // end of onCreate
 
     private DataPoint[] getDataPoints() {
