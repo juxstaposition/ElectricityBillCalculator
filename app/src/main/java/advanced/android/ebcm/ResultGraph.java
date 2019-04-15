@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -30,7 +32,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     ArrayList<Device> devicesList;
     GraphView graphView;
     double maxResult;
-    double kWhPrice;
+    float kWhPrice;
     int profileId;
     DatabaseHelper mDatabaseHelper;
 
@@ -51,20 +53,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
     } // end of onCreate
 
-    private DataPoint[] getDataPoints() {
-        Collections.sort(results);
-        DataPoint[] dataPoints = new DataPoint[results.size()];
-
-        for (int i = 0; i < dataPoints.length; i++) {
-            double result = results.get(i).getResults();
-            if (result > maxResult) {
-                maxResult = result;
-            }
-            dataPoints[i] = new DataPoint(i+1, result);
-        }
-
-        return dataPoints;
-    }
 
     private ArrayList<CalculationResult> loadData() {
         resultList = new ArrayList<>();
@@ -156,6 +144,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         });
 
+
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(getDataPoints());
 
         graphView.getViewport().setMaxY(maxResult * 1.2);
@@ -191,6 +180,10 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         ListView itemDetailsView = findViewById(R.id.item_details);
 
+        priceList();
+
+
+
 //        ArrayList<String> itemDetailsList = new ArrayList<>();
 
 //        for (CalculationResult result : results) {
@@ -205,6 +198,54 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         itemDetailsView.setAdapter(ida);
 
 
+    }
+
+    private void priceList() {
+        ListView costDetailsView = findViewById(R.id.total_details);
+        ArrayList<String> resultPrice = new ArrayList<>();
+
+        float totalUnits = 0;
+        for ( CalculationResult result : results ) {
+
+            totalUnits = totalUnits + result.getResults();
+        }
+
+//        TextView totalUnitsView = new TextView(this), totalPriceView = new TextView(this);
+
+        BigDecimal totalPrice = round( totalUnits * kWhPrice,2) ;
+
+
+//        totalUnitsView.setText(String.valueOf(totalUnits));
+//        totalPriceView.setText(String.valueOf(totalPrice));
+        resultPrice.add(String.valueOf(totalUnits));
+        resultPrice.add(String.valueOf(totalPrice));
+
+        ArrayAdapter<String> aa = new ArrayAdapter<>( this,
+                android.R.layout.simple_list_item_1, resultPrice );
+
+//        costDetailsView.addView(totalUnitsView);
+//        costDetailsView.addView(totalPriceView);
+
+        costDetailsView.setAdapter(aa);
+
+
+
+        Log.d("PRICE", "price: " + totalPrice +", total kWh: " + totalUnits);
+    }
+
+    private DataPoint[] getDataPoints() {
+        Collections.sort(results);
+        DataPoint[] dataPoints = new DataPoint[results.size()];
+
+        for (int i = 0; i < dataPoints.length; i++) {
+            double result = results.get(i).getResults();
+            if (result > maxResult) {
+                maxResult = result;
+            }
+            dataPoints[i] = new DataPoint(i+1, result);
+        }
+
+        return dataPoints;
     }
 
     private int getColor(double x) {
