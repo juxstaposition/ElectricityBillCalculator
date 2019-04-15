@@ -147,31 +147,50 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
 
         // Adding child data
         listDataHeader.add("Lamps");
+        listDataHeader.add("Living/Bedroom/Study Room");
         listDataHeader.add("Kitchen Appliances");
-        listDataHeader.add("Living Room");
+        listDataHeader.add("Home Accessories");
+
 
         // Adding child data
         List<CalculationResult> lamps = new ArrayList<>();
+        lamps.add(new CalculationResult("Fluorescent Lamp", 40,1, 1, 1, 1));
         lamps.add(new CalculationResult("Light Bulb", 40,1, 1, 1, 1));
-        lamps.add(new CalculationResult("Light Bulb", 60,1, 1, 1, 1));
-//        lamps.add("Light bulb 40W");
-//        lamps.add("Light bulb 60W");
+        lamps.add(new CalculationResult("LED Light Bulb", 60,1, 1, 1, 1));
+        lamps.add(new CalculationResult("LED Tubes", 100,1, 1, 1, 1));
+
+        List<CalculationResult> rooms = new ArrayList<>();
+        rooms.add(new CalculationResult("TV", 40,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Air Conditioner", 1500,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Table Fan", 50,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Computer", 200,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Laptop", 40,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Computer Gaming", 500,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Router", 5,1, 1, 1, 1));
+
 
         List<CalculationResult> kitchenAppliances = new ArrayList<>();
-        kitchenAppliances.add(new CalculationResult("Refrigerator", 1000,1, 1, 1, 1));
-        kitchenAppliances.add(new CalculationResult("Micro Wave Oven", 500,1, 1, 1, 1));
-//        kitchenAppliances.add("Refrigerator 1000W");
-//        kitchenAppliances.add("Micro Oven 500W");
+        kitchenAppliances.add(new CalculationResult("Refrigerator", 300,1, 1, 1, 1));
+        kitchenAppliances.add(new CalculationResult("Microwave Oven", 1000,1, 1, 1, 1));
+        kitchenAppliances.add(new CalculationResult("Water Kettle", 1500,1, 1, 1, 1));
+        kitchenAppliances.add(new CalculationResult("Rice Cooker", 1000,1, 1, 1, 1));
+        kitchenAppliances.add(new CalculationResult("Toaster", 800,1, 1, 1, 1));
+        kitchenAppliances.add(new CalculationResult("Dishwasher", 1200,1, 1, 1, 1));
 
 
-        List<CalculationResult> livingRoom = new ArrayList<>();
+        List<CalculationResult> homeAccessories = new ArrayList<>();
         //livingRoom.add("TV");
-        livingRoom.add(new CalculationResult("Micro Wave Oven", 500,1, 1, 1, 1));
-
+        homeAccessories.add(new CalculationResult("Washing Machine", 500,1, 1, 1, 1));
+        homeAccessories.add(new CalculationResult("Clothes Iron", 1100,1, 1, 1, 1));
+        homeAccessories.add(new CalculationResult("Vacuum Cleaner", 300,1, 1, 1, 1));
+        homeAccessories.add(new CalculationResult("Clothes Dryer", 1800,1, 1, 1, 1));
+        homeAccessories.add(new CalculationResult("Hair Dryer", 1500,1, 1, 1, 1));
+        homeAccessories.add(new CalculationResult("Water Heater", 500,1, 1, 1, 1));
 
 
         listDataChild.put(listDataHeader.get(0), lamps); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), kitchenAppliances);
-        listDataChild.put(listDataHeader.get(2), livingRoom);
+        listDataChild.put(listDataHeader.get(1), rooms);
+        listDataChild.put(listDataHeader.get(2), kitchenAppliances);
+        listDataChild.put(listDataHeader.get(3), homeAccessories);
     }
 }
