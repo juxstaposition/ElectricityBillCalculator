@@ -150,7 +150,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
                 if (isValueX) {
                     return super.formatLabel(value, isValueX);
                 } else {
-                    return super.formatLabel(value, isValueX) + "W";
+                    return super.formatLabel(value, isValueX) + " kWh";
                 }
             }
 

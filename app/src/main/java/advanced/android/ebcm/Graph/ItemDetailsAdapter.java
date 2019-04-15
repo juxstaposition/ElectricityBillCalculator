@@ -46,9 +46,14 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
 
             int hours = (int)(result.getUsageTimeTotal() / 60);
             float minutes = (result.getUsageTimeTotal() / 60)%1;
-            BigDecimal usageTotal = ResultGraph.round((float)hours + minutes, 2);
+            minutes = minutes * 100;
+            BigDecimal usageTotal = ResultGraph.round( minutes, 2);
+            String properMinutes = String.valueOf(usageTotal);
+            properMinutes = properMinutes.contains(".") ? properMinutes.replaceAll("0*$","").replaceAll("\\.$","") : properMinutes;
 
-            time.setText(usageTotal + " hours/minutes");
+            String correctTime = String.valueOf(hours) + ":" + properMinutes;
+
+            time.setText(correctTime + " hours/minutes");
 
             power.setText(result.getPower() + " W");
 
