@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -217,8 +216,8 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
 //        totalUnitsView.setText(String.valueOf(totalUnits));
 //        totalPriceView.setText(String.valueOf(totalPrice));
-        resultPrice.add(String.valueOf(totalUnits));
-        resultPrice.add(String.valueOf(totalPrice));
+        resultPrice.add("Total kWh consumed:        " + String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
+        resultPrice.add("Expected price:                        " + String.valueOf(totalPrice) + " €");
 
         ArrayAdapter<String> aa = new ArrayAdapter<>( this,
                 android.R.layout.simple_list_item_1, resultPrice );
@@ -228,9 +227,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         costDetailsView.setAdapter(aa);
 
-
-
-        Log.d("PRICE", "price: " + totalPrice +", total kWh: " + totalUnits);
     }
 
     private DataPoint[] getDataPoints() {
