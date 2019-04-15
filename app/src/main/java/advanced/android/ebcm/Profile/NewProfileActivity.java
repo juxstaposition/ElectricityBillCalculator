@@ -90,18 +90,19 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                     profilePrice = profilePriceInput.getEditText().getText().toString();
 
             if (profileName.length() == 0){
-                validation = sendWarningToast("Insert Profile Name!");
-//                TextInputLayout newProfileName = findViewById(R.id.editProfileName);
-//                newProfileName.setErrorEnabled(true);
-//                newProfileName.setError(getString(R.string.add));
+                validation = sendWarningToast("Please insert profile N=name!");
             }
 
             if (validation && profileDescription.length() == 0 ){
-                validation = sendWarningToast("Insert Description Name!");
+                profileDescription = "";
             }
 
             if (validation && (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 )){
-                validation = sendWarningToast("Cost must be greater than 0!");
+                validation = sendWarningToast("Price per kWh must be greater than 0!");
+            }
+
+            if (profilePrice.length() > 6){
+                validation = sendWarningToast("Price value is too long!\nUse less characters");
             }
 
             if (validation){
@@ -136,7 +137,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
 
         if (insertData) {
-            toastMessage("Profile Successfully Created");
+            toastMessage("Profile Created");
         } else {
             toastMessage("Something went wrong");
         }

@@ -75,7 +75,6 @@
 
 
             <TextView
-                    android:visibility="visible"
                     android:text="@string/orText"
                     android:textSize="12sp"
                     android:layout_width="wrap_content"
@@ -88,7 +87,6 @@
                     app:layout_constraintRight_toRightOf="parent"/>
 
             <Button
-                    android:visibility="visible"
                     android:id="@+id/buttonItemPick"
                     android:text="@string/pick_an_item"
                     android:layout_width="wrap_content"

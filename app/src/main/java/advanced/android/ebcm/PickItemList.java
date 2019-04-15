@@ -25,6 +25,7 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<CalculationResult>> listDataChild;
+    private int lastExpandedPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,11 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    expListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
                 Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Expanded",
                         Toast.LENGTH_SHORT).show();

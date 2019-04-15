@@ -2,7 +2,6 @@ package advanced.android.ebcm.Device;
 
 import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
-import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.PickItemList;
 import advanced.android.ebcm.R;
 import android.app.Activity;
@@ -15,27 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.CacheRequest;
 
 import static advanced.android.ebcm.Constant.EDIT_DEVICE;
 
 public class NewDeviceActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextInputLayout nameInput = null, consumptionInput = null,
-        quantityInput = null, usageHoursInput = null, usageMinutesInput = null, usageDaysInput = null;
-    int profileParent, deviceId;
-    Button btnUpdate;
-    TextView title;
-    private CalculationResult pickDevice;
+    TextInputLayout nameInput, consumptionInput, quantityInput,
+                    usageHoursInput, usageMinutesInput, usageDaysInput;
 
+    int profileParent, deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_new_device);
 
         nameInput = findViewById(R.id.newItemName);
@@ -45,11 +36,16 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         usageMinutesInput = findViewById(R.id.newItemUsageMinutes);
         usageDaysInput = findViewById(R.id.newItemUsageDays);
 
+        findViewById(R.id.backViewNavigation).setOnClickListener(this);
+        findViewById(R.id.buttonItemCancel).setOnClickListener(this);
+        findViewById(R.id.buttonItemAdd).setOnClickListener(this);
+        findViewById(R.id.buttonItemPick).setOnClickListener(this);
+
         if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
-            title= findViewById(R.id.title);
+            TextView title = findViewById(R.id.title);
             title.setText(R.string.edit_device_item);
 
-            btnUpdate = findViewById(R.id.buttonItemAdd);
+            Button btnUpdate = findViewById(R.id.buttonItemAdd);
             btnUpdate.setText(R.string.update);
 
             deviceId = Integer.parseInt(getIntent().getStringExtra("DEVICE_ID"));
@@ -61,18 +57,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             usageDaysInput.getEditText().setText(getIntent().getStringExtra("DEVICE_USAGE_DAYS"));
         } else {
             profileParent = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
+
         }
-
-
-
-        findViewById(R.id.backViewNavigation).setOnClickListener(this);
-        findViewById(R.id.buttonItemCancel).setOnClickListener(this);
-        findViewById(R.id.buttonItemAdd).setOnClickListener(this);
-
-
-        findViewById(R.id.buttonItemPick).setVisibility(View.VISIBLE);
-        findViewById(R.id.buttonItemPick).setOnClickListener(this);
-        findViewById(R.id.orText).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -99,72 +85,74 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             overridePendingTransition(R.anim.blink,0);
         }
         else if (view.getId() == R.id.buttonItemAdd){
-            if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
-                updateDevice();
+            animation.startAnimation(view,R.anim.blink,getApplicationContext());
+            // request input content
+            String name = nameInput.getEditText().getText().toString();
+            String quantity = quantityInput.getEditText().getText().toString();
+            String usageHours = usageHoursInput.getEditText().getText().toString();
+            String consumption = consumptionInput.getEditText().getText().toString();
+            String usageMinutes = usageMinutesInput.getEditText().getText().toString();
+            String usageDays = usageDaysInput.getEditText().getText().toString();
+            Intent returnIntent = new Intent();
 
-            } else if (profileParent == -1) {
-                Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
+            // validation of input parameters
+            boolean validation =true;
+
+            if( name.length() == 0){
+                validation = sendWarningToast("Insert Device Name!");
             }
-            else {
-                animation.startAnimation(view,R.anim.blink,getApplicationContext());
-                // request input content
-                String name = nameInput.getEditText().getText().toString();
-                String quantity = quantityInput.getEditText().getText().toString();
-                String usageHours = usageHoursInput.getEditText().getText().toString();
-                String consumption = consumptionInput.getEditText().getText().toString();
-                String usageMinutes = usageMinutesInput.getEditText().getText().toString();
-                String usageDays = usageDaysInput.getEditText().getText().toString();
-                Intent returnIntent = new Intent();
+            if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 ) ){
+                validation = sendWarningToast("Power must be greater than 0!");
+            }
+            if (validation && (quantity.length() == 0 || Integer.parseInt(quantity) < 1 )){
+                validation = sendWarningToast("At least 1 device must be used!");
+            }
 
-                // validation of input parameters
-                boolean validation =true;
+            if (validation && usageHours.length() == 0 && usageMinutes.length() == 0){
+                validation = sendWarningToast("Usage must be used at least 1 minute!");
+            }
+            else if (validation && (usageHours.length() == 0 || usageMinutes.length() == 0)) {
 
-                if( name.length() == 0){
-                    validation = sendWarningToast("Insert Device Name!");
-                }
-                if (validation && (consumption.length() == 0 || Integer.parseInt(consumption) <= 0 ) ){
-                    validation = sendWarningToast("Power must be greater than 0!");
-                }
-                if (validation && (quantity.length() == 0 || Integer.parseInt(quantity) < 1 )){
-                    validation = sendWarningToast("At least 1 device must be used!");
-                }
-
-                if (validation && usageHours.length() == 0 && usageMinutes.length() == 0){
-                    validation = sendWarningToast("Usage must be used at least 1 minute!");
-                }
-                else if (validation && (usageHours.length() == 0 || usageMinutes.length() == 0)) {
-
-                    // if hours is empty but minutes is correct, automatically fills  hours
-                    if (usageHours.length() == 0 &&  usageMinutes.length() > 0 ){
-                        if (Integer.parseInt(usageMinutes) > 59 ){
-                            validation = sendWarningToast("Invalid time format");
-                        }
-                        else{
-                            usageHours = "0";
-                        }
-                    }
-                    else if (usageMinutes.length() == 0 &&  usageHours.length() > 0 ) {
-                        if (Integer.parseInt(usageHours) > 24) {
-                            validation = sendWarningToast("Invalid time format");
-                        } else {
-                            usageMinutes = "0";
-                        }
-                    }
-                }
-                else {
-                    if(Integer.parseInt(usageHours) == 24){
-                        usageMinutes = "0";
-                    }
-                    else if (Integer.parseInt(usageMinutes) > 59 || Integer.parseInt(usageHours) > 24) {
+                // if hours is empty but minutes is correct, automatically fills  hours
+                if (usageHours.length() == 0 &&  usageMinutes.length() > 0 ){
+                    if (Integer.parseInt(usageMinutes) > 59 ){
                         validation = sendWarningToast("Invalid time format");
                     }
+                    else{
+                        usageHours = "0";
+                    }
                 }
-
-                if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1) ){
-                    validation = sendWarningToast("Must be used at least 1 day!");
+                else if (usageMinutes.length() == 0 &&  usageHours.length() > 0 ) {
+                    if (Integer.parseInt(usageHours) >= 24) {
+                        validation = sendWarningToast("Invalid time format");
+                    } else {
+                        usageMinutes = "0";
+                    }
                 }
+            }
+            else {
+                if(Integer.parseInt(usageHours) == 24){
+                    usageMinutes = "0";
+                }
+                else if (Integer.parseInt(usageMinutes) > 59 || Integer.parseInt(usageHours) > 24) {
+                    validation = sendWarningToast("Invalid time format");
+                }
+            }
 
-                if (validation){
+            if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1) ){
+                validation = sendWarningToast("Must be used at least 1 day!");
+            }
+
+            if (validation){
+
+
+                if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
+                    updateDevice();
+
+                } else if (profileParent == -1) {
+                    Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
+                }
+                else {
                     Toast.makeText(NewDeviceActivity.this, "New Device Added!", Toast.LENGTH_LONG).show();
 
                     returnIntent.putExtra("DEVICE_NAME", name);
@@ -173,7 +161,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     returnIntent.putExtra("DEVICE_USAGE_HOURS", usageHours);
                     returnIntent.putExtra("DEVICE_USAGE_MINUTES", usageMinutes);
                     returnIntent.putExtra("DEVICE_USAGE_DAYS", usageDays);
-
                     String group = "testGroup";
 
                     addDevice(name, Integer.parseInt(quantity), Integer.parseInt(usageHours), Integer.parseInt(usageMinutes),
@@ -190,18 +177,9 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         Bundle mBundle = data.getExtras();
         if (requestCode == Constant.PICK_AN_ITEM_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            try {
-                JSONObject jsonObj = new JSONObject(mBundle.getString("NAME"));
-                nameInput.getEditText().setText(jsonObj.get("itemName").toString());
-                consumptionInput.getEditText().setText(jsonObj.get("power").toString());
-
-            } catch (JSONException e) {
-                Log.e("JSONERROR", e.getLocalizedMessage());
-            }
+            nameInput.getEditText().setText(mBundle.getString("NAME"));
         }
     }
-
-
 
     private void addDevice(String name, int quantity, int usageHours, int usageMinutes, int usageDays, String group, int consumption, int profileParent) {
         Log.d("NEW_DEVICE/addDevice", "name: "+ name +", consumption: "+ consumption + ", quantity: "+ quantity +", usageHours: "+
@@ -212,7 +190,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         boolean insertData = mDatabaseHelper.addDeviceData(name,quantity,usageHours,usageMinutes,usageDays,consumption,profileParent);
 
         if (insertData) {
-            sendWarningToast("Device Successfully Added");
+            sendWarningToast("Device Added");
         } else {
             sendWarningToast("Something went wrong");
         }
@@ -234,7 +212,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
         mDatabaseHelper.close();
 
-        sendWarningToast("Device in Database updated");
+        sendWarningToast("Device updated");
 
         Intent returnIntent = new Intent();
 
@@ -248,7 +226,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
         setResult(RESULT_OK, returnIntent);
         finish();
-
     }
 
     /**
