@@ -110,7 +110,8 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 returnIntent.putExtra("PROFILE_NAME",profileName);
                 returnIntent.putExtra("PROFILE_PRICE",profilePrice);
                 returnIntent.putExtra("PROFILE_DESCRIPTION",profileDescription);
-
+                returnIntent.putExtra("PROFILE_POWER", 0);
+                returnIntent.putExtra("PROFILE_COST", 0);
                 Log.d("PROFILE", profileName +", " + profileDescription + ", " + profilePrice);
 
                 if (newProfile) {
@@ -133,14 +134,15 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
+    //      !!!  power and cost added on database side
     private void addProfileToDatabase (String name, String description, String price) {
         boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
 
-        if (insertData) {
-            toastMessage("Profile Created");
-        } else {
-            toastMessage("Something went wrong");
-        }
+//        if (insertData) {
+//            toastMessage("Profile Created");
+//        } else {
+//            toastMessage("Something went wrong");
+//        }
     }
 
     private void updateProfile () {
@@ -151,20 +153,18 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         TextView description = findViewById(R.id.edit_profile_description);
         TextView price = findViewById(R.id.edit_profile_price);
 
+
         int id = Integer.parseInt(receivedIntent.getStringExtra("PROFILE_ID"));
+
 
         String newName = name.getText().toString();
         String newDescription = description.getText().toString();
         String newPrice = price.getText().toString();
 
-
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
-
-        mDatabaseHelper.updateProfile(newName,newDescription,newPrice, id);
-
+        mDatabaseHelper.updateProfileMain(newName,newDescription,newPrice, id);
         mDatabaseHelper.close();
 
-        toastMessage("Profile data updated");
     }
 
     private boolean sendWarningToast(String message){

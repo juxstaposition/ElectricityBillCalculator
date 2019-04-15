@@ -19,9 +19,7 @@ import android.widget.*;
 
 import java.util.ArrayList;
 
-import static advanced.android.ebcm.Constant.CREATE_PROFILE_ACTIVITY_REQ_CODE;
-import static advanced.android.ebcm.Constant.DELETE_PROFILE_ACTIVITY_REQ_CODE;
-import static advanced.android.ebcm.Constant.UPDATE_PROFILE_ACTIVITY_REQ_CODE;
+import static advanced.android.ebcm.Constant.*;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -94,33 +92,54 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Bundle mBundle = data.getExtras();
+        if (data != null) {
+            Bundle mBundle = data.getExtras();
 
-        if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            addNewProfile();
-        }
 
-        if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            if (mBundle != null) {
-                deleteProfile(Integer.parseInt(mBundle.getString("PROFILE_ID")));
-                Log.d("MainActivity/Delete", ""+mBundle.getInt("PROFILE_ID"));
+            if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+                addNewProfile();
+            }
+
+            if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+                if (mBundle != null) {
+                    deleteProfile(Integer.parseInt(mBundle.getString("PROFILE_ID")));
+                    Log.d("MainActivity/Delete", ""+mBundle.getInt("PROFILE_ID"));
+                }
+            }
+            if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
+
+                if (mBundle != null) {
+                    if (mBundle.getString("ACTION").equals(EDIT_PROFILE) ) {
+                        int id = mBundle.getInt("PROFILE_ID");
+                        String name = mBundle.getString("PROFILE_NAME");
+                        String description = mBundle.getString("PROFILE_DESCRIPTION");
+                        Number price = mBundle.getFloat("PROFILE_PRICE");
+
+
+                        Log.d("updateMAIN", "id " + id + ", name " +name+", description " + description + ", price " + price );
+                        updateProfileData(id, name, description, price);
+
+//                        if (mBundle.getString("ACTION2").equals(RESULTS_PROFILE)) {
+//                            updateProfilePowerCost(data.getFloatExtra("PROFILE_POWER",-1),
+//                                    data.getFloatExtra("PROFILE_COST",-1), data.getIntExtra("PROFILE_ID", -1));
+//                        }
+                    }
+                    if (mBundle.getString("ACTION").equals(DELETE_PROFILE)) {
+                        deleteProfile(mBundle.getInt("PROFILE_ID"));
+                    }
+                }
             }
         }
-        else if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
+    }
 
-            if (mBundle != null) {
-                if (mBundle.getString("ACTION").equals("UPDATE") ) {
-                    int id = mBundle.getInt("PROFILE_ID");
-                    String name = mBundle.getString("PROFILE_NAME");
-                    String description = mBundle.getString("PROFILE_DESCRIPTION");
-                    Number price = mBundle.getFloat("PROFILE_PRICE");
-                    Log.d("updateMAIN", "id " + id + ", name " +name+", description " + description + ", price " + price );
+    private void updateProfilePowerCost(float power, float cost, int id) {
+        for (Profile profile : profiles){
+            if (profile.getId() == id){
 
-                    updateProfileData(id, name, description, price);
-                }
-                if (mBundle.getString("ACTION").equals("DELETE")) {
-                    deleteProfile(mBundle.getInt("PROFILE_ID"));
-                }
+                profile.setPower(String.valueOf(power));
+                profile.setCost(String.valueOf(cost));
+
+                break;
             }
         }
     }
@@ -137,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     createNewProfile(data);
 
                 } while (data.moveToNext());
+                data.close();
             }
         } else {
             Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT).show();
@@ -223,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
 
                 profiles.remove(profile);
                 myVerticalLayout.removeView(profile.getLayout());
-
             }
         }
     }
@@ -234,10 +253,13 @@ public class MainActivity extends AppCompatActivity {
         final String name = data.getString(1);
         String description = data.getString(2);
         String price = String.valueOf(data.getFloat(3));
+        String power = String.valueOf(data.getFloat(4));
+        String cost = String.valueOf(data.getFloat(5));
+        String time = data.getString(6);
 
 
 
-        final Profile profile = new Profile(id,name,description,price);
+        final Profile profile = new Profile(id, name, description, price, power, cost, time);
         profiles.add(profile);
         profile.generateProfile(getApplicationContext(), myVerticalLayout);
 
@@ -287,14 +309,18 @@ public class MainActivity extends AppCompatActivity {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
 
-                    deleteProfile(data.getInt(0));
+                    mDatabaseHelper.deleteDevice(data.getInt(0));
                     Toast.makeText(this,"Deleted device with id "+ data.getInt(0), Toast.LENGTH_LONG).show();
 
                 } while (data.moveToNext());
+                data.close();
+            } else {
+                data.close();
             }
-        } else {
-            Toast.makeText(this, "No devices to delete with DB", Toast.LENGTH_SHORT).show();
+        } else  {
+            data.close();
         }
+        mDatabaseHelper.close();
     }
 
     public Profile getProfiles (int id){

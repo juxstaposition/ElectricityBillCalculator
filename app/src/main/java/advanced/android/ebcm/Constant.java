@@ -10,6 +10,7 @@ public class Constant {
     public static final String NEW_PROFILE = "NEW_PROFILE";
     public static final String EDIT_PROFILE = "EDIT_PROFILE";
     public static final String DELETE_PROFILE = "DELETE_PROFILE";
+    public static final String RESULTS_PROFILE = "PROFILE_RESULTS";
 
     public static final String NEW_DEVICE = "NEW_DEVICE";
     public static final String EDIT_DEVICE = "EDIT_DEVICE";
@@ -25,7 +26,9 @@ public class Constant {
     public static final int ADD_DEVICE_TO_PROFILE_REQ_CODE = 500;
     public static final int EDIT_DEVICE_REQ_CODE = 600;
     public static final int DELETE_DEVICE_REQ_CODE = 700;
-    public static final int PICK_AN_ITEM_REQ_CODE=800;
+    public static final int PICK_AN_ITEM_REQ_CODE = 800;
+
+    public static final int VIEW_RESULTS = 900;
 
 
     public void startAnimation(View view, int animationId, Context context){
