@@ -44,6 +44,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.buttonItemPick).setOnClickListener(this);
 
         if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
+
             TextView title = findViewById(R.id.title);
             title.setText(R.string.edit_device_item);
 
@@ -58,8 +59,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             usageMinutesInput.getEditText().setText(getIntent().getStringExtra("DEVICE_USAGE_MINUTES"));
             usageDaysInput.getEditText().setText(getIntent().getStringExtra("DEVICE_USAGE_DAYS"));
         } else {
-            profileParent = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
 
+            profileParent = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
         }
     }
 
@@ -160,7 +161,6 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(NewDeviceActivity.this, "New Device Added!", Toast.LENGTH_LONG).show();
 
                     returnIntent.putExtra("DEVICE_NAME", name);
                     returnIntent.putExtra("DEVICE_CONSUMPTION", consumption);
@@ -168,10 +168,9 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     returnIntent.putExtra("DEVICE_USAGE_HOURS", usageHours);
                     returnIntent.putExtra("DEVICE_USAGE_MINUTES", usageMinutes);
                     returnIntent.putExtra("DEVICE_USAGE_DAYS", usageDays);
-                    String group = "testGroup";
 
                     addDevice(name, Integer.parseInt(quantity), Integer.parseInt(usageHours), Integer.parseInt(usageMinutes),
-                            Integer.parseInt(usageDays), group, Integer.parseInt(consumption), profileParent);
+                            Integer.parseInt(usageDays), Integer.parseInt(consumption), profileParent);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
@@ -183,21 +182,20 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         Bundle mBundle = data.getExtras();
+
         if (requestCode == Constant.PICK_AN_ITEM_REQ_CODE && resultCode == Activity.RESULT_OK) {
+
             try {
                 JSONObject jsonObj = new JSONObject(mBundle.getString("NAME"));
                 nameInput.getEditText().setText(jsonObj.get("itemName").toString());
                 consumptionInput.getEditText().setText(jsonObj.get("power").toString());
-
             } catch (JSONException e) {
                 Log.e("JSONERROR", e.getLocalizedMessage());
             }
         }
     }
 
-    private void addDevice(String name, int quantity, int usageHours, int usageMinutes, int usageDays, String group, int consumption, int profileParent) {
-        Log.d("NEW_DEVICE/addDevice", "name: "+ name +", consumption: "+ consumption + ", quantity: "+ quantity +", usageHours: "+
-                usageHours +", usageMinutes: "+ usageMinutes +", usageDays: "+ usageDays + ", profileParent: "+ profileParent);
+    private void addDevice(String name, int quantity, int usageHours, int usageMinutes, int usageDays, int consumption, int profileParent) {
 
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 

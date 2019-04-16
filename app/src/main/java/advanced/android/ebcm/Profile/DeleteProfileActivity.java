@@ -29,7 +29,6 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         findViewById(R.id.buttonDeleteCancel).setOnClickListener(this);
         findViewById(R.id.buttonDeleteConfirm).setOnClickListener(this);
         findViewById(R.id.back_view_delete).setOnClickListener(this);
-
     }
 
     @Override
@@ -40,16 +39,14 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         animation.startAnimation(v,R.anim.blink,getApplicationContext());
 
         if (v.getId() == R.id.buttonDeleteConfirm){
+
             setResult(Activity.RESULT_OK);
             finish();
-
-            Log.d("delete", "confirm pressed");
         }
         else if (v.getId() == R.id.buttonDeleteCancel || v.getId() == R.id.back_view_delete){
+
             setResult(Activity.RESULT_CANCELED);
             finish();
-
-            Log.d("delete", "cancel pressed");
         }
     }
 
@@ -58,5 +55,4 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         super.finish();
         overridePendingTransition(0,R.anim.fade);
     }
-
 }

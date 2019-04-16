@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //database info
     private static final String DATABASE_NAME = "ebcm";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     //table names
     private static final String TABLE_PROFILE = "profile_table";
@@ -98,7 +98,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
-
     }
 
     //adding data to Device table
@@ -128,7 +127,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
-
     }
 
 
@@ -161,14 +159,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * This and below are NOT done yet
      */
     //profile
-    public Cursor getProfileItemID(String name, String description){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_PROFILE +
-                " WHERE " + PROFILE_COL1 + " = '" + name + "' AND " + PROFILE_COL2 + " = '" + description + "'" ;
-        Cursor data = db.rawQuery(query, null);
-        return data;
-    }
-
     public Cursor getProfileItemByID(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_PROFILE +

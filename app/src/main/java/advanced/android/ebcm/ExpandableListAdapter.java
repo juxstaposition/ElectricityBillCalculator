@@ -1,6 +1,5 @@
 package advanced.android.ebcm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

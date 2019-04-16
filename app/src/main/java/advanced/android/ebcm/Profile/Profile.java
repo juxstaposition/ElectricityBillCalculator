@@ -17,7 +17,7 @@ public class Profile {
     private String name;
     private String price;
     private String description;
-    private String cost = "0";
+    private String cost;
     private String power;
     private String time;
 
