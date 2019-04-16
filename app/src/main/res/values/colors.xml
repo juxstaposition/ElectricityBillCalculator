@@ -12,4 +12,5 @@
     <color name="lightBlue">#E2EEFD</color>
     <color name="shadowedBackground">#65000000</color>
     <color name="translucent">#00000000</color>
+    <color name="lightWhite">#00FF0000</color>
 </resources>

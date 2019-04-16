@@ -43,4 +43,15 @@
     <string name="notice">Notice:</string>
     <string name="irreversible">This is an irreversible action!</string>
 
+
+
+    //help - app guide
+    <string name="help_title">Welcome to the App Guide</string>
+    <string name="help_description">Please follow the guidelines to use the app.</string>
+    <string name="help_rules1">1. Create a new profile.</string>
+    <string name="help_rules2">2. Add a new profile.</string>
+    <string name="help_rules3">3. Click one of the profile to continue with calculation or add new devices
+                                to the profile.</string>
+    <string name="help_rules4">4. Delete a profile.</string>
+
 </resources>
