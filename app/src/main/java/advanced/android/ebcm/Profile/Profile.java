@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.*;
 
 public class Profile {
@@ -64,17 +65,20 @@ public class Profile {
 
     public void setPrice(String price){
         this.price = price;
-        profilePrice.setText(price);
+        String newPrice = price + "€/kWh";
+        profilePrice.setText(newPrice);
     }
 
     public void setCost (String cost){
         this.cost = cost;
-        profileCost.setText(cost);
+        String newCost = cost+"€/mo.";
+        profileCost.setText(newCost);
     }
 
     public void setPower (String power){
         this.power = power;
-        profilePower.setText(power);
+        String newPower = power + "W";
+        profilePower.setText(newPower);
     }
     public void setTime (String time){
         this.time = time;
@@ -168,19 +172,19 @@ public class Profile {
                                                                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
 
-        LinearLayout firstCol = generatedDescriptionColumn(context,colWidth);
+        LinearLayout firstCol = generatedDescriptionColumn(context,colWidth,5);
         addTitlesToDescription(firstCol,"Price:","Cost:",titlesFont,titlesTextSize,context);
 
-        LinearLayout secondCol = generatedDescriptionColumn(context,colWidth*10/3);
+        LinearLayout secondCol = generatedDescriptionColumn(context,colWidth*10/3,0);
         profilePrice = createTextView(price+"€/kWh", context,descriptionsFont,descriptionsTextSize);
         secondCol.addView(profilePrice);
-        profileCost = createTextView(cost+"€/month", context, descriptionsFont, descriptionsTextSize);
+        profileCost = createTextView(cost+"€/mo.", context, descriptionsFont, descriptionsTextSize);
         secondCol.addView(profileCost);
 
-        LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth*4/3);
+        LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth*4/3,0);
         addTitlesToDescription(thirdCol,"Power:","Time:",titlesFont,titlesTextSize,context);
 
-        LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth*2);
+        LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth*2,0);
         profilePower = createTextView(power+"W", context,descriptionsFont,descriptionsTextSize);
         fourthCol.addView(profilePower);
         profileTime = createTextView(time, context, descriptionsFont, descriptionsTextSize);
@@ -201,7 +205,7 @@ public class Profile {
         myVerticalLayout.addView(supportLayout);
     }
 
-    private LinearLayout generatedDescriptionColumn(Context context,int width) {
+    private LinearLayout generatedDescriptionColumn(Context context,int width,int leftMargin) {
 
         LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);
@@ -209,7 +213,7 @@ public class Profile {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
         // setMargins(left,top,right,bottom)
-        lp.setMargins( convertDpToPx(5,dm),convertDpToPx(0,dm), convertDpToPx(5,dm),0 );
+        lp.setMargins( convertDpToPx(leftMargin,dm),convertDpToPx(0,dm), convertDpToPx(0,dm),0 );
         column.setLayoutParams(lp);
 
         return column;

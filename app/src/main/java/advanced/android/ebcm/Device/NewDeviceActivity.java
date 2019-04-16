@@ -133,7 +133,7 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
             }
-            else {
+            else if(validation){
                 if(Integer.parseInt(usageHours) == 24){
                     usageMinutes = "0";
                 }
