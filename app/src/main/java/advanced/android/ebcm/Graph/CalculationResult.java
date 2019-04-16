@@ -32,7 +32,7 @@ public class CalculationResult implements Comparable {
     @Override
     public int compareTo(Object o) {
         CalculationResult c = (CalculationResult) o;
-        return (int) Math.round(c.results - this.results);
+        return  Math.round(c.results - this.results);
     }
 
     public float getResults() {

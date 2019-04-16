@@ -74,11 +74,11 @@ public class Profile {
 
     public void setPower (String power){
         this.power = power;
-        profileCost.setText(power);
+        profilePower.setText(power);
     }
     public void setTime (String time){
         this.time = time;
-        profileCost.setText(time);
+        profileTime.setText(time);
     }
 
     public CoordinatorLayout getLayout(){
@@ -86,17 +86,23 @@ public class Profile {
     }
 
 
-    public Profile(String name, String description,String price) {
+    public Profile(String name, String description,String price, String power, String cost, String time) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.power = power;
+        this.cost = cost;
+        this.time = time;
     }
 
-    public Profile(int id, String name, String description, String price) {
+    public Profile(int id, String name, String description, String price, String power, String cost, String time) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
+        this.power = power;
+        this.cost = cost;
+        this.time = time;
     }
 
     public void generateProfile(final Context context, LinearLayout myVerticalLayout){
@@ -166,16 +172,16 @@ public class Profile {
         LinearLayout secondCol = generatedDescriptionColumn(context);
         profilePrice = createTextView(price+"€/kWh", context,descriptionsFont,descriptionsTextSize);
         secondCol.addView(profilePrice);
-        profileCost = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
+        profileCost = createTextView(cost+"€/month", context, descriptionsFont, descriptionsTextSize);
         secondCol.addView(profileCost);
 
         LinearLayout thirdCol = generatedDescriptionColumn(context);
         addTitlesToDescription(thirdCol,"Power:","Time:",titlesFont,titlesTextSize,context);
 
         LinearLayout fourthCol = generatedDescriptionColumn(context);
-        profilePower = createTextView(0+"W", context,descriptionsFont,descriptionsTextSize);
+        profilePower = createTextView(power+"kWh", context,descriptionsFont,descriptionsTextSize);
         fourthCol.addView(profilePower);
-        profileTime = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
+        profileTime = createTextView(time+"/month", context, descriptionsFont, descriptionsTextSize);
         fourthCol.addView(profileTime);
 
         thirdLine.addView(firstCol);

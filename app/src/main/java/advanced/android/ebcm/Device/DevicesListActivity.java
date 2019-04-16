@@ -4,7 +4,6 @@ import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
-import advanced.android.ebcm.Profile.Profile;
 import advanced.android.ebcm.R;
 import advanced.android.ebcm.ResultGraph;
 import android.app.Activity;
@@ -26,20 +25,18 @@ import java.util.ArrayList;
 
 import static advanced.android.ebcm.Constant.*;
 
-public class DevicesListActivity extends AppCompatActivity implements View.OnClickListener {
+public class DevicesListActivity extends AppCompatActivity {
 
     private ArrayList<Device> devices = new ArrayList<>();
     private ArrayList<Integer> deviceIds = new ArrayList<>();
 
     DatabaseHelper mDatabaseHelper;
-    int profileId, deviceId, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes ;
-    Profile profile;
+    int profileId;
     LinearLayout deviceLayout;
-    String profileName, profileDescription, deviceName;
+    String profileName, profileDescription;
     Number profilePrice;
     boolean deleted = false;
     boolean updated = false;
-    boolean situation = true;
 
 
 
@@ -78,7 +75,6 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 Intent newItemActivity = new Intent(DevicesListActivity.this, NewDeviceActivity.class);
                 newItemActivity.putExtra("KEY",Constant.NEW_DEVICE);
                 newItemActivity.putExtra("PROFILE_ID", String.valueOf(profileId));
-                Log.d("PROFILE_ID", String.valueOf(profileId));
                 startActivityForResult(newItemActivity, ADD_DEVICE_TO_PROFILE_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
             }
@@ -90,8 +86,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(DevicesListActivity.this, ResultGraph.class);
                 intent.putExtra("PROFILE_ID",profileId);
                 intent.putExtra("PROFILE_NAME",profileName);
-
-                startActivity(intent);
+                startActivityForResult(intent, VIEW_RESULTS);
                 overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
             }
         });
@@ -116,10 +111,11 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         if ( id == R.id.edit_profile_menu){
             Intent editProfile = new Intent(DevicesListActivity.this, NewProfileActivity.class);
             editProfile.putExtra("KEY",Constant.EDIT_PROFILE);
-            editProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
+            editProfile.putExtra("PROFILE_ID", profileId);
             editProfile.putExtra("PROFILE_NAME", profileName);
             editProfile.putExtra("PROFILE_DESCRIPTION", profileDescription);
             editProfile.putExtra("PROFILE_PRICE", String.valueOf(profilePrice));
+
             startActivityForResult(editProfile, EDIT_PROFILE_ACTIVITY_REQ_CODE);
             overridePendingTransition(R.anim.blink,0);
             return true;
@@ -127,7 +123,7 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         else if ( id == R.id.delete_profile_menu){
             Intent deleteProfile = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
             deleteProfile.putExtra("KEY",Constant.DELETE_PROFILE);
-            deleteProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
+            deleteProfile.putExtra("PROFILE_ID",profileId);
             deleteProfile.putExtra("PROFILE_NAME", profileName);
             startActivityForResult(deleteProfile, DELETE_PROFILE_ACTIVITY_REQ_CODE);
             overridePendingTransition(R.anim.blink,0);
@@ -140,40 +136,27 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 
     @Override
     public void onBackPressed () {
         Intent returnIntent = new Intent();
 
         if (deleted) {
-
-            returnIntent.putExtra("ACTION", "DELETE");
-            returnIntent.putExtra("PROFILE_ID", profileId);
-
-            setResult(Activity.RESULT_OK, returnIntent);
-            super.onBackPressed();
-
-        }
-        if (updated) {
-
-            returnIntent.putExtra("ACTION", "UPDATE");
-            returnIntent.putExtra("PROFILE_ID", profileId);
+            returnIntent.putExtra("ACTION", DELETE_PROFILE);
+        } else if (updated) {
+            returnIntent.putExtra("ACTION", EDIT_PROFILE);
             returnIntent.putExtra("PROFILE_NAME", profileName);
             returnIntent.putExtra("PROFILE_DESCRIPTION", profileDescription);
             returnIntent.putExtra("PROFILE_PRICE", profilePrice);
-
-            setResult(Activity.RESULT_OK, returnIntent);
-            super.onBackPressed();
-
+        } else {
+            returnIntent.putExtra("ACTION", "none");
         }
-        else if (situation) {
-            setResult(Activity.RESULT_CANCELED, returnIntent);
-            super.onBackPressed();
-        }
+
+
+        returnIntent.putExtra("PROFILE_ID", profileId);
+        setResult(Activity.RESULT_OK, returnIntent);
+        super.onBackPressed();
+
     }
 
 
@@ -183,16 +166,14 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
 
         if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
             updated = false;
-            situation = false;
             deleted = true;
+
             onBackPressed();
         }
         if (requestCode == EDIT_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            situation = false;
             updated = true;
             getProfile();
             setTitle(profileName);
-
         }
         if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
             addDeviceView(data);
@@ -233,32 +214,6 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
         mDatabaseHelper.close();
     }
 
-    void getUpdatedDevice(int deviceId) {
-        mDatabaseHelper = new DatabaseHelper(this);
-
-        Cursor data = mDatabaseHelper.getDeviceByID(profileId);
-
-        if (data != null) {
-            if (data.moveToFirst() && data.getCount() >= 1) {
-                do {
-                    System.out.println("__________________________");
-
-                    System.out.println(deviceId);
-                    deviceName = data.getString(1);
-                    deviceQuantity = data.getInt(2);
-                    deviceConsumption = data.getInt(7);
-                    deviceUsageHours = data.getInt(3);
-                    deviceUsageMinutes = data.getInt(4);
-                    deviceUsageDays = data.getInt(5);
-
-                } while (data.moveToNext());
-            }
-        } else {
-            Log.d("GET_PROFILE", " is empty");
-        }
-
-        mDatabaseHelper.close();
-    }
 
     private void generateDeviceView(){
 

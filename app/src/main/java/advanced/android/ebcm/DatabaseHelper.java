@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
+
+import java.math.BigDecimal;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -14,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //database info
     private static final String DATABASE_NAME = "ebcm";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 7;
 
     //table names
     private static final String TABLE_PROFILE = "profile_table";
@@ -26,6 +29,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String PROFILE_COL1 = "profile_name";
     private static final String PROFILE_COL2 = "profile_description";
     private static final String PROFILE_COL3 = "profile_price";
+    private static final String PROFILE_COL4 = "profile_power";
+    private static final String PROFILE_COL5 = "profile_cost";
+    private static final String PROFILE_COL6 = "profile_time";
 
     //device table column
     private static final String DEVICE_COL0 = "device_ID";
@@ -42,7 +48,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //create table profiles
     private static final String createProfileTable = "CREATE TABLE " + TABLE_PROFILE + " ("+ PROFILE_COL0 +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            PROFILE_COL1 + " TEXT, " + PROFILE_COL2 + " TEXT, " + PROFILE_COL3 + " NUMERIC "+ ")";
+            PROFILE_COL1 + " TEXT, " + PROFILE_COL2 + " TEXT, " + PROFILE_COL3 + " NUMERIC, "+ PROFILE_COL4 + " NUMERIC, " + PROFILE_COL5 +
+            " NUMERIC, " + PROFILE_COL6 + " TEXT " + ")";
 
     //create table devices
     private static final String createDeviceTable = "CREATE TABLE " + TABLE_DEVICE + " (" + DEVICE_COL0 +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -54,13 +61,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-//    tutorial simple database creating query
-//    @Override
-//    public void onCreate(SQLiteDatabase db) {
-//        String createTable = "CREATE TABLE " + TABLE_PROFILE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                PROFILE_COL1 + " TEXT)";
-//        db.execSQL(createTable);
-//    }
 
     //actually creating tables
     @Override
@@ -84,8 +84,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PROFILE_COL1, newName);
         contentValues.put(PROFILE_COL2, newDescription);
         contentValues.put(PROFILE_COL3, newPrice);
+        contentValues.put(PROFILE_COL4, 0);
+        contentValues.put(PROFILE_COL5, 0);
+        contentValues.put(PROFILE_COL6, 0);
 
-        Log.d(TAG, "addProfileData: Adding " + newName + " as name " + newDescription + " as description " + newPrice + " as price " + " to " + TABLE_PROFILE);
+        Log.d(TAG, "addProfileData: Adding " + newName + " as name " + newDescription + " as description " +
+                newPrice + " as price " + "(power/cost/time) " + 0 + "/" + 0 + "/" + 0 + " to " + TABLE_PROFILE);
         long result = db.insert(TABLE_PROFILE, null, contentValues);
 
         //if data as inserted incorrectly it will return -1
@@ -98,7 +102,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //adding data to Device table
-    public boolean addDeviceData(String newDeviceName, int newQuantity, int newHours, int newMinutes, int newDays, int newConsumption, int newProfileParent) {
+    public boolean addDeviceData(String newDeviceName, int newQuantity, int newHours, int newMinutes, int newDays,
+                                 int newConsumption, int newProfileParent) {
         String newGroup = "none";
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -173,37 +178,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //device
-    public Cursor getDeviceItemID(String name){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + DEVICE_COL0 + " FROM " + TABLE_DEVICE +
-                " WHERE " + DEVICE_COL1 + " = '" + name + "'";
-        Cursor data = db.rawQuery(query, null);
-        return data;
-    }
-
-
     public Cursor getDeviceByID(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_DEVICE + " WHERE " + DEVICE_COL0 +" = " + id;
         Cursor data = db.rawQuery(query, null);
         return data;
     }
+
     /**
      * Updates the name field
+     * @param newDescription string
+     * @param newPrice string
      * @param newName string
      * @param id int
      */
-
     //profile
-    public void updateProfile(String newName, String newDescription, String newPrice, int id) {
+    public void updateProfileMain(String newName, String newDescription, String newPrice, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + TABLE_PROFILE + " SET " + PROFILE_COL1 +
-                " = '" + newName + "', " + PROFILE_COL2 + " = '" + newDescription + "', " + PROFILE_COL3 + " = '" + newPrice + "' WHERE " + PROFILE_COL0 + " = " + id;
 
-        Log.d(TAG, "updateProfile: query: " + query);
-        Log.d(TAG, "updateProfile: Setting name to " + newName);
+        String query = "UPDATE " + TABLE_PROFILE + " SET " + PROFILE_COL1 +
+                    " = '" + newName + "', " + PROFILE_COL2 + " = '" + newDescription + "', " + PROFILE_COL3 + " = '" + newPrice +
+                    "' WHERE " + PROFILE_COL0 + " = " + id;
+
+        Log.d(TAG, "updateProfileMain: query: " + query);
         db.execSQL(query);
     }
+
+    public void updateProfilePowerCost(BigDecimal newCost, BigDecimal newPower, int id ) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "UPDATE " + TABLE_PROFILE + " SET " + PROFILE_COL4 + " = '" + newPower +"', " +
+                PROFILE_COL5 + " = '" + newCost + "' WHERE " + PROFILE_COL0 + " = " + id;
+
+        Log.d(TAG, "updateProfilePowerCost: query: " + query);
+
+        db.execSQL(query);
+    }
+
+    public void updateProfileTime(String time, int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "UPDATE " + TABLE_PROFILE + " SET " + PROFILE_COL6 + " = '" + time + "' WHERE " + PROFILE_COL0 + " = " + id;
+        Log.d(TAG, "updateProfileTime: query: " + query);
+        db.execSQL(query);
+    }
+
 
     //device
     public void updateDevice(String newName, int newConsumption, int newQuantity, int newHours, int newMinutes, int newDays, int id) {
