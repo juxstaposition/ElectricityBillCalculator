@@ -17,7 +17,7 @@ public class Profile {
     private String name;
     private String price;
     private String description;
-    private String cost;
+    private String cost = "0";
     private String power;
     private String time;
 
@@ -101,12 +101,14 @@ public class Profile {
 
     public void generateProfile(final Context context, LinearLayout myVerticalLayout){
 
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int screenWidth = dm.widthPixels;
+        int colWidth = (screenWidth - convertDpToPx(20*2,dm) ) / 8;
+
         String titlesFont = "sans-serif-black";
         int titlesTextSize = 14;
         String descriptionsFont = "serif-monospace";
         int descriptionsTextSize = 16;
-
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
 
         // Instantiation of base linear layout for profile panel
         profileForm = new LinearLayout(context);
@@ -160,22 +162,22 @@ public class Profile {
                                                                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
 
-        LinearLayout firstCol = generatedDescriptionColumn(context);
+        LinearLayout firstCol = generatedDescriptionColumn(context,colWidth);
         addTitlesToDescription(firstCol,"Price:","Cost:",titlesFont,titlesTextSize,context);
 
-        LinearLayout secondCol = generatedDescriptionColumn(context);
+        LinearLayout secondCol = generatedDescriptionColumn(context,colWidth*10/3);
         profilePrice = createTextView(price+"€/kWh", context,descriptionsFont,descriptionsTextSize);
         secondCol.addView(profilePrice);
         profileCost = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
         secondCol.addView(profileCost);
 
-        LinearLayout thirdCol = generatedDescriptionColumn(context);
+        LinearLayout thirdCol = generatedDescriptionColumn(context,colWidth*4/3);
         addTitlesToDescription(thirdCol,"Power:","Time:",titlesFont,titlesTextSize,context);
 
-        LinearLayout fourthCol = generatedDescriptionColumn(context);
+        LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth*2);
         profilePower = createTextView(0+"W", context,descriptionsFont,descriptionsTextSize);
         fourthCol.addView(profilePower);
-        profileTime = createTextView(0+"€/month", context, descriptionsFont, descriptionsTextSize);
+        profileTime = createTextView("hh:mm", context, descriptionsFont, descriptionsTextSize);
         fourthCol.addView(profileTime);
 
         thirdLine.addView(firstCol);
@@ -193,14 +195,13 @@ public class Profile {
         myVerticalLayout.addView(supportLayout);
     }
 
-    private LinearLayout generatedDescriptionColumn(Context context) {
+    private LinearLayout generatedDescriptionColumn(Context context,int width) {
 
         LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                     LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
         // setMargins(left,top,right,bottom)
         lp.setMargins( convertDpToPx(5,dm),convertDpToPx(0,dm), convertDpToPx(5,dm),0 );
         column.setLayoutParams(lp);
