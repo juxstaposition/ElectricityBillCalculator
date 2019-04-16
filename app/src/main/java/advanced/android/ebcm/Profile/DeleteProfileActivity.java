@@ -35,20 +35,18 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
 
-        Intent returnIntent = new Intent();
 
         Constant animation = new Constant();
         animation.startAnimation(v,R.anim.blink,getApplicationContext());
 
         if (v.getId() == R.id.buttonDeleteConfirm){
-            returnIntent.putExtra("PROFILE_ID", getIntent().getStringExtra("PROFILE_ID"));
-            setResult(Activity.RESULT_OK, returnIntent);
+            setResult(Activity.RESULT_OK);
             finish();
 
             Log.d("delete", "confirm pressed");
         }
         else if (v.getId() == R.id.buttonDeleteCancel || v.getId() == R.id.back_view_delete){
-            setResult(Activity.RESULT_CANCELED, returnIntent);
+            setResult(Activity.RESULT_CANCELED);
             finish();
 
             Log.d("delete", "cancel pressed");

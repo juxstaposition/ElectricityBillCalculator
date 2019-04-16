@@ -3,6 +3,7 @@ package advanced.android.ebcm;
 import advanced.android.ebcm.Device.Device;
 import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.Graph.ItemDetailsAdapter;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +33,10 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     ArrayList<Device> devicesList;
     GraphView graphView;
     double maxResult;
-    float kWhPrice;
+    float kWhPrice, totalUnits = 0, totalTime = 0;
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
     int profileId;
+    String correctTime;
     DatabaseHelper mDatabaseHelper;
 
     @Override
@@ -60,6 +63,19 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
     } // end of onCreate
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent returnIntent = new Intent();
+
+        returnIntent.putExtra("PROFILE_POWER",totalUnits);
+        returnIntent.putExtra("PROFILE_COST", totalPrice.floatValue());
+        returnIntent.putExtra("PROFILE_TIME", correctTime);
+
+        setResult(RESULT_OK);
+
+    }
 
     private ArrayList<CalculationResult> loadData() {
         resultList = new ArrayList<>();
@@ -198,40 +214,26 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         priceList();
 
 
-
-//        ArrayList<String> itemDetailsList = new ArrayList<>();
-
-//        for (CalculationResult result : results) {
-//
-//            BigDecimal timeResult = round(result.getUsageTimeTotal(), 2);
-//
-//            String itemDetail = result.getItemName() + " " + result.getResults() + "Units\n" +
-//                    timeResult + " hours/minutes, " + result.getPower() + " W";
-////            itemDetailsList.add(itemDetail);
-//        }
         final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
         itemDetailsView.setAdapter(ida);
 
 
     }
 
+
     private void priceList() {
         ListView costDetailsView = findViewById(R.id.total_details);
         ArrayList<String> resultPrice = new ArrayList<>();
 
-        float totalUnits = 0;
         for ( CalculationResult result : results ) {
 
             totalUnits = totalUnits + result.getResults();
+            totalTime = totalTime + result.getUsageTimeTotal();
         }
 
-//        TextView totalUnitsView = new TextView(this), totalPriceView = new TextView(this);
+        totalPrice = round( totalUnits * kWhPrice,2) ;
+        BigDecimal allUnits = round( totalUnits, 2);
 
-        BigDecimal totalPrice = round( totalUnits * kWhPrice,2) ;
-
-
-//        totalUnitsView.setText(String.valueOf(totalUnits));
-//        totalPriceView.setText(String.valueOf(totalPrice));
         resultPrice.add("Total kWh consumed:        " + String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
         resultPrice.add("Expected price:                        " + String.valueOf(totalPrice) + " €");
 
@@ -241,16 +243,31 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         ArrayAdapter<String> aa = new ArrayAdapter<>( this,
                 android.R.layout.simple_list_item_1, resultPrice );
-
-//        costDetailsView.addView(totalUnitsView);
-//        costDetailsView.addView(totalPriceView);
-
         costDetailsView.setAdapter(aa);
 
+        databasePowerCostTimeUpdate(totalPrice, allUnits, totalTime);
+    }
+
+    private void databasePowerCostTimeUpdate(BigDecimal totalCost, BigDecimal totalUnits, float totalTime) {
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+
+        int hours = (int)(totalTime / 60);
+        float minutes = (totalTime / 60)%1;
+        minutes = minutes * 100;
+        BigDecimal usageTotal = round( minutes, 2);
+        String properMinutes = String.valueOf(Integer.valueOf(usageTotal.intValue()));
+        properMinutes = properMinutes.contains(".") ? properMinutes.replaceAll("0*$","").replaceAll("\\.$","") : properMinutes;
+
+        correctTime = String.valueOf(hours) + ":" + properMinutes;
+
+        mDatabaseHelper.updateProfilePowerCost(totalCost, totalUnits, profileId);
+        mDatabaseHelper.updateProfileTime(String.valueOf(correctTime), profileId);
+
+        mDatabaseHelper.close();
     }
 
     private DataPoint[] getDataPoints() {
-        Collections.sort(results);
+        Collections.sort(results, Collections.reverseOrder());
         DataPoint[] dataPoints = new DataPoint[results.size()];
 
         for (int i = 0; i < dataPoints.length; i++) {
@@ -267,9 +284,8 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     private int getColor(double x) {
 //        double r = c.getResults() / maxResult;
 //        int rr =(int) Math.round(x/maxResult) * 255;
-        int color = Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
        //Log.i("COLOR", Integer.toString(color));
-        return color;
+        return Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
     }
     //nothing implemented --down
 
