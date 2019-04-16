@@ -15,7 +15,6 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
-import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,24 +62,8 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
                     expListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
 
         expListView.setOnChildClickListener(new OnChildClickListener() {
 
@@ -102,16 +85,6 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 returnIntent.putExtra("NAME", jsonObjectExtra.toString());
-
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
-
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
 
@@ -162,11 +135,11 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
         List<CalculationResult> lamps = new ArrayList<>();
         lamps.add(new CalculationResult("Fluorescent Lamp", 40,1, 1, 1, 1));
         lamps.add(new CalculationResult("Light Bulb", 40,1, 1, 1, 1));
-        lamps.add(new CalculationResult("LED Light Bulb", 60,1, 1, 1, 1));
-        lamps.add(new CalculationResult("LED Tubes", 100,1, 1, 1, 1));
+        lamps.add(new CalculationResult("LED Light Bulb", 15,1, 1, 1, 1));
+        lamps.add(new CalculationResult("LED Tubes", 20,1, 1, 1, 1));
 
         List<CalculationResult> rooms = new ArrayList<>();
-        rooms.add(new CalculationResult("TV", 40,1, 1, 1, 1));
+        rooms.add(new CalculationResult("TV", 130,1, 1, 1, 1));
         rooms.add(new CalculationResult("Air Conditioner", 1500,1, 1, 1, 1));
         rooms.add(new CalculationResult("Table Fan", 50,1, 1, 1, 1));
         rooms.add(new CalculationResult("Computer", 200,1, 1, 1, 1));
@@ -180,12 +153,10 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
         kitchenAppliances.add(new CalculationResult("Microwave Oven", 1000,1, 1, 1, 1));
         kitchenAppliances.add(new CalculationResult("Water Kettle", 1500,1, 1, 1, 1));
         kitchenAppliances.add(new CalculationResult("Rice Cooker", 1000,1, 1, 1, 1));
-        kitchenAppliances.add(new CalculationResult("Toaster", 800,1, 1, 1, 1));
         kitchenAppliances.add(new CalculationResult("Dishwasher", 1200,1, 1, 1, 1));
 
 
         List<CalculationResult> homeAccessories = new ArrayList<>();
-        //livingRoom.add("TV");
         homeAccessories.add(new CalculationResult("Washing Machine", 500,1, 1, 1, 1));
         homeAccessories.add(new CalculationResult("Clothes Iron", 1100,1, 1, 1, 1));
         homeAccessories.add(new CalculationResult("Vacuum Cleaner", 300,1, 1, 1, 1));

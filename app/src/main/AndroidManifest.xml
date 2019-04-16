@@ -5,33 +5,31 @@
 
     <application
             android:allowBackup="true"
+            android:fullBackupContent="true"
             android:icon="@mipmap/app_launcher_icon"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/app_launcher_icon_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:fullBackupContent="true"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".HelpInstructions">
+        </activity>
         <activity
                 android:name=".PickItemList"
-                android:theme="@style/AppTheme.InputPopUpStyle"
-        >
+                android:theme="@style/AppTheme.InputPopUpStyle">
         </activity>
         <activity
                 android:name=".Device.DevicesListActivity"
                 android:label="@string/title_activity_devices_list"
-                android:theme="@style/AppTheme.NoActionBar"
                 android:screenOrientation="portrait"
-        >
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".Device.NewDeviceActivity"
-                android:theme="@style/AppTheme.InputPopUpStyle"
-        />
+                android:theme="@style/AppTheme.InputPopUpStyle"/>
         <activity
                 android:name=".Profile.NewProfileActivity"
-                android:theme="@style/AppTheme.InputPopUpStyle"
-        />
+                android:theme="@style/AppTheme.InputPopUpStyle"/>
         <activity
                 android:name=".Profile.DeleteProfileActivity"
                 android:theme="@style/AppTheme.InputPopUpStyle"
@@ -42,6 +40,13 @@
         <activity android:name=".Device.DeleteDeviceActivity"
                   android:theme="@style/AppTheme.InputPopUpStyle"
         />
+        <activity
+                android:name=".ResultGraph"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+                android:name=".Device.DeleteDeviceActivity"
+                android:theme="@style/AppTheme.InputPopUpStyle"/>
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name"
