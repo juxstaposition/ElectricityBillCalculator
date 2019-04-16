@@ -56,14 +56,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fabCalc = findViewById(R.id.fabCompareProfile);
-        fabCalc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         mDatabaseHelper.close();
 
     }

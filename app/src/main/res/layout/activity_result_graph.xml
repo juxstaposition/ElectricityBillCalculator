@@ -5,12 +5,19 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/lightBlue"
         tools:context=".ResultGraph">
 
-    <ScrollView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+    <ScrollView
+            android:id="@+id/resultScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintVertical_bias="0.0">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
@@ -21,9 +28,9 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/title_result"
                     android:gravity="center"
-                    tools:shadowColor="@android:color/holo_blue_bright"
-                    android:textColor="@android:color/holo_purple"
+                    android:textColor="@color/black"
                     tools:textSize="30sp"
+                    android:textStyle="bold"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -31,16 +38,23 @@
                     app:layout_constraintRight_toRightOf="parent"
             />
 
-            <com.jjoe64.graphview.GraphView
+            <LinearLayout
+                    android:id="@+id/graph_layout"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp"
-                    android:id="@+id/graphView"
+                    android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/title_result"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginBottom="20dp"
-            />
+                    android:layout_marginBottom="20dp">
 
+                <com.jjoe64.graphview.GraphView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/graphView"
+
+                />
+            </LinearLayout>
 
 
             <TextView
@@ -62,7 +76,7 @@
                     android:id="@+id/item_details"
                     android:paddingStart="32dp"
                     android:paddingEnd="32dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="5dp"
                     tools:layout_editor_absoluteX="0dp"
                     app:layout_constraintVertical_bias="0.415"/>
 
@@ -75,7 +89,7 @@
                     android:gravity="center"
                     android:textSize="20sp"
                     android:layout_marginBottom="15dp"
-                    />
+            />
 
             <ListView
                     android:layout_width="match_parent"
@@ -84,13 +98,37 @@
                     android:textSize="20sp"
                     android:paddingStart="32dp"
                     android:paddingEnd="32dp"
-                    tools:layout_editor_absoluteX="0dp"
                     app:layout_constraintVertical_bias="0.415"/>
 
         </LinearLayout>
     </ScrollView>
 
+    <LinearLayout
+            android:id="@+id/bottom_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:weightSum="3"
+            android:layout_margin="10dp"
 
+    >
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"/>
+        <TextView
+                android:id="@+id/result_price_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="40sp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:gravity="end"
+                android:text="0.00€"/>
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

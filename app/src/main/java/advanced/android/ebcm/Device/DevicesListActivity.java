@@ -89,6 +89,8 @@ public class DevicesListActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View view) {
                 Intent intent = new Intent(DevicesListActivity.this, ResultGraph.class);
                 intent.putExtra("PROFILE_ID",profileId);
+                intent.putExtra("PROFILE_NAME",profileName);
+
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
             }

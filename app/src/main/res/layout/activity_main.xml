@@ -70,25 +70,14 @@
             android:id="@+id/fabNewProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            app:layout_anchor="@id/fabCompareProfile"
-            app:layout_anchorGravity="top"
-            android:layout_marginBottom="80dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
             android:scaleType="center"
             app:maxImageSize="36dp"
             app:srcCompat="@drawable/add24dp"
             app:backgroundTint="@color/colorPrimary"
             app:tint="@color/white"
     />
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabCompareProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:maxImageSize="50dp"
-            app:srcCompat="@drawable/bulb_layer"
-            app:backgroundTint="@color/colorPrimary"
-    />
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,17 +7,18 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.*;
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,9 +42,16 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         profileId = getIntent().getIntExtra("PROFILE_ID", -1);
 
+        setTitle("Result " + getIntent().getStringExtra("PROFILE_NAME") );
+
         if (profileId == 0 || profileId == -1) {
             finish();
         }
+
+        /*
+        TextView resultTitle = findViewById(R.id.title_result);
+        ScrollView sv = findViewById(R.id.resultScrollView);
+        sv.smoothScrollTo(resultTitle.getScrollX(), resultTitle.getScrollY());*/
 
         //used to fill the graph
         results = loadData();
@@ -109,6 +117,14 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
     void drawGraph() {
         setContentView(R.layout.activity_result_graph);
+
+        // setting size of a graph
+        DisplayMetrics dm = getApplication().getResources().getDisplayMetrics();
+        LinearLayout graphLayout = findViewById(R.id.graph_layout);
+        ViewGroup.LayoutParams params = graphLayout.getLayoutParams();
+        params.height = dm.heightPixels / 2;
+        graphLayout.setLayoutParams(params);
+
         graphView = findViewById(R.id.graphView);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
@@ -218,6 +234,10 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 //        totalPriceView.setText(String.valueOf(totalPrice));
         resultPrice.add("Total kWh consumed:        " + String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
         resultPrice.add("Expected price:                        " + String.valueOf(totalPrice) + " €");
+
+        TextView costSum = findViewById(R.id.result_price_view);
+        String costString = String.valueOf(totalPrice) + "€";
+        costSum.setText(costString);
 
         ArrayAdapter<String> aa = new ArrayAdapter<>( this,
                 android.R.layout.simple_list_item_1, resultPrice );

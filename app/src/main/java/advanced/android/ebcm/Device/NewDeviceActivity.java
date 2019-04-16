@@ -145,6 +145,11 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 validation = sendWarningToast("Must be used at least 1 day!");
             }
 
+            if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) > 31) ){
+                usageDays = "30";
+
+            }
+
             if (validation){
 
 

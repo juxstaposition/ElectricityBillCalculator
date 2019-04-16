@@ -37,7 +37,6 @@
                 android:theme="@style/AppTheme.InputPopUpStyle"
         />
         <activity android:name=".ResultGraph"
-                  android:theme="@style/AppTheme.NoActionBar"
                   android:screenOrientation="portrait"
         />
         <activity android:name=".Device.DeleteDeviceActivity"

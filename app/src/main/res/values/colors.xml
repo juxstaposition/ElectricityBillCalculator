@@ -9,7 +9,7 @@
     <color name="red">#FF0000</color>
     <color name="white">#FFFFFF</color>
     <color name="lightGrey">#E0DFDF</color>
-    <color name="lightBlue">#CCDBFD</color>
+    <color name="lightBlue">#E2EEFD</color>
     <color name="shadowedBackground">#65000000</color>
     <color name="translucent">#00000000</color>
 </resources>
