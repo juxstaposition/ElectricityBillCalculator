@@ -11,10 +11,12 @@ public class Constant {
     public static final String EDIT_PROFILE = "EDIT_PROFILE";
     public static final String DELETE_PROFILE = "DELETE_PROFILE";
     public static final String RESULTS_PROFILE = "PROFILE_RESULTS";
+    public static final String GET_PROFILE_DATA = "GET_PROFILE_DATA";
 
     public static final String NEW_DEVICE = "NEW_DEVICE";
     public static final String EDIT_DEVICE = "EDIT_DEVICE";
     public static final String DELETE_DEVICE = "DELETE_DEVICE";
+    public static final String GET_DEVICE_DATA = "GET_DEVICE_DATA";
 
 
 

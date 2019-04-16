@@ -204,7 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void updateProfilePowerCost(BigDecimal newCost, Float newPower, int id ) {
+    public void updateProfilePowerCost(BigDecimal newCost, BigDecimal newPower, int id ) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "UPDATE " + TABLE_PROFILE + " SET " + PROFILE_COL4 + " = '" + newPower +"', " +
                 PROFILE_COL5 + " = '" + newCost + "' WHERE " + PROFILE_COL0 + " = " + id;

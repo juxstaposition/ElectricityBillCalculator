@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout myVerticalLayout = null;
     ArrayList<Integer> profileIds = new ArrayList<>();
 
+    int profileIdToUpdate;
+
     DatabaseHelper mDatabaseHelper;
 
     @Override
@@ -67,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updateProfilePowerCostTime(profileIdToUpdate);
+
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -92,56 +102,72 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+        if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+            deleteProfile(profileIdToUpdate);
+        }
         if (data != null) {
             Bundle mBundle = data.getExtras();
-
-
+            
             if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
                 addNewProfile();
             }
+            if (requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+                if (mBundle.getString("ACTION").equals(EDIT_PROFILE)) {
+                    String name = mBundle.getString("PROFILE_NAME");
+                    String description = mBundle.getString("PROFILE_DESCRIPTION");
+                    Number price = mBundle.getFloat("PROFILE_PRICE");
 
-            if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-                if (mBundle != null) {
-                    deleteProfile(Integer.parseInt(mBundle.getString("PROFILE_ID")));
-                    Log.d("MainActivity/Delete", ""+mBundle.getInt("PROFILE_ID"));
+
+                    Log.d("updateMAIN", "id " + profileIdToUpdate + ", name " + name + ", description " + description + ", price " + price);
+                    updateProfileData(profileIdToUpdate, name, description, price);
+
                 }
-            }
-            if ( requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK ) {
-
-                if (mBundle != null) {
-                    if (mBundle.getString("ACTION").equals(EDIT_PROFILE) ) {
-                        int id = mBundle.getInt("PROFILE_ID");
-                        String name = mBundle.getString("PROFILE_NAME");
-                        String description = mBundle.getString("PROFILE_DESCRIPTION");
-                        Number price = mBundle.getFloat("PROFILE_PRICE");
-
-
-                        Log.d("updateMAIN", "id " + id + ", name " +name+", description " + description + ", price " + price );
-                        updateProfileData(id, name, description, price);
-
-//                        if (mBundle.getString("ACTION2").equals(RESULTS_PROFILE)) {
-//                            updateProfilePowerCost(data.getFloatExtra("PROFILE_POWER",-1),
-//                                    data.getFloatExtra("PROFILE_COST",-1), data.getIntExtra("PROFILE_ID", -1));
-//                        }
-                    }
-                    if (mBundle.getString("ACTION").equals(DELETE_PROFILE)) {
-                        deleteProfile(mBundle.getInt("PROFILE_ID"));
-                    }
+                if (mBundle.getString("ACTION").equals(DELETE_PROFILE)) {
+                    Log.d("executed", "delete executed");
+                    deleteProfile(profileIdToUpdate);
                 }
             }
         }
     }
 
-    private void updateProfilePowerCost(float power, float cost, int id) {
-        for (Profile profile : profiles){
-            if (profile.getId() == id){
+    private void updateProfilePowerCostTime(int id) {
 
-                profile.setPower(String.valueOf(power));
-                profile.setCost(String.valueOf(cost));
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
+        Cursor data = mDatabaseHelper.getProfileItemByID(id);
 
-                break;
+        if(data != null) {
+            float power = -1;
+            float cost = -1;
+            String time = "00:00";
+            if (data.moveToFirst() && data.getCount() != 0) {
+                try{
+                    power = data.getFloat(4);
+                    cost = data.getFloat(5);
+                    time = data.getString(6);
+
+
+                } catch (Exception e){
+                    System.out.println("could not update power/cost/time");
+                }
+                data.close();
             }
+
+            for (Profile profile : profiles){
+                if (profile.getId() == id){
+
+                    profile.setPower(String.valueOf(power));
+                    profile.setCost(String.valueOf(cost));
+                    profile.setTime(time);
+
+                    break;
+                }
+            }
+        } else {
+            System.out.println("no data from db");
         }
+
+        mDatabaseHelper.close();
     }
 
     private void generateProfileView(){
@@ -268,7 +294,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DeleteProfileActivity.class);
                 intent.putExtra("PROFILE_NAME", name);
-                intent.putExtra("PROFILE_ID", Integer.toString(id));
+                profileIdToUpdate = id;
+                Log.d("main_activity", ""+profileIdToUpdate);
                 startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
         }});
@@ -279,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
                 animation.startAnimation(v,R.anim.blink,getApplicationContext());
                 animation.startAnimation(profile.clipDelete,R.anim.blink,getApplicationContext());
 
+                profileIdToUpdate = profile.getId();
                 Intent intent = new Intent(MainActivity.this, DevicesListActivity.class);
                 intent.putExtra("KEY",Constant.PROFILE_DEVICES);
                 intent.putExtra("PROFILE_ID",Integer.toString(id));
@@ -317,8 +345,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 data.close();
             }
-        } else  {
-            data.close();
         }
         mDatabaseHelper.close();
     }

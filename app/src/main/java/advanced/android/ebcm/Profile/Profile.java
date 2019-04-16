@@ -179,9 +179,9 @@ public class Profile {
         addTitlesToDescription(thirdCol,"Power:","Time:",titlesFont,titlesTextSize,context);
 
         LinearLayout fourthCol = generatedDescriptionColumn(context);
-        profilePower = createTextView(power+"W", context,descriptionsFont,descriptionsTextSize);
+        profilePower = createTextView(power+"kWh", context,descriptionsFont,descriptionsTextSize);
         fourthCol.addView(profilePower);
-        profileTime = createTextView(time+"€/month", context, descriptionsFont, descriptionsTextSize);
+        profileTime = createTextView(time+"/month", context, descriptionsFont, descriptionsTextSize);
         fourthCol.addView(profileTime);
 
         thirdLine.addView(firstCol);

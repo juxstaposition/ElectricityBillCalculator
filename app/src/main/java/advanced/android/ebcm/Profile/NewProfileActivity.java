@@ -154,7 +154,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         TextView price = findViewById(R.id.edit_profile_price);
 
 
-        int id = Integer.parseInt(receivedIntent.getStringExtra("PROFILE_ID"));
+        int id = receivedIntent.getIntExtra("PROFILE_ID", -1);
 
 
         String newName = name.getText().toString();

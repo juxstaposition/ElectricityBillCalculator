@@ -32,8 +32,8 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     ArrayList<Device> devicesList;
     GraphView graphView;
     double maxResult;
-    float kWhPrice, totalUnits = -1, totalTime = -1;
-        BigDecimal totalPrice = BigDecimal.valueOf(-1);
+    float kWhPrice, totalUnits = 0, totalTime = 0;
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
     int profileId;
     String correctTime;
     DatabaseHelper mDatabaseHelper;
@@ -216,6 +216,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         }
 
         totalPrice = round( totalUnits * kWhPrice,2) ;
+        BigDecimal allUnits = round( totalUnits, 2);
 
         resultPrice.add("Total kWh consumed:        " + String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
         resultPrice.add("Expected price:                        " + String.valueOf(totalPrice) + " €");
@@ -224,10 +225,10 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
                 android.R.layout.simple_list_item_1, resultPrice );
         costDetailsView.setAdapter(aa);
 
-        databasePowerCostTimeUpdate(totalPrice, totalUnits, totalTime);
+        databasePowerCostTimeUpdate(totalPrice, allUnits, totalTime);
     }
 
-    private void databasePowerCostTimeUpdate(BigDecimal totalCost, float totalUnits, float totalTime) {
+    private void databasePowerCostTimeUpdate(BigDecimal totalCost, BigDecimal totalUnits, float totalTime) {
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
         int hours = (int)(totalTime / 60);
@@ -246,7 +247,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private DataPoint[] getDataPoints() {
-        Collections.sort(results);
+        Collections.sort(results, Collections.reverseOrder());
         DataPoint[] dataPoints = new DataPoint[results.size()];
 
         for (int i = 0; i < dataPoints.length; i++) {
@@ -263,9 +264,8 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     private int getColor(double x) {
 //        double r = c.getResults() / maxResult;
 //        int rr =(int) Math.round(x/maxResult) * 255;
-        int color = Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
        //Log.i("COLOR", Integer.toString(color));
-        return color;
+        return Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
     }
     //nothing implemented --down
 

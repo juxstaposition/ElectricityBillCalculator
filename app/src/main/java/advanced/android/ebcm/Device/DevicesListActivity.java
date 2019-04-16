@@ -4,7 +4,6 @@ import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.DatabaseHelper;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
-import advanced.android.ebcm.Profile.Profile;
 import advanced.android.ebcm.R;
 import advanced.android.ebcm.ResultGraph;
 import android.app.Activity;
@@ -32,14 +31,12 @@ public class DevicesListActivity extends AppCompatActivity {
     private ArrayList<Integer> deviceIds = new ArrayList<>();
 
     DatabaseHelper mDatabaseHelper;
-    int profileId, deviceId, deviceQuantity, deviceConsumption, deviceUsageDays, deviceUsageHours, deviceUsageMinutes ;
-    Profile profile;
+    int profileId;
     LinearLayout deviceLayout;
-    String profileName, profileTime, profileDescription, deviceName;
-    Number profilePrice, profilePower, profileCost;
+    String profileName, profileDescription;
+    Number profilePrice;
     boolean deleted = false;
     boolean updated = false;
-    boolean situation = true;
 
 
 
@@ -113,7 +110,7 @@ public class DevicesListActivity extends AppCompatActivity {
         if ( id == R.id.edit_profile_menu){
             Intent editProfile = new Intent(DevicesListActivity.this, NewProfileActivity.class);
             editProfile.putExtra("KEY",Constant.EDIT_PROFILE);
-            editProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
+            editProfile.putExtra("PROFILE_ID", profileId);
             editProfile.putExtra("PROFILE_NAME", profileName);
             editProfile.putExtra("PROFILE_DESCRIPTION", profileDescription);
             editProfile.putExtra("PROFILE_PRICE", String.valueOf(profilePrice));
@@ -125,7 +122,7 @@ public class DevicesListActivity extends AppCompatActivity {
         else if ( id == R.id.delete_profile_menu){
             Intent deleteProfile = new Intent(DevicesListActivity.this, DeleteProfileActivity.class);
             deleteProfile.putExtra("KEY",Constant.DELETE_PROFILE);
-            deleteProfile.putExtra("PROFILE_ID", Integer.toString(profileId));
+            deleteProfile.putExtra("PROFILE_ID",profileId);
             deleteProfile.putExtra("PROFILE_NAME", profileName);
             startActivityForResult(deleteProfile, DELETE_PROFILE_ACTIVITY_REQ_CODE);
             overridePendingTransition(R.anim.blink,0);
@@ -144,32 +141,21 @@ public class DevicesListActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
 
         if (deleted) {
-            returnIntent.putExtra("PROFILE_ID", profileId);
             returnIntent.putExtra("ACTION", DELETE_PROFILE);
-
-            setResult(Activity.RESULT_OK, returnIntent);
-        }
-        if (updated) {
+        } else if (updated) {
             returnIntent.putExtra("ACTION", EDIT_PROFILE);
             returnIntent.putExtra("PROFILE_NAME", profileName);
             returnIntent.putExtra("PROFILE_DESCRIPTION", profileDescription);
             returnIntent.putExtra("PROFILE_PRICE", profilePrice);
-
-            setResult(Activity.RESULT_OK, returnIntent);
-        }
-        if (situation) {
-
-            setResult(Activity.RESULT_CANCELED, returnIntent);
+        } else {
+            returnIntent.putExtra("ACTION", "none");
         }
 
-//
-//        returnIntent.putExtra("ACTION2", RESULTS_PROFILE);
-//        returnIntent.putExtra("PROFILE_POWER", profilePower);
-//        returnIntent.putExtra("PROFILE_COST", profileCost);
-//        returnIntent.putExtra("PROFILE_TIME", profileTime);
-//        setResult(Activity.RESULT_OK, returnIntent);
 
+        returnIntent.putExtra("PROFILE_ID", profileId);
+        setResult(Activity.RESULT_OK, returnIntent);
         super.onBackPressed();
+
     }
 
 
@@ -179,21 +165,14 @@ public class DevicesListActivity extends AppCompatActivity {
 
         if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
             updated = false;
-            situation = false;
             deleted = true;
+
             onBackPressed();
         }
         if (requestCode == EDIT_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
-            situation = false;
             updated = true;
             getProfile();
             setTitle(profileName);
-        }
-        if(requestCode == VIEW_RESULTS && resultCode == Activity.RESULT_OK){
-            profilePower = data.getFloatExtra("PROFILE_POWER", -1);
-            profileCost = data.getFloatExtra("PROFILE_COST", -1);
-            profileTime = data.getStringExtra("PROFILE_TIME");
-            setResult(Activity.RESULT_OK);
         }
         if (requestCode == ADD_DEVICE_TO_PROFILE_REQ_CODE && resultCode == Activity.RESULT_OK) {
             addDeviceView(data);
