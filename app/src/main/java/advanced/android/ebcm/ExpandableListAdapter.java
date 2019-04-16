@@ -2,7 +2,6 @@ package advanced.android.ebcm;
 
 import java.util.HashMap;
 import java.util.List;
-
 import advanced.android.ebcm.Graph.CalculationResult;
 import android.content.Context;
 import android.graphics.Typeface;

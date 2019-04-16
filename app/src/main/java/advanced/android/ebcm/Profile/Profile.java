@@ -7,9 +7,7 @@ import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.*;
 
 public class Profile {
