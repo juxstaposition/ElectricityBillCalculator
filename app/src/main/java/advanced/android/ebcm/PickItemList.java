@@ -3,7 +3,6 @@ package advanced.android.ebcm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import advanced.android.ebcm.Graph.CalculationResult;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,8 +119,8 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
      * Preparing the list data
      */
     private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<CalculationResult>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
 
         // Adding child data
         listDataHeader.add("Lamps");

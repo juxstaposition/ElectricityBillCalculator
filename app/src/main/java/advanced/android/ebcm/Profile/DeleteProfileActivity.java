@@ -3,10 +3,8 @@ package advanced.android.ebcm.Profile;
 import advanced.android.ebcm.Constant;
 import advanced.android.ebcm.R;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,7 +27,6 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         findViewById(R.id.buttonDeleteCancel).setOnClickListener(this);
         findViewById(R.id.buttonDeleteConfirm).setOnClickListener(this);
         findViewById(R.id.back_view_delete).setOnClickListener(this);
-
     }
 
     @Override
@@ -40,16 +37,14 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         animation.startAnimation(v,R.anim.blink,getApplicationContext());
 
         if (v.getId() == R.id.buttonDeleteConfirm){
+
             setResult(Activity.RESULT_OK);
             finish();
-
-            Log.d("delete", "confirm pressed");
         }
         else if (v.getId() == R.id.buttonDeleteCancel || v.getId() == R.id.back_view_delete){
+
             setResult(Activity.RESULT_CANCELED);
             finish();
-
-            Log.d("delete", "cancel pressed");
         }
     }
 
@@ -58,5 +53,4 @@ public class DeleteProfileActivity extends AppCompatActivity implements View.OnC
         super.finish();
         overridePendingTransition(0,R.anim.fade);
     }
-
 }

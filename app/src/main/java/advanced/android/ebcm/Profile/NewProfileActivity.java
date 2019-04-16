@@ -58,7 +58,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.buttonProfileAdd).setOnClickListener(this);
         findViewById(R.id.buttonDeleteCancel).setOnClickListener(this);
         findViewById(R.id.back_view_edit_profile).setOnClickListener(this);
-
     }
 
     @Override
@@ -69,6 +68,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed(){
+
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
@@ -76,6 +76,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
+
         Intent returnIntent = new Intent();
 
         Constant animation = new Constant();
@@ -134,15 +135,10 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    //      !!!  power and cost added on database side
+    //      !!!  power and cost added on database side (inside DatabaseHelper)
     private void addProfileToDatabase (String name, String description, String price) {
-        boolean insertData = mDatabaseHelper.addProfileData(name,description,price);
 
-//        if (insertData) {
-//            toastMessage("Profile Created");
-//        } else {
-//            toastMessage("Something went wrong");
-//        }
+        mDatabaseHelper.addProfileData(name,description,price);
     }
 
     private void updateProfile () {
@@ -164,19 +160,10 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
         mDatabaseHelper.updateProfileMain(newName,newDescription,newPrice, id);
         mDatabaseHelper.close();
-
     }
 
     private boolean sendWarningToast(String message){
         Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
         return false;
-    }
-
-    /**
-     * customizable toast
-     * @param message string
-     */
-    private void toastMessage(String message) {
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 }

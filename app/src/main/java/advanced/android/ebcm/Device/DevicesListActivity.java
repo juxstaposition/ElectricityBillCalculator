@@ -14,13 +14,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 import static advanced.android.ebcm.Constant.*;
@@ -48,9 +45,6 @@ public class DevicesListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         profileId  = Integer.parseInt(getIntent().getStringExtra("PROFILE_ID"));
-
-
-
         final String transferredData = getIntent().getStringExtra("KEY");
         System.out.println(transferredData);
 
@@ -59,8 +53,6 @@ public class DevicesListActivity extends AppCompatActivity {
         mDatabaseHelper = new DatabaseHelper(this);
 
         generateDeviceView();
-
-
         getProfile();
         setTitle(profileName);
 
@@ -95,16 +87,14 @@ public class DevicesListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_profile_devices, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -152,11 +142,9 @@ public class DevicesListActivity extends AppCompatActivity {
             returnIntent.putExtra("ACTION", "none");
         }
 
-
         returnIntent.putExtra("PROFILE_ID", profileId);
         setResult(Activity.RESULT_OK, returnIntent);
         super.onBackPressed();
-
     }
 
 
@@ -167,7 +155,6 @@ public class DevicesListActivity extends AppCompatActivity {
         if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
             updated = false;
             deleted = true;
-
             onBackPressed();
         }
         if (requestCode == EDIT_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
@@ -190,12 +177,11 @@ public class DevicesListActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_left_enter, R.anim.slide_right_exit);
-
     }
 
     void getProfile() {
-        mDatabaseHelper = new DatabaseHelper(this);
 
+        mDatabaseHelper = new DatabaseHelper(this);
         Cursor data = mDatabaseHelper.getProfileItemByID(profileId);
 
         if (data != null) {
@@ -204,11 +190,8 @@ public class DevicesListActivity extends AppCompatActivity {
                     profileName = data.getString(1);
                     profileDescription = data.getString(2);
                     profilePrice = data.getFloat(3);
-
                 } while (data.moveToNext());
             }
-        } else {
-            Log.d("GET_PROFILE", " is empty");
         }
 
         mDatabaseHelper.close();
@@ -228,10 +211,7 @@ public class DevicesListActivity extends AppCompatActivity {
 
                 } while (data.moveToNext());
             }
-        } else {
-            Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void createNewDevice(int id, String name, int quantity, int hours, int minutes,
@@ -274,13 +254,11 @@ public class DevicesListActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.blink, 0);
         }});
         devices.add(device);
-
-        Log.d("deviceCREATE", Integer.toString(device.getId()));
     }
 
     private void addDeviceView(Intent data) {
-        mDatabaseHelper = new DatabaseHelper(this);
 
+        mDatabaseHelper = new DatabaseHelper(this);
         Cursor deviceIdData = mDatabaseHelper.getDeviceData(profileId);
 
         try {
@@ -310,7 +288,6 @@ public class DevicesListActivity extends AppCompatActivity {
                 System.out.println(max);
             }
         }
-        Log.d("MAX_VALUE", Integer.toString(max));
 
         Bundle mBundle = data.getExtras();
         final String deviceName = mBundle.getString("DEVICE_NAME");
@@ -319,11 +296,6 @@ public class DevicesListActivity extends AppCompatActivity {
         final String deviceUsageHours = mBundle.getString("DEVICE_USAGE_HOURS");
         final String deviceUsageMinutes = mBundle.getString("DEVICE_USAGE_MINUTES");
         final String deviceUsageDays = mBundle.getString("DEVICE_USAGE_DAYS");
-
-
-        Log.d("DEVICE_LIST", "name: "+ deviceName +", consumption: "+ deviceConsumption + ", quantity: "+ deviceQuantity +", usageHours: "+
-                deviceUsageHours +", usageMinutes: "+ deviceUsageMinutes +", usageDays: "+ deviceUsageDays);
-
 
         createNewDevice(max,deviceName,Integer.parseInt(deviceQuantity),
                         Integer.parseInt(deviceUsageHours),Integer.parseInt(deviceUsageMinutes),
@@ -336,6 +308,7 @@ public class DevicesListActivity extends AppCompatActivity {
         if (data != null) {
             for (Device device: devices){
                 if (device.getId() == data.getIntExtra("DEVICE_ID", -1)){
+
                     device.setName(data.getStringExtra("DEVICE_NAME"), data.getIntExtra("DEVICE_QUANTITY",-1) );
                     device.setPower(data.getIntExtra("DEVICE_CONSUMPTION", -1));
                     device.setTime(data.getIntExtra("DEVICE_USAGE_HOURS",-1),data.getIntExtra("DEVICE_USAGE_MINUTES",-1));
@@ -343,10 +316,7 @@ public class DevicesListActivity extends AppCompatActivity {
                     break;
                 }
             }
-        } else {
-            Toast.makeText(this,"Could not update the list pleas re-open Profile", Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void deleteDevice(Intent receivedIntent) {

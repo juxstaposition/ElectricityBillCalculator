@@ -27,9 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Profile> profiles = new ArrayList<>();
     LinearLayout myVerticalLayout = null;
     ArrayList<Integer> profileIds = new ArrayList<>();
-
     int profileIdToUpdate;
-
     DatabaseHelper mDatabaseHelper;
 
     @Override
@@ -57,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mDatabaseHelper.close();
-
     }
 
     @Override
@@ -68,18 +65,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
+        int id = item.getItemId();
 
         if ( id == R.id.action_help) {
             Intent intent = new Intent(getApplicationContext(), HelpInstructions.class);
@@ -97,27 +91,31 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (requestCode == DELETE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+
             deleteProfile(profileIdToUpdate);
         }
+
         if (data != null) {
+
             Bundle mBundle = data.getExtras();
             
             if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
                 addNewProfile();
             }
+
             if (requestCode == UPDATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
+
                 if (mBundle.getString("ACTION").equals(EDIT_PROFILE)) {
+
                     String name = mBundle.getString("PROFILE_NAME");
                     String description = mBundle.getString("PROFILE_DESCRIPTION");
                     Number price = mBundle.getFloat("PROFILE_PRICE");
 
-
-                    Log.d("updateMAIN", "id " + profileIdToUpdate + ", name " + name + ", description " + description + ", price " + price);
                     updateProfileData(profileIdToUpdate, name, description, price);
-
                 }
+
                 if (mBundle.getString("ACTION").equals(DELETE_PROFILE)) {
-                    Log.d("executed", "delete executed");
+
                     deleteProfile(profileIdToUpdate);
                 }
             }
@@ -130,18 +128,16 @@ public class MainActivity extends AppCompatActivity {
         Cursor data = mDatabaseHelper.getProfileItemByID(id);
 
         if(data != null) {
-            float power = -1;
-            float cost = -1;
+            float power = 0;
+            float cost =  0;
             String time = "00:00";
             if (data.moveToFirst() && data.getCount() != 0) {
                 try{
                     power = data.getFloat(4);
                     cost = data.getFloat(5);
                     time = data.getString(6);
-
-
                 } catch (Exception e){
-                    System.out.println("could not update power/cost/time");
+                   data.close();
                 }
                 data.close();
             }
@@ -152,12 +148,9 @@ public class MainActivity extends AppCompatActivity {
                     profile.setPower(String.valueOf(power));
                     profile.setCost(String.valueOf(cost));
                     profile.setTime(time);
-
                     break;
                 }
             }
-        } else {
-            System.out.println("no data from db");
         }
 
         mDatabaseHelper.close();
@@ -165,28 +158,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void generateProfileView(){
 
-
         Cursor data = mDatabaseHelper.getProfileData();
 
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-
                     createNewProfile(data);
-
                 } while (data.moveToNext());
                 data.close();
             }
-        } else {
-            Toast.makeText(this, "Database is empty", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void addNewProfile(){
 
         mDatabaseHelper = new DatabaseHelper(this);
-
         Cursor data = mDatabaseHelper.getProfileData();
 
         try {
@@ -197,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                     } while (data.moveToNext());
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             data.close();
@@ -210,13 +195,11 @@ public class MainActivity extends AppCompatActivity {
         int max = 0;
 
         for ( int i = 0; i < profileIds.size(); i++ ) {
-
             if ( max < profileIds.get(i) ){
                 max = profileIds.get(i);
                 System.out.println(max);
             }
         }
-        Log.d("MAX_VALUE", Integer.toString(max));
 
         Cursor profileNEW = mDatabaseHelper.getProfileItemByID(max);
 
@@ -224,27 +207,18 @@ public class MainActivity extends AppCompatActivity {
             if (profileNEW != null) {
                 if (profileNEW.moveToFirst() && profileNEW.getCount() >= 1) {
                     do {
-
                         createNewProfile(profileNEW);
-
                     } while (profileNEW.moveToNext());
                 }
-            } else {
-                Log.d("addingNewProfile", "profileNEW is empty");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if(profileNEW != null) {
-                profileNEW.close();
-            }
+            profileNEW.close();
         } finally {
             if (profileNEW != null) {
                 profileNEW.close();
-
             }
         }
-
-
 
         mDatabaseHelper.close();
     }   // addNewProfile
@@ -260,7 +234,9 @@ public class MainActivity extends AppCompatActivity {
                 mDatabaseHelper.deleteProfile(profile.getId());
                 mDatabaseHelper.close();
 
+                //remove profile form ArrayList
                 profiles.remove(profile);
+                //remove profile form View
                 myVerticalLayout.removeView(profile.getLayout());
             }
         }
@@ -291,7 +267,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("main_activity", ""+profileIdToUpdate);
                 startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
-        }});
+        }}); // onClick to delete profile and everything related to it
+
         profile.profileForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,9 +281,8 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("KEY",Constant.PROFILE_DEVICES);
                 intent.putExtra("PROFILE_ID",Integer.toString(id));
                 startActivityForResult(intent, UPDATE_PROFILE_ACTIVITY_REQ_CODE);
-            }
+            } // onClick to view devices that belong to profile
         });
-        Log.d("profileCREATE", Integer.toString(id));
     }   // createNewProfile
 
     private void updateProfileData(int id, String name, String description, Number price) {
@@ -329,10 +305,7 @@ public class MainActivity extends AppCompatActivity {
         if (data != null) {
             if (data.moveToFirst() && data.getCount() >= 1) {
                 do {
-
                     mDatabaseHelper.deleteDevice(data.getInt(0));
-                    Toast.makeText(this,"Deleted device with id "+ data.getInt(0), Toast.LENGTH_LONG).show();
-
                 } while (data.moveToNext());
                 data.close();
             } else {
@@ -340,15 +313,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         mDatabaseHelper.close();
-    }
-
-    public Profile getProfiles (int id){
-        for (Profile temp : profiles){
-            if (temp.getId() == id){
-                return temp;
-            }
-        }
-        return null;
     }
 
 }   // MainActivity

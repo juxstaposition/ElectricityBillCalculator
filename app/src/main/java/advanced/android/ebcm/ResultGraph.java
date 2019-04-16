@@ -19,8 +19,6 @@ import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.*;
-import org.w3c.dom.Text;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,33 +49,26 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
             finish();
         }
 
-        /*
-        TextView resultTitle = findViewById(R.id.title_result);
-        ScrollView sv = findViewById(R.id.resultScrollView);
-        sv.smoothScrollTo(resultTitle.getScrollX(), resultTitle.getScrollY());*/
-
         //used to fill the graph
         results = loadData();
 
         drawGraph();
-
     } // end of onCreate
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
 
         Intent returnIntent = new Intent();
-
         returnIntent.putExtra("PROFILE_POWER",totalUnits);
         returnIntent.putExtra("PROFILE_COST", totalPrice.floatValue());
         returnIntent.putExtra("PROFILE_TIME", correctTime);
 
         setResult(RESULT_OK);
-
+        super.onBackPressed();
     }
 
     private ArrayList<CalculationResult> loadData() {
+
         resultList = new ArrayList<>();
 
         getProfileCost();
@@ -93,6 +84,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
 
     private void getDevices() {
+
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor devices = mDatabaseHelper.getDeviceData(profileId);
         devicesList = new ArrayList<>();
@@ -114,6 +106,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private void getProfileCost() {
+
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor profile = mDatabaseHelper.getProfileItemByID(profileId);
 
@@ -128,10 +121,10 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
             profile.close();
         }
         mDatabaseHelper.close();
-
     }
 
     void drawGraph() {
+
         setContentView(R.layout.activity_result_graph);
 
         // setting size of a graph
@@ -152,15 +145,12 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
-//        graphView.getViewport().setMaxY(400);
-//        graphView.setHorizontalScrollBarEnabled(true);
 
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setScrollableY(true);
 
         graphView.getViewport().setScalable(true);
         graphView.getViewport().setScalableY(true);
-
 
 
         graphView.getGridLabelRenderer(). setLabelFormatter(new DefaultLabelFormatter() {
@@ -172,7 +162,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
                     return super.formatLabel(value, isValueX) + " kWh";
                 }
             }
-
         });
 
 
@@ -216,8 +205,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
         final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
         itemDetailsView.setAdapter(ida);
-
-
     }
 
 
@@ -249,6 +236,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private void databasePowerCostTimeUpdate(BigDecimal totalCost, BigDecimal totalUnits, float totalTime) {
+
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
         int hours = (int)(totalTime / 60);
@@ -267,6 +255,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private DataPoint[] getDataPoints() {
+
         Collections.sort(results, Collections.reverseOrder());
         DataPoint[] dataPoints = new DataPoint[results.size()];
 
@@ -282,9 +271,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
     }
 
     private int getColor(double x) {
-//        double r = c.getResults() / maxResult;
-//        int rr =(int) Math.round(x/maxResult) * 255;
-       //Log.i("COLOR", Integer.toString(color));
+
         return Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
     }
     //nothing implemented --down

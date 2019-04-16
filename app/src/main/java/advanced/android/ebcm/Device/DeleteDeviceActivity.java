@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -40,17 +39,15 @@ public class DeleteDeviceActivity  extends AppCompatActivity implements View.OnC
         animation.startAnimation(v,R.anim.blink,getApplicationContext());
 
         if (v.getId() == R.id.buttonDeleteConfirm){
+
             returnIntent.putExtra("DEVICE_ID", getIntent().getStringExtra("DEVICE_ID"));
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
-
-            Log.d("delete", "confirm pressed");
         }
         else if (v.getId() == R.id.buttonDeleteCancel || v.getId() == R.id.back_view_delete){
+
             setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
-
-            Log.d("delete", "cancel pressed");
         }
     }
 
