@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         if ( id == R.id.action_help) {
             Intent intent = new Intent(getApplicationContext(), HelpInstructions.class);
-           startActivity(intent);
-
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_right_enter,R.anim.slide_left_exit);
             return true;
         }
 
