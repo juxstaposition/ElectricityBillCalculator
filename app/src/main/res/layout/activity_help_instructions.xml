@@ -391,6 +391,7 @@
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
                 android:layout_marginBottom="10dp"
+                android:paddingBottom="20dp"
         />
 
 
