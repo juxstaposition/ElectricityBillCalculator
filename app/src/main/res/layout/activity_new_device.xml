@@ -158,7 +158,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="2"
-                        android:minWidth="200dp"
                 >
                     <android.support.design.widget.TextInputLayout
                             android:layout_weight="1"

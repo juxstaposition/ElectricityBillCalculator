@@ -125,10 +125,9 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
                 else if (usageMinutes.length() == 0 &&  usageHours.length() > 0 ) {
-                    if (Integer.parseInt(usageHours) >= 24) {
+                    if (Integer.parseInt(usageHours) >= 24 ||
+                       (Integer.parseInt(usageHours) == 24 && Integer.parseInt(usageMinutes) > 0)) {
                         validation = sendWarningToast("Invalid time format");
-                    } else {
-                        usageMinutes = "0";
                     }
                 }
             }
@@ -145,8 +144,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 validation = sendWarningToast("Must be used at least 1 day!");
             }
 
-            if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) > 31) ){
-                usageDays = "30";
+            if (validation && (usageDays.length() == 0 || Integer.parseInt(usageDays) > 30) ){
+                validation = sendWarningToast("For calculation purposes\nmonth can have max 30 days!");
 
             }
 
