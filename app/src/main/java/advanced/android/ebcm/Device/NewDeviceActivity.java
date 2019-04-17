@@ -129,6 +129,9 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                        (Integer.parseInt(usageHours) == 24 && Integer.parseInt(usageMinutes) > 0)) {
                         validation = sendWarningToast("Invalid time format");
                     }
+                    else{
+                        usageMinutes = "0";
+                    }
                 }
             }
             else if(validation){

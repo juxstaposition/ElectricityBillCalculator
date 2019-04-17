@@ -13,7 +13,8 @@ public class HelpInstructions extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,R.anim.slide_left_exit);
     }
 }

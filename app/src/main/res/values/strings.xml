@@ -4,7 +4,7 @@
     <string name="title_activity_devices_list">Favourite Devices</string>
 
     <!--menu-->
-    <string name="action_devices">Devices</string>
+    <string name="action_devices">devices</string>
     <string name="action_help">Help</string>
 
     <!--titles-->
@@ -17,14 +17,15 @@
     <string name="result_graph_title">CONSUMPTION OF ELECTRICITY GRAPH (WATTS)</string>
     <string name="highest_consumption">Usage from Highest to Lowest</string>
     <string name="cost_info">Cost Information</string>
+    <string name="help">Help</string>
 
     <!--hints-->
     <string name="description">Description</string>
     <string name="new_profile_name">New Profile Name</string>
     <string name="power">Power W</string>
     <string name="quantity">Quantity</string>
-    <string name="usage_h_day">Usage h/Day</string>
-    <string name="usage_min_day">Usage min/Day</string>
+    <string name="usage_h_day">hours</string>
+    <string name="usage_min_day">mins</string>
     <string name="usage_d_month">Usage d/Month</string>
     <string name="new_item">New Item</string>
     <string name="profile_price">Price kWh</string>
@@ -42,10 +43,11 @@
     <string name="orText">------ or ------</string>
     <string name="notice">Notice:</string>
     <string name="irreversible">This is an irreversible action!</string>
+    <string name="kwh">kWh</string>
 
 
 
-    //help - app guide
+    <!--help - app guide-->
     <string name="help_title">Welcome to the App Guide</string>
     <string name="help_description">Please follow the guidelines to use the app.</string>
     <string name="help_rules1">1. Create a new profile.</string>
@@ -59,10 +61,7 @@
     <string name="help_rules6">6. Add an item in the profile.</string>
     <string name="help_rules7">7. Pick an item. </string>
     <string name="help_rules8">8. Choose items that matches your devices.</string>
-    <string name="help_rules9">9. Choose "$" for the calculation result.</string>
-
-
-
+    <string name="help_rules9">9. Press "$" for the calculation result.</string>
 
     <string name="help_picture">Help Picture</string>
 

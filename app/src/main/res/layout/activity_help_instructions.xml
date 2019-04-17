@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        android:background="@color/lightWhite"
-        tools:context=".Essentials.HelpInstructions"
+        android:background="@color/translucent"
+        android:theme="@android:style/Theme.Holo.NoActionBar">
 
->
+
+<ScrollView
+        android:background="@drawable/pop_up_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    >
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
         <TextView
                 android:id="@+id/main_heading"
@@ -72,16 +76,16 @@
                 android:maxWidth="200dp"
                 android:maxHeight="400dp"
                 android:contentDescription="@string/help_picture"
+                android:background="@drawable/help_image_border"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:padding="1dp"
                 app:srcCompat="@drawable/create_a_new_profile"
                 app:layout_constraintTop_toBottomOf="@+id/heading1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
 
         <TextView
@@ -113,8 +117,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
 
         <TextView
@@ -148,8 +150,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
         <TextView
                 android:id="@+id/heading4"
@@ -182,8 +182,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
 
         <TextView
@@ -217,8 +215,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
         <TextView
                 android:id="@+id/spaceTextView"
@@ -231,9 +227,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"/>
+                android:gravity="center"/>
 
         <ImageView
                 android:id="@+id/imageViewDelete2"
@@ -250,8 +244,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/spaceTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
 
         />
         <TextView
@@ -285,8 +277,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
         <TextView
                 android:id="@+id/heading7"
@@ -319,8 +309,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
 
         <TextView
@@ -354,8 +342,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
         />
         <TextView
                 android:id="@+id/heading9"
@@ -388,8 +374,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/heading9"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
                 android:layout_marginBottom="10dp"
                 android:paddingBottom="20dp"
         />
@@ -401,4 +385,6 @@
 </ScrollView>
 
 
+
+</android.support.constraint.ConstraintLayout>
 

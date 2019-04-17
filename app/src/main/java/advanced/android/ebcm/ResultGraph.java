@@ -11,10 +11,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -26,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ResultGraph extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class ResultGraph extends AppCompatActivity {
 
     ArrayList<CalculationResult> results;
     ArrayList<CalculationResult> resultList;
@@ -148,20 +145,20 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
 
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setScrollableY(true);
+        graphView.getViewport().setScrollable(false);
+        graphView.getViewport().setScrollableY(false);
 
-        graphView.getViewport().setScalable(true);
-        graphView.getViewport().setScalableY(true);
+        graphView.getViewport().setScalable(false);
+        graphView.getViewport().setScalableY(false);
 
 
-        graphView.getGridLabelRenderer(). setLabelFormatter(new DefaultLabelFormatter() {
+        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
                     return super.formatLabel(value, isValueX);
                 } else {
-                    return super.formatLabel(value, isValueX) + " kWh";
+                    return super.formatLabel(value, isValueX);
                 }
             }
         });
@@ -277,48 +274,6 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
         return Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
     }
     //nothing implemented --down
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.i("###RESULTGRAPH", "outTouchEVent X: " + event.getX() + ", Y: " + event.getY());
-
-
-        return super.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        Log.i("RESULTGRAPH", "onDown X: " + e.getX() + ", Y: " + e.getY());
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        Log.i("RESULTGRAPH", "onShowPress X: " + e.getX() + ", Y: " + e.getY());
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        Log.i("RESULTGRAPH", "onSingleTapUp X: " + e.getX() + ", Y: " + e.getY());
-return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.i("RESULTGRAPH", "onScroll X: " + e1.getX() + ", Y: " + e2.getY());
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        Log.i("RESULTGRAPH", "onLongPress X: " + e.getX() + ", Y: " + e.getY());
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.i("RESULTGRAPH", "onFling X: " + e1.getX() + ", Y: " + e2.getY());
-        return false;
-    }
 
     public static BigDecimal round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));

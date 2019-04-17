@@ -18,6 +18,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="AppTheme.Help">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/translucent</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
 
     <!-- Input Activities Styling -->
     <style name="AppTheme.InputPopUpStyle">
