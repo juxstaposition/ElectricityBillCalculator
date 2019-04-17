@@ -1,8 +1,10 @@
 package advanced.android.ebcm;
 
 import advanced.android.ebcm.Device.Device;
+import advanced.android.ebcm.Essentials.DatabaseHelper;
 import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.Graph.ItemDetailsAdapter;
+import advanced.android.ebcm.Graph.SortCalculationResult;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -256,7 +258,7 @@ public class ResultGraph extends AppCompatActivity implements GestureDetector.On
 
     private DataPoint[] getDataPoints() {
 
-        Collections.sort(results, Collections.reverseOrder());
+        Collections.sort(results, new SortCalculationResult());
         DataPoint[] dataPoints = new DataPoint[results.size()];
 
         for (int i = 0; i < dataPoints.length; i++) {

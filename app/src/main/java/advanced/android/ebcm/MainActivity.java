@@ -1,6 +1,9 @@
 package advanced.android.ebcm;
 
 import advanced.android.ebcm.Device.DevicesListActivity;
+import advanced.android.ebcm.Essentials.Constant;
+import advanced.android.ebcm.Essentials.DatabaseHelper;
+import advanced.android.ebcm.Essentials.HelpInstructions;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
 import advanced.android.ebcm.Profile.Profile;
@@ -19,7 +22,7 @@ import android.widget.*;
 
 import java.util.ArrayList;
 
-import static advanced.android.ebcm.Constant.*;
+import static advanced.android.ebcm.Essentials.Constant.*;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent newProfileActivity = new Intent(MainActivity.this, NewProfileActivity.class);
-                newProfileActivity.putExtra("KEY",Constant.NEW_PROFILE);
+                newProfileActivity.putExtra("KEY", Constant.NEW_PROFILE);
                 startActivityForResult(newProfileActivity, CREATE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
             }

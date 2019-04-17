@@ -1,4 +1,4 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Essentials;
 
 import android.content.Context;
 import android.view.View;

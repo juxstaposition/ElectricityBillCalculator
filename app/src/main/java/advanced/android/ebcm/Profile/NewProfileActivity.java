@@ -1,7 +1,7 @@
 package advanced.android.ebcm.Profile;
 
-import advanced.android.ebcm.Constant;
-import advanced.android.ebcm.DatabaseHelper;
+import advanced.android.ebcm.Essentials.Constant;
+import advanced.android.ebcm.Essentials.DatabaseHelper;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;

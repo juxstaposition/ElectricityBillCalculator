@@ -86,4 +86,5 @@ public class CalculationResult implements Comparable {
     public void setUsageDays(int usageDays) {
         this.usageDays = usageDays;
     }
+
 }

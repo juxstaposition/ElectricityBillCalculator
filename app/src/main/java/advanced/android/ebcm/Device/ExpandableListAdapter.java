@@ -1,8 +1,9 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Device;
 
 import java.util.HashMap;
 import java.util.List;
 import advanced.android.ebcm.Graph.CalculationResult;
+import advanced.android.ebcm.R;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;

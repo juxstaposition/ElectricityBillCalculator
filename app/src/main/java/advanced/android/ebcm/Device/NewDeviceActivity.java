@@ -1,8 +1,7 @@
 package advanced.android.ebcm.Device;
 
-import advanced.android.ebcm.Constant;
-import advanced.android.ebcm.DatabaseHelper;
-import advanced.android.ebcm.PickItemList;
+import advanced.android.ebcm.Essentials.Constant;
+import advanced.android.ebcm.Essentials.DatabaseHelper;
 import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static advanced.android.ebcm.Constant.EDIT_DEVICE;
+import static advanced.android.ebcm.Essentials.Constant.EDIT_DEVICE;
 
 public class NewDeviceActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -1,5 +1,6 @@
 package advanced.android.ebcm.Device;
 
+import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.R;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Comparator;
 
 public class Device {
 
