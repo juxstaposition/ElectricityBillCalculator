@@ -151,7 +151,6 @@
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
         />
-
         <TextView
                 android:id="@+id/heading4"
                 android:text="@string/help_rules4"
@@ -179,13 +178,14 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/delete_a_profile"
+                app:srcCompat="@drawable/edit_a_profile"
                 app:layout_constraintTop_toBottomOf="@+id/heading4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
         />
+
         <TextView
                 android:id="@+id/heading5"
                 android:text="@string/help_rules5"
@@ -213,12 +213,46 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/add_device_to_the_profile"
+                app:srcCompat="@drawable/delete_a_profile"
                 app:layout_constraintTop_toBottomOf="@+id/heading5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
+        />
+        <TextView
+                android:id="@+id/spaceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/space_textView"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                tools:layout_editor_absoluteY="29dp"
+                tools:layout_editor_absoluteX="20dp"/>
+
+        <ImageView
+                android:id="@+id/imageViewDelete2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="200dp"
+                android:maxHeight="400dp"
+                android:contentDescription="@string/help_picture"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/deletes_a_profile"
+                app:layout_constraintTop_toBottomOf="@+id/spaceTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="29dp"
+                tools:layout_editor_absoluteX="20dp"
+
         />
         <TextView
                 android:id="@+id/heading6"
@@ -231,7 +265,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewDelete2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
         />
@@ -247,14 +281,13 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/pick_a_device"
+                app:srcCompat="@drawable/add_device_to_the_profile"
                 app:layout_constraintTop_toBottomOf="@+id/heading6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
         />
-
         <TextView
                 android:id="@+id/heading7"
                 android:text="@string/help_rules7"
@@ -282,13 +315,14 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/choose_from_pick_list"
+                app:srcCompat="@drawable/pick_a_device"
                 app:layout_constraintTop_toBottomOf="@+id/heading7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
         />
+
         <TextView
                 android:id="@+id/heading8"
                 android:text="@string/help_rules8"
@@ -316,7 +350,7 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/add_device_or_show_result"
+                app:srcCompat="@drawable/choose_from_pick_list"
                 app:layout_constraintTop_toBottomOf="@+id/heading8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -350,48 +384,15 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/edit_a_profile"
+                app:srcCompat="@drawable/show_calculation_result"
                 app:layout_constraintTop_toBottomOf="@+id/heading9"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteY="29dp"
                 tools:layout_editor_absoluteX="20dp"
-        />
-        <TextView
-                android:id="@+id/heading10"
-                android:text="@string/help_rules10"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView9"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="10dp"
         />
 
-        <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="200dp"
-                android:maxHeight="400dp"
-                android:contentDescription="@string/help_picture"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/delete_a_profile"
-                app:layout_constraintTop_toBottomOf="@+id/heading10"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="29dp"
-                tools:layout_editor_absoluteX="20dp"
-                android:paddingBottom="10dp"
-        />
 
     </android.support.constraint.ConstraintLayout>
 

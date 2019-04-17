@@ -52,14 +52,15 @@
     <string name="help_rules2">2. Add a new profile.</string>
     <string name="help_rules3">3. Click one of the profile to continue with calculation or add new devices
                                 to the profile.</string>
-    <string name="help_rules4">4. Delete a profile.</string>
-    <string name="help_rules5">5. Add an item in the profile.</string>
-    <string name="help_rules6">6. Pick an item. </string>
-    <string name="help_rules7">7. Choose items that matches your devices.</string>
-    <string name="help_rules8">8. Choose "+" icon to add more devices to the profile or "$" for
-                                the calculation result.</string>
-    <string name="help_rules9">9. Edit a profile.</string>
-    <string name="help_rules10">10. Delete a profile.</string>
+    <string name="help_rules4">4. Edit a profile.</string>
+    <string name="help_rules5">5. Delete a profile. NB: Delete a profile will delete
+                                all the devices of that profile too</string>
+    <string name="space_textView">OR</string>
+    <string name="help_rules6">6. Add an item in the profile.</string>
+    <string name="help_rules7">7. Pick an item. </string>
+    <string name="help_rules8">8. Choose items that matches your devices.</string>
+    <string name="help_rules9">9. Choose "$" for the calculation result.</string>
+
 
 
 
