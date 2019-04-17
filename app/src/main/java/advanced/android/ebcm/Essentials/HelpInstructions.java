@@ -1,5 +1,6 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Essentials;
 
+import advanced.android.ebcm.R;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 

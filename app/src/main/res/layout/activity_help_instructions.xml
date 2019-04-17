@@ -10,7 +10,7 @@
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         android:background="@color/lightWhite"
-        tools:context=".HelpInstructions"
+        tools:context=".Essentials.HelpInstructions"
 
 >
 

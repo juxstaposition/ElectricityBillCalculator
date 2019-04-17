@@ -1,9 +1,11 @@
-package advanced.android.ebcm;
+package advanced.android.ebcm.Device;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import advanced.android.ebcm.Graph.CalculationResult;
+import advanced.android.ebcm.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

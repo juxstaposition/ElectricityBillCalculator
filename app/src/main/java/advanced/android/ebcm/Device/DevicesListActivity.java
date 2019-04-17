@@ -1,7 +1,7 @@
 package advanced.android.ebcm.Device;
 
-import advanced.android.ebcm.Constant;
-import advanced.android.ebcm.DatabaseHelper;
+import advanced.android.ebcm.Essentials.Constant;
+import advanced.android.ebcm.Essentials.DatabaseHelper;
 import advanced.android.ebcm.Profile.DeleteProfileActivity;
 import advanced.android.ebcm.Profile.NewProfileActivity;
 import advanced.android.ebcm.R;
@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
 
-import static advanced.android.ebcm.Constant.*;
+import static advanced.android.ebcm.Essentials.Constant.*;
 
 public class DevicesListActivity extends AppCompatActivity {
 

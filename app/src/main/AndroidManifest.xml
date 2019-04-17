@@ -13,11 +13,11 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name=".HelpInstructions"
+                android:name=".Essentials.HelpInstructions"
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".PickItemList"
+                android:name=".Device.PickItemList"
                 android:theme="@style/AppTheme.InputPopUpStyle">
         </activity>
         <activity
