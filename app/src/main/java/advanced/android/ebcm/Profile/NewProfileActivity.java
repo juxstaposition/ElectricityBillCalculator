@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,8 +23,8 @@ import org.json.JSONObject;
 public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
-    TextInputEditText name, description;
-    AutoCompleteTextView price;
+    TextInputEditText description;
+    AutoCompleteTextView name, price;
 
     boolean newProfile = true;
 
@@ -39,6 +40,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profileDescriptionInput = findViewById(R.id.editProfileDescription);
         profilePriceInput = findViewById(R.id.editProfilePrice);
         price = findViewById(R.id.edit_profile_price);
+        name = findViewById(R.id.edit_profile_name);
 
         setProfileSuggestions(price);
 
@@ -53,7 +55,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
             TextView buttonAdd = findViewById(R.id.buttonProfileAdd);
             buttonAdd.setText(R.string.confirm);
 
-            name = findViewById(R.id.edit_profile_name);
             name.setText(getIntent().getStringExtra("PROFILE_NAME"));
 
             description = findViewById(R.id.edit_profile_description);
@@ -98,10 +99,11 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                     profilePrice = profilePriceInput.getEditText().getText().toString();
 
             if (profileName.length() == 0){
-                validation = sendWarningToast("Please insert profile N=name!");
+                name.setError("Please insert profile Name!");
+                validation = false;
             }
 
-            if (validation && profileDescription.length() == 0 ){
+            if (profileDescription.length() == 0 ){
                 profileDescription = "";
             }
 
@@ -110,8 +112,9 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 profilePrice = stringSplit[0];
             }
 
-            if (validation && (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 )){
-                validation = sendWarningToast("Price per kWh must be greater than 0!");
+            if (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 ){
+                price.setError("Price per kWh must be greater than 0!");
+                validation = false;
             }
 
             if (validation){
@@ -191,15 +194,9 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.autocomplete_view, COUNTRIES);
         price.setAdapter(adapter);
+
+
     }
-
-
-    private boolean sendWarningToast(String message){
-        Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-
-
+    
 }
 
