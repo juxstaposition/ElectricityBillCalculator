@@ -208,8 +208,10 @@ public class ResultGraph extends AppCompatActivity {
 
 
     private void priceList() {
-        ListView costDetailsView = findViewById(R.id.total_details);
-        ArrayList<String> resultPrice = new ArrayList<>();
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        TextView resultConsumption = new TextView(this);
+        TextView resultPrice = new TextView(this);
 
         for ( CalculationResult result : results ) {
 
@@ -220,16 +222,19 @@ public class ResultGraph extends AppCompatActivity {
         totalPrice = round( totalUnits * kWhPrice,2) ;
         BigDecimal allUnits = round( totalUnits, 2);
 
-        resultPrice.add("Total kWh consumed:        " + String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
-        resultPrice.add("Expected price:                        " + String.valueOf(totalPrice) + " €");
 
         TextView costSum = findViewById(R.id.result_price_view);
         String costString = String.valueOf(totalPrice) + "€";
         costSum.setText(costString);
 
-        ArrayAdapter<String> aa = new ArrayAdapter<>( this,
-                android.R.layout.simple_list_item_1, resultPrice );
-        costDetailsView.setAdapter(aa);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        resultConsumption.setText(String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
+        resultPrice.setText(costString);
+        linearLayout.addView(resultConsumption);
+        linearLayout.addView(resultPrice);
+
+        LinearLayout mainLayout = findViewById(R.id.cost_info_result_layout);
+        mainLayout.addView(linearLayout);
 
         databasePowerCostTimeUpdate(totalPrice, allUnits, totalTime);
     }

@@ -20,12 +20,13 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
         super(context, 0, results);
     }
 
-    public ItemDetailsAdapter(Context context, ArrayList<CalculationResult> results, boolean pickItems) {
+//    public ItemDetailsAdapter(Context context, ArrayList<CalculationResult> results, boolean pickItems) {
+//
+//        super(context, 0, results);
+//        this.pickItems = pickItems;
+//    }
+//    boolean pickItems = false;
 
-        super(context, 0, results);
-        this.pickItems = pickItems;
-    }
-    boolean pickItems = false;
     @NotNull
     @Override
     public View getView(int position, @Nullable View convertView, @NotNull ViewGroup parent) {

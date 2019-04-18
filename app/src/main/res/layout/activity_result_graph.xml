@@ -18,9 +18,14 @@
             tools:layout_editor_absoluteX="0dp"
             android:layout_marginBottom="80dp"
             app:layout_constraintVertical_bias="0.0">
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
+        <LinearLayout
+                android:id="@+id/cost_info_result_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:orientation="vertical">
 
             <TextView
                     android:text="@string/result_graph_title"
@@ -104,14 +109,14 @@
                     android:layout_marginBottom="15dp"
             />
 
-            <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:id="@+id/total_details"
-                    android:textSize="20sp"
-                    android:paddingStart="32dp"
-                    android:paddingEnd="32dp"
-                    app:layout_constraintVertical_bias="0.415"/>
+            <!--<ListView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="300dp"-->
+                    <!--android:id="@+id/total_details"-->
+                    <!--android:textSize="20sp"-->
+                    <!--android:paddingStart="32dp"-->
+                    <!--android:paddingEnd="32dp"-->
+                    <!--app:layout_constraintVertical_bias="0.415"/>-->
 
         </LinearLayout>
     </ScrollView>

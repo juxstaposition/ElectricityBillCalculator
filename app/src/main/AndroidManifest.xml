@@ -16,7 +16,7 @@
                 android:name=".Essentials.HelpInstructions"
                 android:label="@string/help"
                 android:theme="@style/AppTheme.Help"
-                android:screenOrientation="portrait">
+        >
         </activity>
         <activity
                 android:name=".Device.PickItemList"
