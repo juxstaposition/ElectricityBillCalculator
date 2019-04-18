@@ -81,7 +81,6 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
                     jsonObjectExtra.put("usageTimeMinutesTotal", 1);
                     jsonObjectExtra.put("usageDays", 1);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 returnIntent.putExtra("NAME", jsonObjectExtra.toString());
@@ -144,7 +143,7 @@ public class PickItemList extends AppCompatActivity implements View.OnClickListe
         rooms.add(new CalculationResult("Table Fan", 50,1, 1, 1, 1));
         rooms.add(new CalculationResult("Computer", 200,1, 1, 1, 1));
         rooms.add(new CalculationResult("Laptop", 40,1, 1, 1, 1));
-        rooms.add(new CalculationResult("Computer Gaming", 500,1, 1, 1, 1));
+        rooms.add(new CalculationResult("Gaming Computer", 500,1, 1, 1, 1));
         rooms.add(new CalculationResult("Router", 5,1, 1, 1, 1));
 
 
