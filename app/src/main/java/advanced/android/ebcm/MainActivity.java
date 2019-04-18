@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.blink,0);
         }}); // onClick to delete profile and everything related to it
 
-        profile.profileForm.setOnClickListener(new View.OnClickListener() {
+        profile.supportLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Constant animation = new Constant();

@@ -20,15 +20,15 @@
     <string name="help">Help</string>
 
     <!--hints-->
+    <string name="new_profile_name">Profile Name</string>
     <string name="description">Description</string>
-    <string name="new_profile_name">New Profile Name</string>
+    <string name="profile_price">Price kWh</string>
+    <string name="new_item">Device Name</string>
     <string name="power">Power W</string>
     <string name="quantity">Quantity</string>
     <string name="usage_h_day">hours</string>
     <string name="usage_min_day">mins</string>
     <string name="usage_d_month">Usage d/Month</string>
-    <string name="new_item">New Item</string>
-    <string name="profile_price">Price kWh</string>
     <string name="delete_name">Delete Name</string>
 
     <!--buttons-->

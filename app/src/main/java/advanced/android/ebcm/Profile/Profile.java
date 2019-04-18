@@ -16,11 +16,10 @@ public class Profile {
     private String name;
     private String price;
     private String description;
-    private String cost;
-    private String power;
-    private String time;
+    private String cost = "0";
+    private String power = "0";
+    private String time = "00:00";
 
-    public LinearLayout profileForm;
     public CoordinatorLayout supportLayout;
 
     private TextView profileName;
@@ -78,26 +77,10 @@ public class Profile {
         String newPower = power + "W";
         profilePower.setText(newPower);
     }
-    public void setTime (String time){
+    public void setTime (String time) {
         this.time = time;
-        if (time != null) {
-            String newTime;
-            String[] fullTime = time.split(":");
-            if (fullTime[0].length() == 1 ){
-                newTime = "0" + fullTime[0] + ":";
-            } else {
-                newTime = fullTime[0] + ":";
-            }
-
-            if(fullTime[1].length() == 1){
-                newTime = newTime + "0" + fullTime[1];
-            } else {
-                newTime = newTime + fullTime[1];
-            }
-
-            profileTime.setText(newTime);
-        }
-
+        String newTime = this.setTimeFormat(time);
+        profileTime.setText(newTime);
     }
 
     public CoordinatorLayout getLayout(){
@@ -136,7 +119,8 @@ public class Profile {
         int descriptionsTextSize = 16;
 
         // Instantiation of base linear layout for profile panel
-        profileForm = new LinearLayout(context);
+
+        LinearLayout profileForm = new LinearLayout(context);
         profileForm.setBackgroundResource(R.drawable.profile_view);
         // Setting margins, with each component new Layout parameters have to be instantiated
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -202,7 +186,7 @@ public class Profile {
         LinearLayout fourthCol = generatedDescriptionColumn(context,colWidth*2,0);
         profilePower = createTextView(power+"W", context,descriptionsFont,descriptionsTextSize);
         fourthCol.addView(profilePower);
-        profileTime = createTextView(time, context, descriptionsFont, descriptionsTextSize);
+        profileTime = createTextView(setTimeFormat(time), context, descriptionsFont, descriptionsTextSize);
         fourthCol.addView(profileTime);
 
         thirdLine.addView(firstCol);
@@ -256,6 +240,29 @@ public class Profile {
         newTextView.setTypeface(typeface);
 
         return newTextView;
+    }
+
+    private String setTimeFormat(String time){
+        String newTime;
+        if (time.length() == 0 || time.equals("0")) {
+            newTime = "00:00";
+        }
+        else {
+
+            String[] fullTime = time.split(":");
+            if (fullTime[0].length() == 1) {
+                newTime = "0" + fullTime[0] + ":";
+            } else {
+                newTime = fullTime[0] + ":";
+            }
+
+            if (fullTime[1].length() == 1) {
+                newTime = newTime + "0" + fullTime[1];
+            } else {
+                newTime = newTime + fullTime[1];
+            }
+        }
+        return newTime;
     }
 
     private int convertDpToPx(int dp, DisplayMetrics displayMetrics) {

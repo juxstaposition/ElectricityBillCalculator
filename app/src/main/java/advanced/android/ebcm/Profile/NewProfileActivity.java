@@ -11,13 +11,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class NewProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
-    TextInputEditText name, description, price;
+    TextInputEditText name, description;
+    AutoCompleteTextView price;
 
     boolean newProfile = true;
 
@@ -32,9 +38,11 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profileNameInput = findViewById(R.id.editProfileName);
         profileDescriptionInput = findViewById(R.id.editProfileDescription);
         profilePriceInput = findViewById(R.id.editProfilePrice);
+        price = findViewById(R.id.edit_profile_price);
+
+        setProfileSuggestions(price);
 
         final String transferredData = getIntent().getStringExtra("KEY");
-        System.out.print(transferredData);
 
         if (transferredData.equals(Constant.EDIT_PROFILE)) {
             newProfile = false;
@@ -51,7 +59,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
             description = findViewById(R.id.edit_profile_description);
             description.setText(getIntent().getStringExtra("PROFILE_DESCRIPTION"));
 
-            price = findViewById(R.id.edit_profile_price);
             price.setText(getIntent().getStringExtra("PROFILE_PRICE"));
         }
 
@@ -98,12 +105,13 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
                 profileDescription = "";
             }
 
-            if (validation && (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 )){
-                validation = sendWarningToast("Price per kWh must be greater than 0!");
+            if (profilePrice.contains("€")){
+                String[] stringSplit = profilePrice.split("€");
+                profilePrice = stringSplit[0];
             }
 
-            if (profilePrice.length() > 6){
-                validation = sendWarningToast("Price value is too long!\nUse less characters");
+            if (validation && (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 )){
+                validation = sendWarningToast("Price per kWh must be greater than 0!");
             }
 
             if (validation){
@@ -162,8 +170,36 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         mDatabaseHelper.close();
     }
 
+    private void setProfileSuggestions(AutoCompleteTextView price){
+        String[] COUNTRIES = new String[]{
+                "0.086€, Albania","0.198€, Austria","0.288€, Belgium",
+                "0.098€, Bulgaria","0.149€, Czech Republic","0.124€, Croatia",
+                "0.183€, Cyprus","0.301€, Denmark","0.132€, Estonia",
+                "0.160€, Finland","0.176€, France","0.305€, Germany",
+                "0.162€, Greece","0.113€, Hungary","0.152€, Iceland",
+                "0.208€, Italy","0.065€, Kosovo","0.158€, Latvia",
+                "0.111€, Lithuania","0.162€, Luxembourg","0.136€, Malta",
+                "0.101€, Moldova","0.100€, Montenegro","0.156€, Netherlands",
+                "0.161€, Norway","0.145€, Poland","0.223€, Portugal",
+                "0.129€, Romania","0.081€, Republic of Macedonia","0.070€, Serbia",
+                "0.144€, Slovakia","0.161€, Slovenia","0.218€, Spain",
+                "0.199€, Sweden","0.096€, Turkey","0.038€, Ukraine",
+                "0.186€, United Kingdom",
+        };
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.autocomplete_view, COUNTRIES);
+        price.setAdapter(adapter);
+    }
+
+
     private boolean sendWarningToast(String message){
         Toast.makeText(NewProfileActivity.this, message, Toast.LENGTH_SHORT).show();
         return false;
     }
+
+
+
 }
+
