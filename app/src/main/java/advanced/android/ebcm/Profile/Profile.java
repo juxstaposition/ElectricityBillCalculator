@@ -80,7 +80,21 @@ public class Profile {
     }
     public void setTime (String time){
         this.time = time;
-        profileTime.setText(time);
+        String newTime;
+        String[] fullTime = time.split(":");
+        if (fullTime[0].length() == 1 ){
+            newTime = "0" + fullTime[0] + ":";
+        } else {
+            newTime = fullTime[0] + ":";
+        }
+
+        if(fullTime[1].length() == 1){
+            newTime = newTime + "0" + fullTime[1];
+        } else {
+            newTime = newTime + fullTime[1];
+        }
+
+        profileTime.setText(newTime);
     }
 
     public CoordinatorLayout getLayout(){

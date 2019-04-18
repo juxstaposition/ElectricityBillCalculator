@@ -190,7 +190,7 @@ public class ResultGraph extends AppCompatActivity {
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return getColor(data.getX());
+                return getColor(data.getX(),devicesList.size());
             }
         });
         series.setSpacing(50);
@@ -269,9 +269,16 @@ public class ResultGraph extends AppCompatActivity {
         return dataPoints;
     }
 
-    private int getColor(double x) {
-
-        return Color.rgb((int)Math.round(255.0/x), (int) Math.round(x*40), (int) Math.round(x*40));
+    private int getColor(double x,int devicesTot) {
+        double R = (255 * (devicesTot-x)) / devicesTot;
+        double G = (255 * (devicesTot - (devicesTot-x))) / devicesTot;
+        double B = 0;
+        return Color.rgb((int)R, (int)G, (int)B);
+        /*int myColor = Color.rgb((int)R, (int)G, (int)B);
+        float[] hsv = new float[] {0f,1f,1f};
+        hsv[0] = (float) (x * (2.0/6.0 / devicesTot));
+        System.out.println("________________________________"+hsv[0]+" , "+(float)(x* (2.0/6.0 / devicesTot)));
+        return Color.HSVToColor(hsv);*/
     }
     //nothing implemented --down
 
