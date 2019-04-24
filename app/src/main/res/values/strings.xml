@@ -15,7 +15,7 @@
     <string name="name_title">Name</string>
     <string name="price_title">Price</string>
     <string name="result_graph_title">CONSUMPTION OF ELECTRICITY GRAPH (kWh)</string>
-    <string name="highest_consumption">Usage from Highest to Lowest</string>
+    <string name="highest_consumption">5 Devices With Highest Power Consumption At The End Of The Month</string>
     <string name="cost_info">Cost Information</string>
     <string name="help">Help</string>
 
@@ -44,6 +44,10 @@
     <string name="notice">Notice:</string>
     <string name="irreversible">This is an irreversible action!</string>
     <string name="kwh">kWh</string>
+    <string name="time_total">Time total: </string>
+    <string name="power_total">Power total: </string>
+    <string name="price_total">Price total: </string>
+
 
 
 

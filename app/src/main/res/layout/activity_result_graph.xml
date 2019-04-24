@@ -56,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:backgroundTint="@color/white"
                     app:layout_constraintTop_toBottomOf="@+id/title_result"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent">
@@ -95,13 +96,14 @@
                     android:id="@+id/item_details"
                     android:paddingStart="32dp"
                     android:paddingEnd="32dp"
+
                     android:layout_marginBottom="5dp"
                     tools:layout_editor_absoluteX="0dp"
                     app:layout_constraintVertical_bias="0.415"/>
 
             <TextView
                     android:text="@string/cost_info"
-                    android:layout_width="match_parent"
+                    android:layout_width="342dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:id="@+id/cost_info"
@@ -110,14 +112,67 @@
                     android:layout_marginBottom="15dp"
             />
 
-            <!--<ListView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="300dp"-->
-                    <!--android:id="@+id/total_details"-->
-                    <!--android:textSize="20sp"-->
-                    <!--android:paddingStart="32dp"-->
-                    <!--android:paddingEnd="32dp"-->
-                    <!--app:layout_constraintVertical_bias="0.415"/>-->
+            <LinearLayout
+                    android:id="@+id/data_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    app:layout_constraintTop_toBottomOf="@+id/cost_info"
+
+                    android:layout_marginBottom="5dp"
+                    tools:layout_editor_absoluteX="0dp"
+                    app:layout_constraintVertical_bias="0.415"
+            >
+                <LinearLayout
+                        android:id="@+id/layout_total_power"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:text="@string/power_total"
+                    />
+
+                    <TextView
+                            android:id="@+id/total_power"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textColor="@color/black"
+                            android:textSize="25sp"
+
+                    />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/layout_totalTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:text="@string/time_total"
+                    />
+                    <TextView
+                            android:id="@+id/total_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textColor="@color/black"
+                            android:textSize="25sp"
+                    />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -134,16 +189,22 @@
             android:layout_margin="10dp"
 
     >
-        <Space
-                android:layout_width="0dp"
+
+        <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"/>
+                android:textSize="35sp"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="@string/price_total"/>
+
         <TextView
                 android:id="@+id/result_price_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="40sp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:textColor="@color/black"
                 android:gravity="end"
                 android:text="0.00€"/>

@@ -20,12 +20,6 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
         super(context, 0, results);
     }
 
-//    public ItemDetailsAdapter(Context context, ArrayList<CalculationResult> results, boolean pickItems) {
-//
-//        super(context, 0, results);
-//        this.pickItems = pickItems;
-//    }
-//    boolean pickItems = false;
 
     @NotNull
     @Override
@@ -59,7 +53,7 @@ public class ItemDetailsAdapter extends ArrayAdapter<CalculationResult> {
             power.setText(result.getPower() + " W");
 
 
-//        return super.getView(position, convertView, parent);
+
         return convertView;
     }
 

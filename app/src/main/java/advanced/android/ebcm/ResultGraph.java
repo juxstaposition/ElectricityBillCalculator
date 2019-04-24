@@ -42,7 +42,7 @@ public class ResultGraph extends AppCompatActivity {
 
         profileId = getIntent().getIntExtra("PROFILE_ID", -1);
 
-        setTitle("Result " + getIntent().getStringExtra("PROFILE_NAME") );
+        setTitle("Result for:       " + getIntent().getStringExtra("PROFILE_NAME") );
 
         if (profileId == 0 || profileId == -1) {
             finish();
@@ -201,17 +201,22 @@ public class ResultGraph extends AppCompatActivity {
 
         priceList();
 
+        ArrayList<CalculationResult> mostHungry = new ArrayList<>();
 
-        final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, results);
+        for (int i = 0; i < 5; i ++){
+            mostHungry.add(results.get(i));
+        }
+
+        final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, mostHungry);
+
+
         itemDetailsView.setAdapter(ida);
     }
 
 
     private void priceList() {
 
-        LinearLayout linearLayout = new LinearLayout(this);
-        TextView resultConsumption = new TextView(this);
-        TextView resultPrice = new TextView(this);
+        TextView resultConsumption = findViewById(R.id.total_power);
 
         for ( CalculationResult result : results ) {
 
@@ -227,14 +232,8 @@ public class ResultGraph extends AppCompatActivity {
         String costString = String.valueOf(totalPrice) + "€";
         costSum.setText(costString);
 
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
         resultConsumption.setText(String.valueOf((round(totalUnits,2).floatValue())) + " kWh");
-        resultPrice.setText(costString);
-        linearLayout.addView(resultConsumption);
-        linearLayout.addView(resultPrice);
 
-        LinearLayout mainLayout = findViewById(R.id.cost_info_result_layout);
-        mainLayout.addView(linearLayout);
 
         databasePowerCostTimeUpdate(totalPrice, allUnits, totalTime);
     }
@@ -251,6 +250,9 @@ public class ResultGraph extends AppCompatActivity {
         properMinutes = properMinutes.contains(".") ? properMinutes.replaceAll("0*$","").replaceAll("\\.$","") : properMinutes;
 
         correctTime = String.valueOf(hours) + ":" + properMinutes;
+        TextView resultTime = findViewById(R.id.total_time);
+        resultTime.setText(String.valueOf(correctTime) + " h");
+
 
         mDatabaseHelper.updateProfilePowerCost(totalCost, totalUnits, profileId);
         mDatabaseHelper.updateProfileTime(String.valueOf(correctTime), profileId);
@@ -279,13 +281,8 @@ public class ResultGraph extends AppCompatActivity {
         double G = (255 * (devicesTot - (devicesTot-x))) / devicesTot;
         double B = 0;
         return Color.rgb((int)R, (int)G, (int)B);
-        /*int myColor = Color.rgb((int)R, (int)G, (int)B);
-        float[] hsv = new float[] {0f,1f,1f};
-        hsv[0] = (float) (x * (2.0/6.0 / devicesTot));
-        System.out.println("________________________________"+hsv[0]+" , "+(float)(x* (2.0/6.0 / devicesTot)));
-        return Color.HSVToColor(hsv);*/
+
     }
-    //nothing implemented --down
 
     public static BigDecimal round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
