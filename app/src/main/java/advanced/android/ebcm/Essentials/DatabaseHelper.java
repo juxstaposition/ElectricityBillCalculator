@@ -150,8 +150,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * returns only the ID that matches the name passed in
-     * @param name string
+     * returns only the everything where id
+     * id int
      * @return
      *
      * This and below are NOT done yet

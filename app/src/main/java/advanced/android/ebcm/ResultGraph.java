@@ -204,7 +204,9 @@ public class ResultGraph extends AppCompatActivity {
         ArrayList<CalculationResult> mostHungry = new ArrayList<>();
 
         for (int i = 0; i < 5; i ++){
-            mostHungry.add(results.get(i));
+            if (i < results.size()) {
+                mostHungry.add(results.get(i));
+            }
         }
 
         final ItemDetailsAdapter ida = new ItemDetailsAdapter(this, mostHungry);
