@@ -10,7 +10,6 @@ import advanced.android.ebcm.Profile.Profile;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         myVerticalLayout = findViewById(R.id.profile_list);
+
+        mDatabaseHelper = new DatabaseHelper(this);
 
         generateProfileView();
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         if (data != null) {
 
             Bundle mBundle = data.getExtras();
-            
+
             if (requestCode == CREATE_PROFILE_ACTIVITY_REQ_CODE && resultCode == Activity.RESULT_OK) {
                 addNewProfile();
             }
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                     cost = data.getFloat(5);
                     time = data.getString(6);
                 } catch (Exception e){
-                   data.close();
+                    data.close();
                 }
                 data.close();
             }
@@ -231,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
         for (Profile profile : profiles){
             if (profile.getId() == id){
-                profiles.remove(profile);
 
                 mDatabaseHelper = new DatabaseHelper(getApplicationContext());
                 mDatabaseHelper.deleteProfile(profile.getId());
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("main_activity", ""+profileIdToUpdate);
                 startActivityForResult(intent, DELETE_PROFILE_ACTIVITY_REQ_CODE);
                 overridePendingTransition(R.anim.blink,0);
-        }}); // onClick to delete profile and everything related to it
+            }}); // onClick to delete profile and everything related to it
 
         profile.supportLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,7 +289,16 @@ public class MainActivity extends AppCompatActivity {
     }   // createNewProfile
 
     private void updateProfileData(int id, String name, String description, Number price) {
+        for (Profile profile : profiles){
+            if (profile.getId() == id){
 
+                profile.setName(name);
+                profile.setDescription(description);
+                profile.setPrice(String.valueOf(price));
+
+                break;
+            }
+        }
     }
 
     private void deleteDevices(int profileParent) {

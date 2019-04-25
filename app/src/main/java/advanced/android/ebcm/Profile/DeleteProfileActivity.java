@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DeleteProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView btnCancel, btnConfirm;
+    TextView btnCancel, btnConfirm, profileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
