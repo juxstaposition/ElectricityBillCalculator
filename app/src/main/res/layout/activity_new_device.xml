@@ -118,7 +118,7 @@
                         android:textColorHint="@color/colorSecondary"
                 >
 
-                    <android.support.design.widget.TextInputEditText
+                    <AutoCompleteTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/new_item"
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:textColorHint="@color/colorSecondary">
 
-                    <android.support.design.widget.TextInputEditText
+                    <AutoCompleteTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/power"
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:textColorHint="@color/colorSecondary">
 
-                    <android.support.design.widget.TextInputEditText
+                    <AutoCompleteTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/quantity"
@@ -168,7 +168,7 @@
                             app:counterEnabled="true"
                             app:counterMaxLength="2">
 
-                        <android.support.design.widget.TextInputEditText
+                        <AutoCompleteTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/usage_h_day"
@@ -195,7 +195,7 @@
                             app:counterMaxLength="2"
                     >
 
-                        <android.support.design.widget.TextInputEditText
+                        <AutoCompleteTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/usage_min_day"
@@ -213,7 +213,7 @@
                         app:counterEnabled="true"
                         app:counterMaxLength="2">
 
-                    <android.support.design.widget.TextInputEditText
+                    <AutoCompleteTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/usage_d_month"
@@ -222,16 +222,6 @@
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
-
-
-
-
-
-
-
-
-
-
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
