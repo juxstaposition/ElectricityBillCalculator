@@ -13,11 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:layout_editor_absoluteX="0dp"
-            android:layout_marginBottom="80dp"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_details"
+    >
         <LinearLayout
                 android:id="@+id/cost_info_result_layout"
                 android:layout_width="match_parent"
@@ -55,7 +54,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:backgroundTint="@color/white"
                     app:layout_constraintTop_toBottomOf="@+id/title_result"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -64,6 +63,7 @@
                 <com.jjoe64.graphview.GraphView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/graph_rounded"
                         android:id="@+id/graphView"
 
                 />
@@ -151,7 +151,8 @@
                 <LinearLayout
                         android:id="@+id/layout_totalTime"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="80dp">
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -182,12 +183,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:weightSum="3"
-            android:layout_margin="10dp"
-
+            android:padding="7dp"
     >
 
         <TextView
@@ -203,7 +204,7 @@
                 android:id="@+id/result_price_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
+                android:textSize="35sp"
                 android:layout_weight="2"
                 android:textColor="@color/black"
                 android:gravity="end"
