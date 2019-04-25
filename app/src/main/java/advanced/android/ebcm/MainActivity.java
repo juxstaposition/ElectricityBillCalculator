@@ -10,6 +10,7 @@ import advanced.android.ebcm.Profile.Profile;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         myVerticalLayout = findViewById(R.id.profile_list);
-
-        mDatabaseHelper = new DatabaseHelper(this);
 
         generateProfileView();
 
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
@@ -232,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (Profile profile : profiles){
             if (profile.getId() == id){
+                profiles.remove(profile);
 
                 mDatabaseHelper = new DatabaseHelper(getApplicationContext());
                 mDatabaseHelper.deleteProfile(profile.getId());
@@ -289,16 +289,7 @@ public class MainActivity extends AppCompatActivity {
     }   // createNewProfile
 
     private void updateProfileData(int id, String name, String description, Number price) {
-        for (Profile profile : profiles){
-            if (profile.getId() == id){
 
-                profile.setName(name);
-                profile.setDescription(description);
-                profile.setPrice(String.valueOf(price));
-
-                break;
-            }
-        }
     }
 
     private void deleteDevices(int profileParent) {
