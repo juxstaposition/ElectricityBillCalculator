@@ -47,6 +47,10 @@
     <string name="time_total">Time total: </string>
     <string name="power_total">Power total: </string>
     <string name="price_total">Price total: </string>
+    <string name="result_name">Name: </string>
+    <string name="result_power">Power: </string>
+    <string name="result_consumption">Total: </string>
+    
 
 
 

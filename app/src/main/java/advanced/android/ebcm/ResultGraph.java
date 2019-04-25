@@ -4,6 +4,7 @@ import advanced.android.ebcm.Device.Device;
 import advanced.android.ebcm.Essentials.DatabaseHelper;
 import advanced.android.ebcm.Graph.CalculationResult;
 import advanced.android.ebcm.Graph.ItemDetailsAdapter;
+import advanced.android.ebcm.Graph.ResultDetails;
 import advanced.android.ebcm.Graph.SortCalculationResult;
 import android.content.Intent;
 import android.database.Cursor;
@@ -178,12 +179,15 @@ public class ResultGraph extends AppCompatActivity {
                 CalculationResult result = results.get(x-1);
 
                 BigDecimal expenditure = round(result.getResults(), 2);
-                String message = "Device name: " + result.getItemName() + "\n\t" + "Power: " + result.getPower() +
-                        " W\n\t"+ "Consumption total: " + expenditure + " kWh";
 
-                Toast toast = Toast.makeText(ResultGraph.this, message, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.TOP | Gravity.START, 120, 40);
-                toast.show();
+                Intent intent = new Intent(ResultGraph.this, ResultDetails.class);
+                intent.putExtra("NAME", result.getItemName());
+                intent.putExtra("POWER", result.getPower() + " W");
+                intent.putExtra("CONSUMPTION", expenditure + " kWh");
+                intent.putExtra("TIME", String.valueOf(result.getUsageTimeTotal()));
+                startActivity(intent);
+                overridePendingTransition( R.anim.blink, 0);
+                
             }
         });
 

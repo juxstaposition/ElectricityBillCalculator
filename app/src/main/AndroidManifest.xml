@@ -41,6 +41,9 @@
         <activity android:name=".ResultGraph"
                   android:screenOrientation="portrait"
         />
+        <activity android:name=".Graph.ResultDetails"
+                  android:theme="@style/AppTheme.InputPopUpStyle">
+        </activity>
         <activity android:name=".Device.DeleteDeviceActivity"
                   android:theme="@style/AppTheme.InputPopUpStyle"
         />
