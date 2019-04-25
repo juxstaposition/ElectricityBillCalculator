@@ -24,7 +24,6 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
     TextInputLayout profileNameInput, profileDescriptionInput, profilePriceInput;
     TextInputEditText description;
-    AutoCompleteTextView name, price;
 
     boolean newProfile = true;
 
@@ -39,8 +38,9 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
         profileNameInput = findViewById(R.id.editProfileName);
         profileDescriptionInput = findViewById(R.id.editProfileDescription);
         profilePriceInput = findViewById(R.id.editProfilePrice);
-        price = findViewById(R.id.edit_profile_price);
-        name = findViewById(R.id.edit_profile_name);
+
+        AutoCompleteTextView price = findViewById(R.id.edit_profile_price);
+        AutoCompleteTextView name = findViewById(R.id.edit_profile_name);
 
         setProfileSuggestions(price);
 
@@ -94,11 +94,15 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
 
             boolean validation = true;
 
+
+
+
             String  profileName = profileNameInput.getEditText().getText().toString(),
                     profileDescription = profileDescriptionInput.getEditText().getText().toString(),
                     profilePrice = profilePriceInput.getEditText().getText().toString();
 
             if (profileName.length() == 0){
+                AutoCompleteTextView name = findViewById(R.id.edit_profile_name);
                 name.setError("Please insert profile Name!");
                 validation = false;
             }
@@ -113,6 +117,7 @@ public class NewProfileActivity extends AppCompatActivity implements View.OnClic
             }
 
             if (profilePrice.length() == 0 || Float.valueOf(profilePrice.trim()) <= 0 ){
+                AutoCompleteTextView price = findViewById(R.id.edit_profile_price);
                 price.setError("Price per kWh must be greater than 0!");
                 validation = false;
             }
