@@ -35,8 +35,6 @@ public class DevicesListActivity extends AppCompatActivity {
     boolean deleted = false;
     boolean updated = false;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
