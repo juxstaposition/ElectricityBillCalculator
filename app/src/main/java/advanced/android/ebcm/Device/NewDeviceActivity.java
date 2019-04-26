@@ -91,12 +91,18 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
             // request input content
             String name = nameInput.getEditText().getText().toString();
             String quantity = quantityInput.getEditText().getText().toString();
-            String usageHours = usageHoursInput.getEditText().getText().toString();
             String consumption = consumptionInput.getEditText().getText().toString();
-            String usageMinutes = usageMinutesInput.getEditText().getText().toString();
             String usageDays = usageDaysInput.getEditText().getText().toString();
             Intent returnIntent = new Intent();
 
+            String usageHours = "0";
+            String usageMinutes = "0";
+            if(usageHoursInput.getEditText().getText().toString().length() != 0) {
+                usageHours = usageHoursInput.getEditText().getText().toString();
+            }
+            if(usageMinutesInput.getEditText().getText().toString().length() != 0) {
+                usageMinutes = usageMinutesInput.getEditText().getText().toString();
+            }
             // validation of input parameters
             boolean validation =true;
 
@@ -110,45 +116,23 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
                 validation = setTextError(quantityInput,"At least 1 device must be used!");
             }
 
-            if (usageHours.length() == 0 && usageMinutes.length() == 0){
-                validation = setTextError(usageMinutesInput,"Usage must be used at least 1 minute!");
-            }
-            else if (usageHours.length() == 0 || usageMinutes.length() == 0) {
 
-                // if hours is empty but minutes is correct, automatically fills  hours
-                if (usageHours.length() == 0 &&  usageMinutes.length() > 0 ){
-                    if (Integer.parseInt(usageMinutes) > 59 ){
-                        validation = setTextError(usageMinutesInput,"Invalid time format");
-                    }
-                    else{
-                        usageHours = "0";
-                    }
-                }
-                else if (usageMinutes.length() == 0 &&  usageHours.length() > 0 ) {
-                    if (Integer.parseInt(usageHours) >= 24 ) {
-                        validation = setTextError(usageHoursInput,"Invalid time format");
-                    }
-                    else if (Integer.parseInt(usageHours) == 24 && Integer.parseInt(usageMinutes) > 0){
-
-                        validation = setTextError(usageMinutesInput,"Invalid time format");
-                    }
-                    else{
-                        usageMinutes = "0";
-                    }
-                }
+            if(Integer.parseInt(usageHours) > 24){
+                validation = setTextError(usageHoursInput,"Invalid time format");
             }
-            else {
-                if(Integer.parseInt(usageHours) == 24){
-                    usageMinutes = "0";
-                }
-                else if (Integer.parseInt(usageMinutes) > 59 ) {
-                    validation = setTextError(usageMinutesInput,"Invalid time format");
-                }
-                else if (Integer.parseInt(usageHours) > 24){
 
-                    validation = setTextError(usageHoursInput,"Invalid time format");
-                }
+            if (Integer.parseInt(usageMinutes) > 59 ) {
+                validation = setTextError(usageMinutesInput,"Invalid time format");
             }
+
+            if (Integer.parseInt(usageHours) == 24 && Integer.parseInt(usageMinutes) > 0 ) {
+                validation = setTextError(usageMinutesInput,"Invalid time format");
+            }
+
+            if (Integer.parseInt(usageHours) == 0 && Integer.parseInt(usageMinutes) == 0 ) {
+                validation = setTextError(usageMinutesInput,"Invalid time format");
+            }
+
 
             if (usageDays.length() == 0 || Integer.parseInt(usageDays) < 1 ){
                 validation = setTextError(usageDaysInput,"Must be used at least 1 day!");
@@ -163,7 +147,8 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
 
 
                 if (getIntent().getStringExtra("KEY").equals(EDIT_DEVICE)){
-                    updateDevice();
+                    updateDevice(Integer.parseInt(consumption),Integer.parseInt(quantity),Integer.parseInt(usageHours),
+                                 Integer.parseInt(usageMinutes),Integer.parseInt(usageDays));
 
                 } else if (profileParent == -1) {
                     Toast.makeText(this, "profileParent"+profileParent, Toast.LENGTH_SHORT).show();
@@ -218,15 +203,10 @@ public class NewDeviceActivity extends AppCompatActivity implements View.OnClick
         mDatabaseHelper.close();
     }
 
-    private void updateDevice() {
+    private void updateDevice( int consumption ,int quantity, int usageHours, int usageMinutes ,int usageDays) {
         DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
 
         String name = nameInput.getEditText().getText().toString();
-        int consumption =Integer.parseInt(consumptionInput.getEditText().getText().toString());
-        int quantity = Integer.parseInt(quantityInput.getEditText().getText().toString());
-        int usageHours = Integer.parseInt(usageHoursInput.getEditText().getText().toString());
-        int usageMinutes = Integer.parseInt(usageMinutesInput.getEditText().getText().toString());
-        int usageDays = Integer.parseInt(usageDaysInput.getEditText().getText().toString());
 
         mDatabaseHelper.updateDevice(name,consumption,quantity,usageHours,usageMinutes,usageDays, deviceId);
 
